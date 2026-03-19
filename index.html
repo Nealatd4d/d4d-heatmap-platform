@@ -18,9 +18,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>D4D Election Heatmap Platform</title>
-<meta name="description" content="Precinct-level election data viewer for Chicago districts by Digital4Dems">
+<meta name="description" content="Precinct-level election data viewer for Cook County &amp; Chicago by Digital4Dems">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/spark-md5@3.0.2/spark-md5.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -111,53 +112,19 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Sego
       </svg>
       <div>
         <div class="header-title">D4D Election Heatmap Platform</div>
-        <div class="header-subtitle">Precinct-Level Election Data · Chicago</div>
+        <div class="header-subtitle">Precinct-Level Election Data · Cook County &amp; Chicago</div>
       </div>
     </div>
     <div class="header-stats" id="headerStats"></div>
   </div>
 
   <div class="toolbar">
-    <span class="toolbar-label">District</span>
-    <select id="selType">
-      <option value="">Select Type…</option>
-      <optgroup label="Legislative">
-        <option value="state_rep">State House</option>
-        <option value="state_senate">State Senate</option>
-        <option value="congress">Congressional</option>
-      </optgroup>
-      <optgroup label="Municipal">
-        <option value="mayor">Mayor (City-wide)</option>
-        <option value="alderman">Alderman (Ward)</option>
-        <option value="clerk">City Clerk (City-wide)</option>
-        <option value="treasurer">City Treasurer (City-wide)</option>
-      </optgroup>
-      <optgroup label="Cook County">
-        <option value="commissioner">Cook County Commissioner</option>
-        <option value="cook_board_president">Cook Co. Board Pres.</option>
-        <option value="mwrd">MWRD</option>
-      </optgroup>
-      <optgroup label="Judicial">
-        <option value="circuit">Circuit Court</option>
-        <option value="subcircuit">Subcircuit Court</option>
-        <option value="appellate">Appellate Court</option>
-        <option value="supreme">Supreme Court</option>
-      </optgroup>
-      <optgroup label="State-wide">
-        <option value="governor">Governor</option>
-        <option value="us_senate">U.S. Senate</option>
-      </optgroup>
-    </select>
-    <select id="selRace" disabled><option value="">Select Race…</option></select>
-    <div class="toolbar-sep"></div>
     <span class="toolbar-label">Election</span>
-    <select id="selElection">
-      <option value="2024_general">2024 General</option>
-      <option value="2024_primary">2024 Primary</option>
-      <option value="2023_municipal">2023 Municipal</option>
-      <option value="2023_municipal_runoff">2023 Muni Runoff</option>
-      <option value="2022_general">2022 General</option>
-    </select>
+    <select id="selElection"><option value="">Loading…</option></select>
+    <div class="toolbar-sep"></div>
+    <span class="toolbar-label">District</span>
+    <select id="selType"><option value="">Select Type…</option></select>
+    <select id="selRace" disabled><option value="">Select Race…</option></select>
     <div class="toolbar-sep"></div>
     <span class="toolbar-label">View</span>
     <div class="mode-group">
@@ -166,7 +133,7 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Sego
       <button class="mode-btn" data-mode="margin">Margin</button>
       <button class="mode-btn" data-mode="candidate">Candidate</button>
       <button class="mode-btn" data-mode="vs">Vs</button>
-      <button class="mode-btn" data-mode="turnout_delta">Turnout Δ</button>
+      <button class="mode-btn" data-mode="turnout_delta">Turnout &Delta;</button>
       <button class="mode-btn" data-mode="swing">Swing</button>
       <button class="mode-btn" data-mode="votes">Votes</button>
     </div>
@@ -177,8 +144,8 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Sego
     <div id="map"></div>
     <div class="loading-indicator" id="loader"><div class="spinner"></div><span>Loading…</span></div>
     <div class="landing-overlay" id="landing">
-      <h2>Select a District</h2>
-      <p>Choose a district type and race from the toolbar to view precinct-level election data.</p>
+      <h2>Select a Race</h2>
+      <p>Choose an election, district type, and race from the toolbar to view precinct-level data.</p>
     </div>
     <div class="info-panel" id="infoPanel"></div>
     <div class="legend" id="legend"></div>
@@ -194,62 +161,122 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Sego
 (function(){
 'use strict';
 
-/* ═══════════════════════════ STATE ═══════════════════════════ */
-let map, precinctLayer, boundaryLayer;
-let allPrecinctGeo = null, districtPrecincts = null, metaData = null;
-let boundaryCache = {}, electionCache = {};
+/* ═══════════════════ SUPABASE CONFIG ═══════════════════ */
+const SUPA_URL = 'https://nfjfqdffulhqhszhlymo.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5mamZxZGZmdWxocWhzemhseW1vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NTAzMDgsImV4cCI6MjA4OTUyNjMwOH0.vNrXz0iCwA4scUCP2O75KWaLyh7LVQrYmUdnEGMnnCE';
 
-let currentType = '', currentRaceKey = '', currentDistrictKey = '';
-let currentElection = '2024_general', currentMode = 'turnout';
-let compareElection = '2022_general';
-let selectedCandidate = '', vsCandidate1 = '', vsCandidate2 = '';
+async function rpc(fn, params) {
+  const r = await fetch(`${SUPA_URL}/rest/v1/rpc/${fn}`, {
+    method: 'POST',
+    headers: {
+      'apikey': SUPA_KEY,
+      'Authorization': `Bearer ${SUPA_KEY}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(params || {})
+  });
+  if (!r.ok) {
+    const err = await r.text();
+    throw new Error(`RPC ${fn} failed: ${r.status} ${err}`);
+  }
+  return r.json();
+}
 
-// Candidate → color mapping for the current race (built dynamically)
+/* ═══════════════════ MD5 PRECINCT ID ═══════════════════ */
+function makeId(...parts) {
+  const raw = parts.map(p => String(p).trim().toLowerCase()).join('|');
+  return SparkMD5.hash(raw).substring(0, 16);
+}
+
+function pad2(n) { return String(n).padStart(2, '0'); }
+
+function chicagoPrecinctId(ward, precinct) {
+  const name = `Ward ${pad2(ward)} Precinct ${pad2(precinct)}`;
+  return makeId('chicago', name);
+}
+
+function suburbanPrecinctId(precinctid) {
+  return makeId('cook_suburban', precinctid);
+}
+
+/* ═══════════════════ STATE ═══════════════════ */
+let map, precinctLayer;
+let geoFeatures = [];          // merged GeoJSON features with ._pid computed
+let pidToFeatureIdx = {};      // precinct_id → index in geoFeatures
+
+let elections = [];            // from get_elections
+let racesForElection = {};     // cache: election_id → [races]
+let raceMapCache = {};         // cache: race_id → {pid: {total_votes, candidates}}
+let turnoutCache = {};         // cache: election_id → {pid: {registered_voters, ballots_cast, turnout_pct}}
+
+let currentElectionId = '';
+let currentRaceType = '';
+let currentRaceId = '';
+let currentMode = 'turnout';
+let compareElectionId = '';
+let selectedCandidate = '';
+let vsCandidate1 = '';
+let vsCandidate2 = '';
 let candidateColorMap = {};
 
+// Render generation token to prevent stale async overwrites
+let renderSeq = 0;
+// Loading reference count
+let loadingCount = 0;
+// Track previously hovered layer for efficient unhover
+let hoveredLayer = null;
+
 const $ = id => document.getElementById(id);
-const selType=$('selType'), selRace=$('selRace'), selElection=$('selElection');
-const infoPanel=$('infoPanel'), headerStats=$('headerStats'), legendEl=$('legend');
-const landing=$('landing'), loader=$('loader'), viewOpts=$('viewOpts');
+const selElection = $('selElection'), selType = $('selType'), selRace = $('selRace');
+const infoPanel = $('infoPanel'), headerStats = $('headerStats'), legendEl = $('legend');
+const landing = $('landing'), loader = $('loader'), viewOpts = $('viewOpts');
 
-/* ═══════════════════════════ CONFIG ═══════════════════════════ */
-const TYPE_CFG = {
-  state_rep:{mode:'district',label:'District',bnd:'boundaries_state_rep.geojson'},
-  state_senate:{mode:'district',label:'District',bnd:'boundaries_state_senate.geojson'},
-  congress:{mode:'district',label:'District',bnd:'boundaries_congress.geojson'},
-  alderman:{mode:'district',label:'Ward'},
-  commissioner:{mode:'district',label:'District'},
-  subcircuit:{mode:'district',label:'Subcircuit'},
-  circuit:{mode:'countywide',label:'Judge'},
-  appellate:{mode:'countywide',label:'Judge'},
-  supreme:{mode:'countywide',label:'Judge'},
-  mwrd:{mode:'countywide',label:'Race'},
-  mayor:{mode:'single'},clerk:{mode:'single'},treasurer:{mode:'single'},
-  governor:{mode:'single'},us_senate:{mode:'single'},cook_board_president:{mode:'single'},
-};
-
-const ELECTIONS = [
-  {key:'2024_general',label:'2024 General'},
-  {key:'2024_primary',label:'2024 Primary'},
-  {key:'2023_municipal',label:'2023 Municipal'},
-  {key:'2023_municipal_runoff',label:'2023 Muni Runoff'},
-  {key:'2022_general',label:'2022 General'},
-];
-
-// 15 distinct, high-contrast colors for up to 15 candidates in "Winner" mode
-const CANDIDATE_PALETTE = [
-  '#4fc3f7','#ff8a65','#ce93d8','#81c784','#fdd835',
-  '#ef5350','#26c6da','#ffb74d','#7986cb','#a1887f',
-  '#4db6ac','#f06292','#aed581','#90a4ae','#fff176'
+/* ═══════════════════ DISTRICT TYPE CONFIG ═══════════════════ */
+// Maps UI category to DB race_type values
+const TYPE_GROUPS = [
+  { label: 'Legislative', items: [
+    { value: 'state_rep', label: 'State House' },
+    { value: 'state_senate', label: 'State Senate' },
+    { value: 'congress', label: 'Congressional' },
+  ]},
+  { label: 'Municipal', items: [
+    { value: 'mayor', label: 'Mayor' },
+    { value: 'aldermanic_ward', label: 'Alderman' },
+    { value: 'city_clerk', label: 'City Clerk' },
+    { value: 'city_treasurer', label: 'City Treasurer' },
+  ]},
+  { label: 'Cook County', items: [
+    { value: 'cook_commissioner', label: 'Commissioner' },
+    { value: 'cook_president', label: 'Board President' },
+    { value: 'mwrd', label: 'MWRD' },
+  ]},
+  { label: 'Judicial', items: [
+    { value: 'circuit_court', label: 'Circuit Court' },
+    { value: 'subcircuit', label: 'Subcircuit' },
+    { value: 'appellate_court', label: 'Appellate Court' },
+    { value: 'supreme_court', label: 'Supreme Court' },
+  ]},
+  { label: 'Education', items: [
+    { value: 'school_board', label: 'School Board' },
+  ]},
+  { label: 'State-wide', items: [
+    { value: 'president', label: 'President' },
+    { value: 'governor', label: 'Governor' },
+    { value: 'us_senate', label: 'U.S. Senate' },
+    { value: 'attorney_general', label: 'Attorney General' },
+    { value: 'secretary_of_state', label: 'Sec. of State' },
+    { value: 'comptroller', label: 'Comptroller' },
+    { value: 'treasurer_state', label: 'State Treasurer' },
+  ]},
 ];
 
 const NO_DATA = '#333';
 
-/* ═══════════════════════════ COLORS ═══════════════════════════ */
+/* ═══════════════════ COLOR SCALES ═══════════════════ */
 function scaleColor(v, scale) {
   if (v == null) return NO_DATA;
-  for (const [t,c] of scale) if (v >= t) return c;
-  return scale[scale.length-1][1];
+  for (const [t, c] of scale) if (v >= t) return c;
+  return scale[scale.length - 1][1];
 }
 
 const TURNOUT_SC = [[55,'#fdd835'],[45,'#ffb300'],[35,'#f57c00'],[25,'#e65100'],[15,'#bf360c'],[5,'#6d4c41'],[0,'#3e2723']];
@@ -257,517 +284,720 @@ const MARGIN_SC  = [[40,'#b71c1c'],[30,'#c62828'],[20,'#e53935'],[10,'#ef5350'],
 const CAND_SC    = [[60,'#4a148c'],[50,'#6a1b9a'],[40,'#8e24aa'],[30,'#ab47bc'],[20,'#ce93d8'],[10,'#e1bee7'],[0,'#f3e5f5']];
 const VOLUME_SC  = [[800,'#0d47a1'],[600,'#1565c0'],[400,'#1976d2'],[300,'#42a5f5'],[200,'#90caf9'],[100,'#bbdefb'],[0,'#e3f2fd']];
 
-function deltaColor(d){
-  if(d==null) return NO_DATA;
-  if(d>=10) return '#1b5e20'; if(d>=5) return '#2e7d32'; if(d>=2) return '#43a047'; if(d>=0) return '#a5d6a7';
-  if(d>=-2) return '#ef9a9a'; if(d>=-5) return '#e57373'; return '#c62828';
-}
-function vsColor(d){
-  if(d==null) return NO_DATA;
-  if(d>=30) return '#0d47a1'; if(d>=20) return '#1565c0'; if(d>=10) return '#42a5f5'; if(d>=5) return '#90caf9'; if(d>=0) return '#e3f2fd';
-  if(d>=-5) return '#ffcdd2'; if(d>=-10) return '#ef9a9a'; if(d>=-20) return '#e57373'; return '#c62828';
+const CANDIDATE_PALETTE = [
+  '#4fc3f7','#ff8a65','#ce93d8','#81c784','#fdd835',
+  '#ef5350','#26c6da','#ffb74d','#7986cb','#a1887f',
+  '#4db6ac','#f06292','#aed581','#90a4ae','#fff176'
+];
+
+function deltaColor(d) {
+  if (d == null) return NO_DATA;
+  if (d >= 10) return '#1b5e20'; if (d >= 5) return '#2e7d32';
+  if (d >= 2) return '#43a047';  if (d >= 0) return '#a5d6a7';
+  if (d >= -2) return '#ef9a9a'; if (d >= -5) return '#e57373';
+  return '#c62828';
 }
 
-/* ═══════════════════════════ DATA ═══════════════════════════ */
-function showLoading(v){loader.classList.toggle('visible',v)}
-async function loadJSON(u){const r=await fetch(u);if(!r.ok)throw new Error(u);return r.json()}
-async function initData(){
-  showLoading(true);
-  try{
-    const [m,dp,g]=await Promise.all([loadJSON('data/meta.json'),loadJSON('data/district_precincts.json'),loadJSON('data/chicago_precincts.geojson')]);
-    metaData=m;districtPrecincts=dp;allPrecinctGeo=g;
-  }catch(e){console.error('Init failed:',e)}
-  showLoading(false);
-}
-async function getElection(k){
-  if(electionCache[k]) return electionCache[k];
-  showLoading(true);
-  try{const d=await loadJSON(`data/election_${k}.json`);electionCache[k]=d;return d}finally{showLoading(false)}
-}
-async function getBoundary(t){
-  const c=TYPE_CFG[t];if(!c||!c.bnd) return null;
-  if(boundaryCache[t]) return boundaryCache[t];
-  try{const d=await loadJSON('data/'+c.bnd);boundaryCache[t]=d;return d}catch(e){return null}
+function vsColor(d) {
+  if (d == null) return NO_DATA;
+  if (d >= 30) return '#0d47a1'; if (d >= 20) return '#1565c0';
+  if (d >= 10) return '#42a5f5'; if (d >= 5)  return '#90caf9';
+  if (d >= 0)  return '#e3f2fd';
+  if (d >= -5) return '#ffcdd2'; if (d >= -10) return '#ef9a9a';
+  if (d >= -20) return '#e57373';
+  return '#c62828';
 }
 
-function getAvailableElections(type){
-  if(!metaData) return [];
-  const r=[];
-  for(const [ek,ed] of Object.entries(metaData.elections)){
-    const cats=Object.keys(ed.races);
-    if(type==='mwrd'){if(cats.includes('mwrd'))r.push(ek)}
-    else if(cats.includes(type))r.push(ek);
-    else{for(const c of cats){if(c===type||ed.races[c]?.some(x=>x.startsWith(type))){r.push(ek);break}}}
+/* ═══════════════════ LOADING ═══════════════════ */
+function pushLoading() { loadingCount++; loader.classList.add('visible'); }
+function popLoading() { loadingCount = Math.max(0, loadingCount - 1); if (loadingCount === 0) loader.classList.remove('visible'); }
+
+/* ═══════════════════ INIT DATA ═══════════════════ */
+async function loadGeoJSON() {
+  const [chiRes, subRes] = await Promise.all([
+    fetch('data/precincts_chicago.geojson').then(r => r.json()),
+    fetch('data/precincts_suburban.geojson').then(r => r.json())
+  ]);
+
+  geoFeatures = [];
+  pidToFeatureIdx = {};
+
+  // Chicago
+  for (const f of chiRes.features) {
+    const p = f.properties;
+    const pid = chicagoPrecinctId(p.ward, p.precinct);
+    f._pid = pid;
+    f._label = p.name;
+    pidToFeatureIdx[pid] = geoFeatures.length;
+    geoFeatures.push(f);
   }
-  return r;
+
+  // Suburban
+  for (const f of subRes.features) {
+    const p = f.properties;
+    const pid = suburbanPrecinctId(p.precinctid);
+    f._pid = pid;
+    f._label = p.name;
+    pidToFeatureIdx[pid] = geoFeatures.length;
+    geoFeatures.push(f);
+  }
+
+  console.log(`GeoJSON loaded: ${geoFeatures.length} features (${chiRes.features.length} Chicago + ${subRes.features.length} suburban)`);
 }
 
-/* ═══════════════════════════ CANDIDATE HELPERS ═══════════════════════════ */
-// Build {candidateName: totalVotes} for a race across precincts
-function aggregateCandidates(elecData, pids, raceKey){
-  const v={};
-  pids.forEach(pid=>{
-    const p=elecData[pid];if(!p||!p.x||!p.x[raceKey])return;
-    p.x[raceKey].c.forEach(c=>{v[c[0]]=(v[c[0]]||0)+c[1]});
-  });
-  return Object.entries(v).sort((a,b)=>b[1]-a[1]);
+async function loadElections() {
+  elections = await rpc('get_elections');
+  selElection.innerHTML = '';
+  for (const e of elections) {
+    const o = document.createElement('option');
+    o.value = e.id;
+    o.textContent = e.election_name;
+    selElection.appendChild(o);
+  }
+  if (elections.length) {
+    currentElectionId = elections[0].id;
+    selElection.value = currentElectionId;
+  }
 }
 
-// Build stable color assignment for candidates (sorted by total votes desc)
-function buildCandidateColors(sortedCands){
-  const m={};
-  sortedCands.forEach(([name],i)=>{m[name]=CANDIDATE_PALETTE[i%CANDIDATE_PALETTE.length]});
+async function fetchRaces(electionId) {
+  if (racesForElection[electionId]) return racesForElection[electionId];
+  const races = await rpc('get_races', { p_election_id: electionId });
+  racesForElection[electionId] = races;
+  return races;
+}
+
+async function fetchRaceMap(raceId) {
+  if (raceMapCache[raceId]) return raceMapCache[raceId];
+  const rows = await rpc('get_race_map', { p_race_id: raceId });
+  const m = {};
+  for (const r of rows) {
+    m[r.precinct_id] = {
+      totalVotes: r.total_votes,
+      candidates: r.candidates // [{n, v, p}]
+    };
+  }
+  raceMapCache[raceId] = m;
   return m;
 }
 
-function shortName(n,max){return n.length>max?n.substring(0,max-1)+'…':n}
-
-/* ═══════════════════════════ DROPDOWNS ═══════════════════════════ */
-function titleCase(s){return s.toLowerCase().replace(/(?:^|\s)\S/g,a=>a.toUpperCase())}
-function prettifyRace(key,type){
-  if(type==='alderman'){const m=key.match(/alderman_(\d+)(_runoff)?/);if(m)return `Ward ${m[1]}${m[2]?' (Runoff)':''}`}
-  if(type==='commissioner'){const m=key.match(/commissioner_(\d+)/);if(m)return `District ${m[1]}`}
-  if(type==='subcircuit'){const m=key.match(/subcircuit_(\d+)/);if(m)return `Subcircuit ${m[1]}`}
-  if(type==='mwrd'){if(key==='mwrd')return 'MWRD (6-Year)';if(key==='mwrd_2yr')return 'MWRD (2-Year)';return 'MWRD'}
-  let c=key;
-  if(type==='circuit')c=key.replace('circuit_','');
-  else if(type==='appellate')c=key.replace('appellate_','');
-  else if(type==='supreme')c=key.replace('supreme_','');
-  if(c.startsWith('retain_'))return `Retain ${titleCase(c.replace('retain_','').replace(/_/g,' '))}`;
-  c=c.replace(/_VACANCY/g,'').replace(/_/g,' ').replace(/\s+/g,' ').trim();
-  if(c.match(/^conv /i))return `${titleCase(c.replace(/^conv /i,''))} (Conv.)`;
-  return titleCase(c)+(key.includes('retain')?'':' Vacancy');
+async function fetchTurnout(electionId) {
+  if (turnoutCache[electionId]) return turnoutCache[electionId];
+  const rows = await rpc('get_race_turnout', { p_election_id: electionId });
+  const m = {};
+  for (const r of rows) {
+    m[r.precinct_id] = {
+      registered: r.registered_voters,
+      ballots: r.ballots_cast,
+      turnout: r.turnout_pct
+    };
+  }
+  turnoutCache[electionId] = m;
+  return m;
 }
-const TYPE_NAMES={state_rep:'State House',state_senate:'State Senate',congress:'Congressional',mayor:'Mayor',alderman:'Alderman',clerk:'City Clerk',treasurer:'City Treasurer',commissioner:'Cook Co. Commissioner',cook_board_president:'Cook Co. Board Pres.',mwrd:'MWRD',circuit:'Circuit Court',subcircuit:'Subcircuit Court',appellate:'Appellate Court',supreme:'Supreme Court',governor:'Governor',us_senate:'U.S. Senate'};
 
-function populateRaces(){
-  selRace.innerHTML='<option value="">Select Race…</option>';
-  selRace.disabled=true;
-  if(!currentType||!metaData) return;
-  const cfg=TYPE_CFG[currentType];if(!cfg) return;
+/* ═══════════════════ POPULATE DROPDOWNS ═══════════════════ */
+function populateTypeDropdown() {
+  selType.innerHTML = '<option value="">Select Type…</option>';
+  for (const g of TYPE_GROUPS) {
+    const og = document.createElement('optgroup');
+    og.label = g.label;
+    for (const it of g.items) {
+      const o = document.createElement('option');
+      o.value = it.value;
+      o.textContent = it.label;
+      og.appendChild(o);
+    }
+    selType.appendChild(og);
+  }
+}
 
-  if(cfg.mode==='single'){
-    let rk=currentType;
-    if(currentElection==='2023_municipal_runoff'&&currentType==='mayor')rk='mayor_runoff';
-    currentRaceKey=rk;currentDistrictKey=currentType;
-    selRace.innerHTML=`<option value="${rk}" selected>${TYPE_NAMES[currentType]||currentType}</option>`;
-    selRace.disabled=true;
+async function populateRaceDropdown() {
+  selRace.innerHTML = '<option value="">Loading…</option>';
+  selRace.disabled = true;
+  if (!currentElectionId || !currentRaceType) {
+    selRace.innerHTML = '<option value="">Select Race…</option>';
+    return;
+  }
+
+  const races = await fetchRaces(currentElectionId);
+  const filtered = races.filter(r => r.race_type === currentRaceType);
+  
+  selRace.innerHTML = '';
+  if (!filtered.length) {
+    selRace.innerHTML = '<option value="">No races this election</option>';
+    currentRaceId = '';
+    clearMap();
+    return;
+  }
+
+  // Sort: extract any number from the name for natural sorting
+  filtered.sort((a, b) => {
+    const na = a.race_name.match(/(\d+)/);
+    const nb = b.race_name.match(/(\d+)/);
+    if (na && nb) return parseInt(na[1]) - parseInt(nb[1]);
+    return a.race_name.localeCompare(b.race_name);
+  });
+
+  // If only one race, auto-select it
+  if (filtered.length === 1) {
+    const o = document.createElement('option');
+    o.value = filtered[0].id;
+    o.textContent = filtered[0].race_name;
+    selRace.appendChild(o);
+    selRace.disabled = true;
+    currentRaceId = filtered[0].id;
     onRaceSelected();
     return;
   }
-  if(cfg.mode==='district'){
-    const pfx=currentType+'_';
-    Object.keys(districtPrecincts)
-      .filter(k=>k.startsWith(pfx)&&!k.includes('_runoff'))
-      .sort((a,b)=>parseInt(a.replace(pfx,''))-parseInt(b.replace(pfx,'')))
-      .forEach(k=>{
-        const n=parseInt(k.replace(pfx,''));
-        const o=document.createElement('option');o.value=k;o.textContent=`${cfg.label} ${n}`;
-        selRace.appendChild(o);
-      });
-    selRace.disabled=false;
-    return;
+
+  const def = document.createElement('option');
+  def.value = '';
+  def.textContent = 'Select Race…';
+  selRace.appendChild(def);
+
+  for (const r of filtered) {
+    const o = document.createElement('option');
+    o.value = r.id;
+    o.textContent = r.race_name;
+    selRace.appendChild(o);
   }
-  if(cfg.mode==='countywide'){
-    const ed=metaData.elections[currentElection];
-    if(!ed||!ed.races[currentType]){selRace.innerHTML='<option value="">No races this election</option>';return}
-    ed.races[currentType].sort().forEach(k=>{
-      const o=document.createElement('option');o.value=k;o.textContent=prettifyRace(k,currentType);selRace.appendChild(o);
-    });
-    if(currentType==='mwrd'&&ed.races['mwrd_2yr']){
-      ed.races['mwrd_2yr'].forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent='MWRD (2-Year)';selRace.appendChild(o)});
-    }
-    selRace.disabled=false;
-  }
+  selRace.disabled = false;
 }
 
-function updateElectionOpts(){
-  const avail=currentType?getAvailableElections(currentType):ELECTIONS.map(e=>e.key);
-  selElection.innerHTML='';
-  ELECTIONS.forEach(e=>{
-    const o=document.createElement('option');o.value=e.key;o.textContent=e.label;
-    if(!avail.includes(e.key)){o.disabled=true;o.textContent+=' (N/A)'}
-    selElection.appendChild(o);
+/* ═══════════════════ CANDIDATE HELPERS ═══════════════════ */
+function aggregateCandidates(raceData) {
+  // raceData = {pid: {totalVotes, candidates: [{n,v,p}]}}
+  const totals = {};
+  for (const pid of Object.keys(raceData)) {
+    const d = raceData[pid];
+    if (!d.candidates) continue;
+    for (const c of d.candidates) {
+      totals[c.n] = (totals[c.n] || 0) + c.v;
+    }
+  }
+  return Object.entries(totals).sort((a, b) => b[1] - a[1]);
+}
+
+function buildCandidateColors(sortedCands) {
+  const m = {};
+  sortedCands.forEach(([name], i) => {
+    m[name] = CANDIDATE_PALETTE[i % CANDIDATE_PALETTE.length];
   });
-  if(!avail.includes(currentElection)&&avail.length)currentElection=avail[0];
-  selElection.value=currentElection;
+  return m;
 }
 
-/* ═══════════════════════════ VIEW OPTIONS ═══════════════════════════ */
-async function updateViewOpts(){
-  viewOpts.innerHTML='';
-  const needsCandidates = ['candidate','vs','swing'].includes(currentMode);
-  const needsCompare = ['turnout_delta','swing'].includes(currentMode);
+function shortName(n, max) { return n.length > max ? n.substring(0, max - 1) + '…' : n; }
 
-  if(needsCompare){
-    const s=document.createElement('select');
-    ELECTIONS.filter(e=>e.key!==currentElection).forEach(e=>{
-      const o=document.createElement('option');o.value=e.key;o.textContent='vs '+e.label;s.appendChild(o);
+/* ═══════════════════ VIEW OPTIONS ═══════════════════ */
+async function updateViewOpts() {
+  viewOpts.innerHTML = '';
+  const needsCandidates = ['candidate', 'vs', 'swing'].includes(currentMode);
+  const needsCompare = ['turnout_delta', 'swing'].includes(currentMode);
+
+  if (needsCompare) {
+    const s = document.createElement('select');
+    elections.filter(e => e.id !== currentElectionId).forEach(e => {
+      const o = document.createElement('option');
+      o.value = e.id;
+      o.textContent = 'vs ' + e.election_name;
+      s.appendChild(o);
     });
-    if(compareElection&&compareElection!==currentElection)s.value=compareElection;
-    compareElection=s.value;
-    s.addEventListener('change',()=>{compareElection=s.value;render()});
+    if (compareElectionId && compareElectionId !== currentElectionId) s.value = compareElectionId;
+    compareElectionId = s.value;
+    s.addEventListener('change', () => { compareElectionId = s.value; render(); });
     viewOpts.appendChild(s);
   }
 
-  if(!needsCandidates||!currentRaceKey) return;
-  const ed=await getElection(currentElection);
-  const pids=getActivePids();if(!pids)return;
-  const sorted=aggregateCandidates(ed,pids,currentRaceKey);
-  if(!sorted.length)return;
-  const names=sorted.map(x=>x[0]);
+  if (!needsCandidates || !currentRaceId) return;
+  const raceData = raceMapCache[currentRaceId];
+  if (!raceData) return;
 
-  if(currentMode==='candidate'||currentMode==='swing'){
-    const s=document.createElement('select');
-    const d=document.createElement('option');d.value='';d.textContent='Select Candidate…';s.appendChild(d);
-    names.forEach(n=>{const o=document.createElement('option');o.value=n;o.textContent=shortName(n,30);s.appendChild(o)});
-    if(selectedCandidate&&names.includes(selectedCandidate))s.value=selectedCandidate;
-    s.addEventListener('change',()=>{selectedCandidate=s.value;if(selectedCandidate)render()});
+  const sorted = aggregateCandidates(raceData);
+  if (!sorted.length) return;
+  const names = sorted.map(x => x[0]);
+
+  if (currentMode === 'candidate' || currentMode === 'swing') {
+    const s = document.createElement('select');
+    const d = document.createElement('option');
+    d.value = ''; d.textContent = 'Select Candidate…';
+    s.appendChild(d);
+    names.forEach(n => {
+      const o = document.createElement('option');
+      o.value = n; o.textContent = shortName(n, 30);
+      s.appendChild(o);
+    });
+    if (selectedCandidate && names.includes(selectedCandidate)) s.value = selectedCandidate;
+    s.addEventListener('change', () => { selectedCandidate = s.value; render(); });
     viewOpts.appendChild(s);
   }
-  if(currentMode==='vs'){
-    const s1=document.createElement('select'),s2=document.createElement('select');
-    names.forEach(n=>{
-      const o1=document.createElement('option');o1.value=n;o1.textContent=shortName(n,24);s1.appendChild(o1);
-      const o2=document.createElement('option');o2.value=n;o2.textContent=shortName(n,24);s2.appendChild(o2);
+
+  if (currentMode === 'vs') {
+    const s1 = document.createElement('select');
+    const s2 = document.createElement('select');
+    names.forEach(n => {
+      const o1 = document.createElement('option');
+      o1.value = n; o1.textContent = shortName(n, 24);
+      s1.appendChild(o1);
+      const o2 = document.createElement('option');
+      o2.value = n; o2.textContent = shortName(n, 24);
+      s2.appendChild(o2);
     });
-    vsCandidate1=vsCandidate1&&names.includes(vsCandidate1)?vsCandidate1:names[0];
-    vsCandidate2=vsCandidate2&&names.includes(vsCandidate2)?vsCandidate2:(names[1]||names[0]);
-    s1.value=vsCandidate1;s2.value=vsCandidate2;
-    const lbl=document.createElement('span');lbl.className='vs-lbl';lbl.textContent='vs';
-    s1.addEventListener('change',()=>{vsCandidate1=s1.value;render()});
-    s2.addEventListener('change',()=>{vsCandidate2=s2.value;render()});
-    viewOpts.appendChild(s1);viewOpts.appendChild(lbl);viewOpts.appendChild(s2);
+    vsCandidate1 = vsCandidate1 && names.includes(vsCandidate1) ? vsCandidate1 : names[0];
+    vsCandidate2 = vsCandidate2 && names.includes(vsCandidate2) ? vsCandidate2 : (names[1] || names[0]);
+    s1.value = vsCandidate1; s2.value = vsCandidate2;
+    const lbl = document.createElement('span');
+    lbl.className = 'vs-lbl'; lbl.textContent = 'vs';
+    s1.addEventListener('change', () => { vsCandidate1 = s1.value; render(); });
+    s2.addEventListener('change', () => { vsCandidate2 = s2.value; render(); });
+    viewOpts.appendChild(s1); viewOpts.appendChild(lbl); viewOpts.appendChild(s2);
   }
 }
 
-function getActivePids(){
-  if(!currentType||!districtPrecincts)return null;
-  const cfg=TYPE_CFG[currentType];if(!cfg)return null;
-  if(cfg.mode==='single'||cfg.mode==='countywide')return new Set(districtPrecincts[currentDistrictKey||currentType]||[]);
-  const dk=selRace.value;if(!dk)return null;
-  return new Set(districtPrecincts[dk]||[]);
-}
+/* ═══════════════════ STYLE PER FEATURE ═══════════════════ */
+function getStyle(pid, turnout, raceData, turnout2, raceData2) {
+  const t = turnout ? turnout[pid] : null;
+  const rd = raceData ? raceData[pid] : null;
+  let fill = NO_DATA, dash = null;
 
-/* ═══════════════════════════ STYLE ═══════════════════════════ */
-function getStyle(pid, ed, ed2, rk){
-  const p=ed?ed[pid]:null;
-  let fill=NO_DATA, dash=null;
+  if (currentMode === 'turnout') {
+    fill = t ? scaleColor(t.turnout, TURNOUT_SC) : NO_DATA;
+    if (!t) dash = '4 4';
 
-  if(currentMode==='turnout'){
-    fill=p?scaleColor(p.t,TURNOUT_SC):NO_DATA;
-    if(!p)dash='4 4';
+  } else if (currentMode === 'winner') {
+    if (rd && rd.candidates && rd.candidates.length) {
+      const winner = rd.candidates[0].n;
+      fill = candidateColorMap[winner] || CANDIDATE_PALETTE[0];
+    } else { fill = NO_DATA; if (!t) dash = '4 4'; }
 
-  }else if(currentMode==='winner'){
-    if(p&&p.x&&p.x[rk]&&p.x[rk].c&&p.x[rk].c.length){
-      const winner=p.x[rk].c[0][0];
-      fill=candidateColorMap[winner]||CANDIDATE_PALETTE[0];
-    }else{fill=NO_DATA;if(!p)dash='4 4'}
+  } else if (currentMode === 'margin') {
+    if (rd && rd.candidates && rd.candidates.length >= 2) {
+      fill = scaleColor(rd.candidates[0].p - rd.candidates[1].p, MARGIN_SC);
+    } else if (rd && rd.candidates && rd.candidates.length === 1) {
+      fill = MARGIN_SC[0][1];
+    } else { fill = NO_DATA; if (!t) dash = '4 4'; }
 
-  }else if(currentMode==='margin'){
-    // Margin = gap between #1 and #2
-    if(p&&p.x&&p.x[rk]&&p.x[rk].c&&p.x[rk].c.length>=2){
-      fill=scaleColor(p.x[rk].c[0][2]-p.x[rk].c[1][2],MARGIN_SC);
-    }else if(p&&p.x&&p.x[rk]&&p.x[rk].c&&p.x[rk].c.length===1){
-      fill=MARGIN_SC[0][1]; // uncontested = max margin
-    }else{fill=NO_DATA;if(!p)dash='4 4'}
+  } else if (currentMode === 'candidate') {
+    if (!selectedCandidate) { fill = NO_DATA; }
+    else if (rd && rd.candidates) {
+      const c = rd.candidates.find(x => x.n === selectedCandidate);
+      fill = c ? scaleColor(c.p, CAND_SC) : NO_DATA;
+    } else { fill = NO_DATA; if (!t) dash = '4 4'; }
 
-  }else if(currentMode==='candidate'){
-    if(!selectedCandidate){fill=NO_DATA}
-    else if(p&&p.x&&p.x[rk]&&p.x[rk].c){
-      const c=p.x[rk].c.find(x=>x[0]===selectedCandidate);
-      fill=c?scaleColor(c[2],CAND_SC):NO_DATA;
-    }else{fill=NO_DATA;if(!p)dash='4 4'}
+  } else if (currentMode === 'vs') {
+    if (!vsCandidate1 || !vsCandidate2) { fill = NO_DATA; }
+    else if (rd && rd.candidates) {
+      const a = rd.candidates.find(x => x.n === vsCandidate1);
+      const b = rd.candidates.find(x => x.n === vsCandidate2);
+      fill = (a && b) ? vsColor(a.p - b.p) : NO_DATA;
+    } else { fill = NO_DATA; if (!t) dash = '4 4'; }
 
-  }else if(currentMode==='vs'){
-    if(!vsCandidate1||!vsCandidate2){fill=NO_DATA}
-    else if(p&&p.x&&p.x[rk]&&p.x[rk].c){
-      const a=p.x[rk].c.find(x=>x[0]===vsCandidate1);
-      const b=p.x[rk].c.find(x=>x[0]===vsCandidate2);
-      fill=(a&&b)?vsColor(a[2]-b[2]):NO_DATA;
-    }else{fill=NO_DATA;if(!p)dash='4 4'}
+  } else if (currentMode === 'turnout_delta') {
+    const t2 = turnout2 ? turnout2[pid] : null;
+    if (t && t2 && t.turnout != null && t2.turnout != null) {
+      fill = deltaColor(t.turnout - t2.turnout);
+    } else { fill = NO_DATA; dash = '4 4'; }
 
-  }else if(currentMode==='turnout_delta'){
-    const p2=ed2?ed2[pid]:null;
-    if(p&&p2&&p.t!=null&&p2.t!=null)fill=deltaColor(p.t-p2.t);
-    else{fill=NO_DATA;dash='4 4'}
-
-  }else if(currentMode==='swing'){
-    if(!selectedCandidate){fill=NO_DATA}
-    else{
-      const p2=ed2?ed2[pid]:null;
-      let v1=null,v2=null;
-      if(p&&p.x&&p.x[rk]&&p.x[rk].c){const c=p.x[rk].c.find(x=>x[0]===selectedCandidate);if(c)v1=c[2]}
-      if(p2&&p2.x&&p2.x[rk]&&p2.x[rk].c){const c=p2.x[rk].c.find(x=>x[0]===selectedCandidate);if(c)v2=c[2]}
-      if(v1!=null&&v2!=null)fill=deltaColor(v1-v2);else{fill=NO_DATA;dash='4 4'}
-    }
-
-  }else if(currentMode==='votes'){
-    if(p&&p.x&&p.x[rk])fill=scaleColor(p.x[rk].t,VOLUME_SC);
-    else if(p)fill=scaleColor(p.b,VOLUME_SC);
-    else{fill=NO_DATA;dash='4 4'}
-  }
-
-  return{fillColor:fill,color:'#1a1d27',weight:1,fillOpacity:.85,dashArray:dash};
-}
-
-/* ═══════════════════════════ RENDER ═══════════════════════════ */
-async function render(){
-  if(!currentType)return;
-  const cfg=TYPE_CFG[currentType];if(!cfg)return;
-  let pids,rk;
-
-  if(cfg.mode==='single'){
-    pids=new Set(districtPrecincts[currentType]||[]);rk=currentRaceKey||currentType;
-  }else if(cfg.mode==='countywide'){
-    rk=selRace.value;if(!rk)return;currentRaceKey=rk;
-    pids=new Set(districtPrecincts[currentType]||[]);
-  }else{
-    const dk=selRace.value;if(!dk)return;currentDistrictKey=dk;rk=dk;currentRaceKey=rk;
-    pids=new Set(districtPrecincts[dk]||[]);
-    if(currentType==='alderman'&&currentElection==='2023_municipal_runoff'){
-      rk=`alderman_${dk.replace('alderman_','')}_runoff`;currentRaceKey=rk;
-    }
-  }
-  if(!pids.size)return;
-
-  showLoading(true);landing.style.display='none';
-  const ed=await getElection(currentElection);
-  let ed2=null;
-  if(currentMode==='turnout_delta'||currentMode==='swing')ed2=await getElection(compareElection);
-
-  // Build candidate color map for winner mode
-  if(currentMode==='winner'){
-    const sorted=aggregateCandidates(ed,pids,rk);
-    candidateColorMap=buildCandidateColors(sorted);
-  }
-
-  const feats=allPrecinctGeo.features.filter(f=>pids.has(f.properties.id));
-  if(precinctLayer){map.removeLayer(precinctLayer);precinctLayer=null}
-  if(boundaryLayer){map.removeLayer(boundaryLayer);boundaryLayer=null}
-
-  precinctLayer=L.geoJSON({type:'FeatureCollection',features:feats},{
-    style:f=>getStyle(f.properties.id,ed,ed2,rk),
-    onEachFeature:(f,l)=>{
-      l.on('mouseover',()=>{
-        if(precinctLayer)precinctLayer.eachLayer(x=>{x.setStyle({color:'#1a1d27',weight:1})});
-        l.setStyle({color:'#fff',weight:2.5});l.bringToFront();
-        if(boundaryLayer)boundaryLayer.bringToFront();
-        showInfo(f.properties,ed,ed2,rk);
-      });
-      l.on('mouseout',()=>{
-        if(precinctLayer)precinctLayer.eachLayer(x=>{x.setStyle({color:'#1a1d27',weight:1})});
-        infoPanel.classList.remove('visible');
-      });
-    }
-  }).addTo(map);
-
-  // District boundary overlay
-  if(cfg.mode==='district'&&cfg.bnd){
-    try{
-      const bg=await getBoundary(currentType);
-      if(bg){
-        const dn=selRace.value.replace(currentType+'_','');
-        const bf=bg.features.find(f=>{const d=f.properties.district||f.properties.name;return d===dn||d===String(parseInt(dn))});
-        if(bf)boundaryLayer=L.geoJSON(bf,{style:{color:'#fdd835',weight:2,fill:false,dashArray:'8 6',opacity:.8},interactive:false}).addTo(map);
+  } else if (currentMode === 'swing') {
+    if (!selectedCandidate) { fill = NO_DATA; }
+    else {
+      const rd2 = raceData2 ? raceData2[pid] : null;
+      let v1 = null, v2 = null;
+      if (rd && rd.candidates) {
+        const c = rd.candidates.find(x => x.n === selectedCandidate);
+        if (c) v1 = c.p;
       }
-    }catch(e){}
+      if (rd2 && rd2.candidates) {
+        const c = rd2.candidates.find(x => x.n === selectedCandidate);
+        if (c) v2 = c.p;
+      }
+      if (v1 != null && v2 != null) fill = deltaColor(v1 - v2);
+      else { fill = NO_DATA; dash = '4 4'; }
+    }
+
+  } else if (currentMode === 'votes') {
+    if (rd) fill = scaleColor(rd.totalVotes, VOLUME_SC);
+    else if (t) fill = scaleColor(t.ballots, VOLUME_SC);
+    else { fill = NO_DATA; dash = '4 4'; }
   }
 
-  if(precinctLayer.getLayers().length){
-    map.fitBounds(precinctLayer.getBounds(),{padding:cfg.mode==='district'?[30,30]:[20,20],maxZoom:cfg.mode==='district'?14:12});
-  }
-
-  updateStats(pids,ed,ed2,rk);updateLegend(ed,pids,rk);showLoading(false);
+  return { fillColor: fill, color: '#1a1d27', weight: 1, fillOpacity: 0.85, dashArray: dash };
 }
 
-/* ═══════════════════════════ CALLED WHEN RACE CHANGES ═══════════════════════════ */
-async function onRaceSelected(){
-  selectedCandidate='';vsCandidate1='';vsCandidate2='';
+/* ═══════════════════ RENDER ═══════════════════ */
+let bgLayer = null; // gray background precincts outside current race
+let lastActivePidKey = ''; // track if precinct set changed (for fitBounds)
+
+async function render() {
+  if (!currentRaceId && currentMode !== 'turnout') return;
+  const mySeq = ++renderSeq;
+  pushLoading();
+  landing.style.display = 'none';
+
+  try {
+    // Fetch turnout for current election
+    const turnout = await fetchTurnout(currentElectionId);
+    if (mySeq !== renderSeq) return; // stale
+
+    // Fetch race data if we have a race selected
+    let raceData = null;
+    if (currentRaceId) {
+      raceData = await fetchRaceMap(currentRaceId);
+      if (mySeq !== renderSeq) return;
+    }
+
+    // Fetch comparison data if needed
+    let turnout2 = null, raceData2 = null;
+    if (currentMode === 'turnout_delta' && compareElectionId) {
+      turnout2 = await fetchTurnout(compareElectionId);
+      if (mySeq !== renderSeq) return;
+    }
+    if (currentMode === 'swing' && compareElectionId && currentRaceId) {
+      const compareRaces = await fetchRaces(compareElectionId);
+      if (mySeq !== renderSeq) return;
+      const currentRaces = racesForElection[currentElectionId] || [];
+      const thisRace = currentRaces.find(r => r.id === currentRaceId);
+      if (thisRace) {
+        const matchRace = compareRaces.find(r =>
+          r.race_type === thisRace.race_type && r.race_name === thisRace.race_name
+        );
+        if (matchRace) {
+          raceData2 = await fetchRaceMap(matchRace.id);
+          if (mySeq !== renderSeq) return;
+        }
+      }
+    }
+
+    // Build candidate color map on every render (consistent across all modes)
+    if (raceData) {
+      const sorted = aggregateCandidates(raceData);
+      candidateColorMap = buildCandidateColors(sorted);
+    } else {
+      candidateColorMap = {};
+    }
+
+    // Determine active precincts: race data precincts are primary
+    const racePids = raceData ? new Set(Object.keys(raceData)) : new Set();
+    const turnoutPids = turnout ? new Set(Object.keys(turnout)) : new Set();
+    const activePids = racePids.size > 0 ? racePids : turnoutPids;
+
+    const activeFeats = geoFeatures.filter(f => activePids.has(f._pid));
+    const bgFeats = racePids.size > 0
+      ? geoFeatures.filter(f => !racePids.has(f._pid) && turnoutPids.has(f._pid))
+      : [];
+
+    // Check if precinct set changed (for fitBounds)
+    const pidKey = currentRaceId || currentElectionId;
+    const pidsChanged = pidKey !== lastActivePidKey;
+    lastActivePidKey = pidKey;
+
+    // Clear old layers
+    if (precinctLayer) { map.removeLayer(precinctLayer); precinctLayer = null; }
+    if (bgLayer) { map.removeLayer(bgLayer); bgLayer = null; }
+    hoveredLayer = null;
+
+    // Background layer (gray, non-interactive) for context
+    if (bgFeats.length > 0) {
+      bgLayer = L.geoJSON({ type: 'FeatureCollection', features: bgFeats }, {
+        style: () => ({ fillColor: '#1e2028', color: '#1a1d27', weight: 0.5, fillOpacity: 0.4 }),
+        interactive: false
+      }).addTo(map);
+    }
+
+    // Active precinct layer
+    precinctLayer = L.geoJSON({ type: 'FeatureCollection', features: activeFeats }, {
+      style: f => getStyle(f._pid, turnout, raceData, turnout2, raceData2),
+      onEachFeature: (f, l) => {
+        l.on('mouseover', () => {
+          // Reset only previously hovered layer (efficient)
+          if (hoveredLayer && hoveredLayer !== l) {
+            hoveredLayer.setStyle({ color: '#1a1d27', weight: 1 });
+          }
+          hoveredLayer = l;
+          l.setStyle({ color: '#fff', weight: 2.5 });
+          l.bringToFront();
+          showInfo(f, turnout, raceData, turnout2, raceData2);
+        });
+        l.on('mouseout', () => {
+          l.setStyle({ color: '#1a1d27', weight: 1 });
+          hoveredLayer = null;
+          infoPanel.classList.remove('visible');
+        });
+      }
+    }).addTo(map);
+
+    // Only fitBounds when the precinct set changes, not on mode/candidate switches
+    if (pidsChanged && precinctLayer.getLayers().length) {
+      map.fitBounds(precinctLayer.getBounds(), { padding: [30, 30], maxZoom: 14 });
+    }
+
+    updateStats(turnout, raceData, activePids);
+    updateLegend(raceData);
+  } catch (err) {
+    console.error('Render error:', err);
+  } finally {
+    popLoading();
+  }
+}
+
+/* ═══════════════════ ON RACE SELECTED ═══════════════════ */
+async function onRaceSelected() {
+  selectedCandidate = '';
+  vsCandidate1 = '';
+  vsCandidate2 = '';
+
+  if (currentRaceId) {
+    await fetchRaceMap(currentRaceId);
+  }
   await updateViewOpts();
   render();
 }
 
-/* ═══════════════════════════ INFO PANEL ═══════════════════════════ */
-function showInfo(props,ed,ed2,rk){
-  const pid=props.id,p=ed?ed[pid]:null;
-  let h=`<h3>${props.name||'Precinct '+pid}</h3>`;
-  if(!p){h+='<div class="info-row"><span>No data</span></div>';infoPanel.innerHTML=h;infoPanel.classList.add('visible');return}
+/* ═══════════════════ INFO PANEL ═══════════════════ */
+function showInfo(feature, turnout, raceData, turnout2, raceData2) {
+  const pid = feature._pid;
+  const label = feature._label;
+  const t = turnout ? turnout[pid] : null;
+  const rd = raceData ? raceData[pid] : null;
 
-  h+=`<div class="info-row"><span>Registered</span><span class="val">${(p.r||0).toLocaleString()}</span></div>`;
-  h+=`<div class="info-row"><span>Ballots</span><span class="val">${(p.b||0).toLocaleString()}</span></div>`;
-  h+=`<div class="info-row"><span>Turnout</span><span class="val">${p.t!=null?p.t.toFixed(1)+'%':'—'}</span></div>`;
+  let h = `<h3>${label || 'Precinct'}</h3>`;
 
-  if(currentMode==='turnout_delta'){
-    const p2=ed2?ed2[pid]:null;
-    if(p2&&p2.t!=null){const d=(p.t||0)-(p2.t||0);const s=d>=0?'+':'';
-      h+=`<div class="info-row"><span>Δ Turnout</span><span class="val" style="color:${d>=0?'#43a047':'#e57373'}">${s}${d.toFixed(1)}pp</span></div>`}
+  if (t) {
+    h += `<div class="info-row"><span>Registered</span><span class="val">${(t.registered || 0).toLocaleString()}</span></div>`;
+    h += `<div class="info-row"><span>Ballots</span><span class="val">${(t.ballots || 0).toLocaleString()}</span></div>`;
+    h += `<div class="info-row"><span>Turnout</span><span class="val">${t.turnout != null ? t.turnout.toFixed(1) + '%' : '—'}</span></div>`;
+  } else {
+    h += '<div class="info-row"><span>No turnout data</span></div>';
   }
 
-  if(p.x&&p.x[rk]&&p.x[rk].c){
-    const race=p.x[rk];
-    h+='<div class="info-divider"></div>';
-    if(race.c.length>=2){
-      const mg=race.c[0][2]-race.c[1][2];
-      h+=`<div class="info-row"><span>Margin (#1 − #2)</span><span class="val">${mg.toFixed(1)}pp</span></div>`;
+  if (currentMode === 'turnout_delta') {
+    const t2 = turnout2 ? turnout2[pid] : null;
+    if (t && t2 && t.turnout != null && t2.turnout != null) {
+      const d = t.turnout - t2.turnout;
+      const s = d >= 0 ? '+' : '';
+      h += `<div class="info-row"><span>&Delta; Turnout</span><span class="val" style="color:${d >= 0 ? '#43a047' : '#e57373'}">${s}${d.toFixed(1)}pp</span></div>`;
     }
-    race.c.forEach((c,i)=>{
-      const nm=c[0],vt=c[1],pct=c[2];
-      const col=candidateColorMap[nm]||CANDIDATE_PALETTE[i%CANDIDATE_PALETTE.length];
-      const hl=(currentMode==='candidate'&&nm===selectedCandidate)||(currentMode==='swing'&&nm===selectedCandidate)||
-               (currentMode==='vs'&&(nm===vsCandidate1||nm===vsCandidate2));
-      h+=`<div class="cand-row${hl?' hl':''}">
+  }
+
+  if (rd && rd.candidates && rd.candidates.length) {
+    h += '<div class="info-divider"></div>';
+    if (rd.candidates.length >= 2) {
+      const mg = rd.candidates[0].p - rd.candidates[1].p;
+      h += `<div class="info-row"><span>Margin (#1 - #2)</span><span class="val">${mg.toFixed(1)}pp</span></div>`;
+    }
+    rd.candidates.forEach((c, i) => {
+      const col = candidateColorMap[c.n] || CANDIDATE_PALETTE[i % CANDIDATE_PALETTE.length];
+      const hl = (currentMode === 'candidate' && c.n === selectedCandidate) ||
+                 (currentMode === 'swing' && c.n === selectedCandidate) ||
+                 (currentMode === 'vs' && (c.n === vsCandidate1 || c.n === vsCandidate2));
+      h += `<div class="cand-row${hl ? ' hl' : ''}">
         <span class="cand-swatch" style="background:${col}"></span>
-        <span class="cand-name" title="${nm}">${nm}</span>
-        <div class="cand-bar-wrap"><div class="cand-bar" style="width:${pct}%;background:${col}"></div></div>
-        <span class="cand-pct">${pct.toFixed(1)}%</span>
-        <span class="cand-votes">${vt.toLocaleString()}</span>
+        <span class="cand-name" title="${c.n}">${c.n}</span>
+        <div class="cand-bar-wrap"><div class="cand-bar" style="width:${c.p}%;background:${col}"></div></div>
+        <span class="cand-pct">${c.p.toFixed(1)}%</span>
+        <span class="cand-votes">${c.v.toLocaleString()}</span>
       </div>`;
     });
 
-    if(currentMode==='swing'&&selectedCandidate&&ed2){
-      const p2=ed2[pid];
-      if(p2&&p2.x&&p2.x[rk]&&p2.x[rk].c){
-        const c1=race.c.find(x=>x[0]===selectedCandidate);
-        const c2=p2.x[rk].c.find(x=>x[0]===selectedCandidate);
-        if(c1&&c2){const sw=c1[2]-c2[2];const s=sw>=0?'+':'';
-          h+=`<div class="info-divider"></div><div class="info-row"><span>Swing</span><span class="val" style="color:${sw>=0?'#43a047':'#e57373'}">${s}${sw.toFixed(1)}pp</span></div>`}
+    if (currentMode === 'swing' && selectedCandidate && raceData2) {
+      const rd2 = raceData2[pid];
+      if (rd2 && rd2.candidates) {
+        const c1 = rd.candidates.find(x => x.n === selectedCandidate);
+        const c2 = rd2.candidates.find(x => x.n === selectedCandidate);
+        if (c1 && c2) {
+          const sw = c1.p - c2.p;
+          const s = sw >= 0 ? '+' : '';
+          h += `<div class="info-divider"></div><div class="info-row"><span>Swing</span><span class="val" style="color:${sw >= 0 ? '#43a047' : '#e57373'}">${s}${sw.toFixed(1)}pp</span></div>`;
+        }
       }
     }
-  }else{h+='<div class="info-divider"></div><div class="info-row"><span>No race data</span></div>'}
+  } else if (currentRaceId) {
+    h += '<div class="info-divider"></div><div class="info-row"><span>No race data</span></div>';
+  }
 
-  infoPanel.innerHTML=h;infoPanel.classList.add('visible');
+  infoPanel.innerHTML = h;
+  infoPanel.classList.add('visible');
 }
 
-/* ═══════════════════════════ HEADER STATS ═══════════════════════════ */
-function updateStats(pids,ed,ed2,rk){
-  if(!ed){headerStats.innerHTML='';return}
-  let tReg=0,tBal=0,rv={},rt=0,hasR=false;
-  pids.forEach(pid=>{
-    const p=ed[pid];if(!p)return;tReg+=p.r||0;tBal+=p.b||0;
-    if(p.x&&p.x[rk]){hasR=true;rt+=p.x[rk].t||0;if(p.x[rk].c)p.x[rk].c.forEach(c=>{rv[c[0]]=(rv[c[0]]||0)+c[1]})}
-  });
-  const to=tReg>0?(tBal/tReg*100).toFixed(1):'—';
-  let h=`<div class="stat"><span class="stat-val">${tReg.toLocaleString()}</span><span class="stat-label">Registered</span></div>
+/* ═══════════════════ HEADER STATS ═══════════════════ */
+function updateStats(turnout, raceData, activePids) {
+  if (!turnout && !raceData) { headerStats.innerHTML = ''; return; }
+
+  let tReg = 0, tBal = 0;
+  const pidsToCount = activePids || (turnout ? new Set(Object.keys(turnout)) : new Set());
+  if (turnout) {
+    for (const pid of pidsToCount) {
+      const t = turnout[pid];
+      if (!t) continue;
+      tReg += t.registered || 0;
+      tBal += t.ballots || 0;
+    }
+  }
+  const to = tReg > 0 ? (tBal / tReg * 100).toFixed(1) : '—';
+
+  let h = `<div class="stat"><span class="stat-val">${tReg.toLocaleString()}</span><span class="stat-label">Registered</span></div>
     <div class="stat"><span class="stat-val">${tBal.toLocaleString()}</span><span class="stat-label">Ballots</span></div>
     <div class="stat"><span class="stat-val">${to}%</span><span class="stat-label">Turnout</span></div>`;
-  if(hasR&&Object.keys(rv).length>=1){
-    const s=Object.entries(rv).sort((a,b)=>b[1]-a[1]);
-    const w=s[0];const wp=rt>0?(w[1]/rt*100).toFixed(1):'—';
-    h+=`<div class="stat"><span class="stat-val" title="${w[0]}">${shortName(w[0],20)}</span><span class="stat-label">Winner · ${wp}%</span></div>`;
-    if(s.length>=2){
-      const mg=rt>0?((s[0][1]-s[1][1])/rt*100).toFixed(1):'—';
-      h+=`<div class="stat"><span class="stat-val">${mg}pp</span><span class="stat-label">Margin</span></div>`;
+
+  if (raceData) {
+    const sorted = aggregateCandidates(raceData);
+    if (sorted.length >= 1) {
+      const totalV = sorted.reduce((s, x) => s + x[1], 0);
+      const w = sorted[0];
+      const wp = totalV > 0 ? (w[1] / totalV * 100).toFixed(1) : '—';
+      h += `<div class="stat"><span class="stat-val" title="${w[0]}">${shortName(w[0], 20)}</span><span class="stat-label">Winner · ${wp}%</span></div>`;
+      if (sorted.length >= 2) {
+        const mg = totalV > 0 ? ((sorted[0][1] - sorted[1][1]) / totalV * 100).toFixed(1) : '—';
+        h += `<div class="stat"><span class="stat-val">${mg}pp</span><span class="stat-label">Margin</span></div>`;
+      }
     }
   }
-  headerStats.innerHTML=h;
+  headerStats.innerHTML = h;
 }
 
-/* ═══════════════════════════ LEGEND ═══════════════════════════ */
-function updateLegend(ed,pids,rk){
-  let h='';
-  if(currentMode==='turnout'){
-    h='<div class="legend-title">Turnout %</div>';
-    [['55%+','#fdd835'],['45–55','#ffb300'],['35–45','#f57c00'],['25–35','#e65100'],['15–25','#bf360c'],['5–15','#6d4c41'],['<5%','#3e2723'],['No data','#333']].forEach(([l,c])=>{h+=`<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`});
+/* ═══════════════════ LEGEND ═══════════════════ */
+function updateLegend(raceData) {
+  let h = '';
+  if (currentMode === 'turnout') {
+    h = '<div class="legend-title">Turnout %</div>';
+    [['55%+','#fdd835'],['45–55','#ffb300'],['35–45','#f57c00'],['25–35','#e65100'],['15–25','#bf360c'],['5–15','#6d4c41'],['<5%','#3e2723'],['No data','#333']].forEach(([l,c]) => {
+      h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`;
+    });
 
-  }else if(currentMode==='winner'){
-    h='<div class="legend-title">Winner by Precinct</div>';
-    // Show candidates in vote order with their colors
-    const sorted=Object.entries(candidateColorMap);
-    // re-sort by original order if we have election data
-    if(ed&&pids&&rk){
-      const agg=aggregateCandidates(ed,pids,rk);
-      agg.forEach(([name,votes])=>{
-        const col=candidateColorMap[name]||'#999';
-        h+=`<div class="legend-row"><span class="legend-swatch" style="background:${col}"></span>${shortName(name,22)}</div>`;
+  } else if (currentMode === 'winner') {
+    h = '<div class="legend-title">Winner by Precinct</div>';
+    if (raceData) {
+      const agg = aggregateCandidates(raceData);
+      agg.forEach(([name]) => {
+        const col = candidateColorMap[name] || '#999';
+        h += `<div class="legend-row"><span class="legend-swatch" style="background:${col}"></span>${shortName(name, 22)}</div>`;
       });
-    }else{
-      sorted.forEach(([name,col])=>{h+=`<div class="legend-row"><span class="legend-swatch" style="background:${col}"></span>${shortName(name,22)}</div>`});
     }
-    h+=`<div class="legend-row"><span class="legend-swatch" style="background:#333"></span>No data</div>`;
+    h += '<div class="legend-row"><span class="legend-swatch" style="background:#333"></span>No data</div>';
 
-  }else if(currentMode==='margin'){
-    h='<div class="legend-title">Margin (#1 − #2)</div>';
-    [['40pp+','#b71c1c'],['30–40pp','#c62828'],['20–30pp','#e53935'],['10–20pp','#ef5350'],['5–10pp','#ef9a9a'],['<5pp','#ffcdd2'],['No data','#333']].forEach(([l,c])=>{h+=`<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`});
+  } else if (currentMode === 'margin') {
+    h = '<div class="legend-title">Margin (#1 - #2)</div>';
+    [['40pp+','#b71c1c'],['30–40pp','#c62828'],['20–30pp','#e53935'],['10–20pp','#ef5350'],['5–10pp','#ef9a9a'],['<5pp','#ffcdd2'],['No data','#333']].forEach(([l,c]) => {
+      h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`;
+    });
 
-  }else if(currentMode==='candidate'){
-    const nm=selectedCandidate?shortName(selectedCandidate,18):'Candidate';
-    h=`<div class="legend-title">${nm} Vote %</div>`;
-    [['60%+','#4a148c'],['50–60','#6a1b9a'],['40–50','#8e24aa'],['30–40','#ab47bc'],['20–30','#ce93d8'],['10–20','#e1bee7'],['<10%','#f3e5f5'],['No data','#333']].forEach(([l,c])=>{h+=`<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`});
+  } else if (currentMode === 'candidate') {
+    const nm = selectedCandidate ? shortName(selectedCandidate, 18) : 'Candidate';
+    h = `<div class="legend-title">${nm} Vote %</div>`;
+    [['60%+','#4a148c'],['50–60','#6a1b9a'],['40–50','#8e24aa'],['30–40','#ab47bc'],['20–30','#ce93d8'],['10–20','#e1bee7'],['<10%','#f3e5f5'],['No data','#333']].forEach(([l,c]) => {
+      h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`;
+    });
 
-  }else if(currentMode==='vs'){
-    const n1=vsCandidate1?shortName(vsCandidate1,12):'Cand 1';
-    const n2=vsCandidate2?shortName(vsCandidate2,12):'Cand 2';
-    h=`<div class="legend-title">${n1} vs ${n2}</div>`;
+  } else if (currentMode === 'vs') {
+    const n1 = vsCandidate1 ? shortName(vsCandidate1, 12) : 'Cand 1';
+    const n2 = vsCandidate2 ? shortName(vsCandidate2, 12) : 'Cand 2';
+    h = `<div class="legend-title">${n1} vs ${n2}</div>`;
     [[`${n1} +30+`,'#0d47a1'],['+20','#1565c0'],['+10','#42a5f5'],['+5','#90caf9'],['Even','#e3f2fd'],
-     [`${n2} +5`,'#ffcdd2'],['+10','#ef9a9a'],['+20','#e57373'],['+30+','#c62828'],['No data','#333']].forEach(([l,c])=>{h+=`<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`});
+     [`${n2} +5`,'#ffcdd2'],['+10','#ef9a9a'],['+20','#e57373'],['+30+','#c62828'],['No data','#333']].forEach(([l,c]) => {
+      h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`;
+    });
 
-  }else if(currentMode==='turnout_delta'){
-    h='<div class="legend-title">Turnout Δ (pp)</div>';
-    [['+10+','#1b5e20'],['+5 to +10','#2e7d32'],['+2 to +5','#43a047'],['0 to +2','#a5d6a7'],['0 to −2','#ef9a9a'],['−2 to −5','#e57373'],['−5+','#c62828'],['No data','#333']].forEach(([l,c])=>{h+=`<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`});
+  } else if (currentMode === 'turnout_delta') {
+    h = '<div class="legend-title">Turnout &Delta; (pp)</div>';
+    [['+10+','#1b5e20'],['+5 to +10','#2e7d32'],['+2 to +5','#43a047'],['0 to +2','#a5d6a7'],['0 to -2','#ef9a9a'],['-2 to -5','#e57373'],['-5+','#c62828'],['No data','#333']].forEach(([l,c]) => {
+      h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`;
+    });
 
-  }else if(currentMode==='swing'){
-    const nm=selectedCandidate?shortName(selectedCandidate,16):'Candidate';
-    h=`<div class="legend-title">${nm} Swing (pp)</div>`;
-    [['+10+','#1b5e20'],['+5 to +10','#2e7d32'],['+2 to +5','#43a047'],['0 to +2','#a5d6a7'],['0 to −2','#ef9a9a'],['−2 to −5','#e57373'],['−5+','#c62828'],['No data','#333']].forEach(([l,c])=>{h+=`<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`});
+  } else if (currentMode === 'swing') {
+    const nm = selectedCandidate ? shortName(selectedCandidate, 16) : 'Candidate';
+    h = `<div class="legend-title">${nm} Swing (pp)</div>`;
+    [['+10+','#1b5e20'],['+5 to +10','#2e7d32'],['+2 to +5','#43a047'],['0 to +2','#a5d6a7'],['0 to -2','#ef9a9a'],['-2 to -5','#e57373'],['-5+','#c62828'],['No data','#333']].forEach(([l,c]) => {
+      h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`;
+    });
 
-  }else if(currentMode==='votes'){
-    h='<div class="legend-title">Total Votes</div>';
-    [['800+','#0d47a1'],['600–800','#1565c0'],['400–600','#1976d2'],['300–400','#42a5f5'],['200–300','#90caf9'],['100–200','#bbdefb'],['<100','#e3f2fd'],['No data','#333']].forEach(([l,c])=>{h+=`<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`});
+  } else if (currentMode === 'votes') {
+    h = '<div class="legend-title">Total Votes</div>';
+    [['800+','#0d47a1'],['600–800','#1565c0'],['400–600','#1976d2'],['300–400','#42a5f5'],['200–300','#90caf9'],['100–200','#bbdefb'],['<100','#e3f2fd'],['No data','#333']].forEach(([l,c]) => {
+      h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`;
+    });
   }
-  legendEl.innerHTML=h;
+  legendEl.innerHTML = h;
 }
 
-/* ═══════════════════════════ EVENTS ═══════════════════════════ */
-selType.addEventListener('change',()=>{
-  currentType=selType.value;currentRaceKey='';currentDistrictKey='';
-  selectedCandidate='';vsCandidate1='';vsCandidate2='';viewOpts.innerHTML='';
-  if(currentType){updateElectionOpts();populateRaces()}else clearMap();
+/* ═══════════════════ EVENTS ═══════════════════ */
+selElection.addEventListener('change', async () => {
+  currentElectionId = selElection.value;
+  currentRaceId = '';
+  selectedCandidate = ''; vsCandidate1 = ''; vsCandidate2 = '';
+  viewOpts.innerHTML = '';
+  if (currentRaceType) {
+    await populateRaceDropdown();
+  }
 });
 
-selRace.addEventListener('change',()=>{
-  const v=selRace.value;
-  if(v){
-    const cfg=TYPE_CFG[currentType];
-    if(cfg.mode==='district'){currentDistrictKey=v;currentRaceKey=v;
-      if(currentType==='alderman'&&currentElection==='2023_municipal_runoff')currentRaceKey=`alderman_${v.replace('alderman_','')}_runoff`;
-    }else{currentRaceKey=v;currentDistrictKey=currentType}
+selType.addEventListener('change', async () => {
+  currentRaceType = selType.value;
+  currentRaceId = '';
+  selectedCandidate = ''; vsCandidate1 = ''; vsCandidate2 = '';
+  viewOpts.innerHTML = '';
+  if (currentRaceType) {
+    await populateRaceDropdown();
+  } else {
+    selRace.innerHTML = '<option value="">Select Race…</option>';
+    selRace.disabled = true;
+    clearMap();
+  }
+});
+
+selRace.addEventListener('change', () => {
+  const v = selRace.value;
+  if (v) {
+    currentRaceId = v;
     onRaceSelected();
-  }else clearMap();
+  } else {
+    currentRaceId = '';
+    clearMap();
+  }
 });
 
-selElection.addEventListener('change',()=>{
-  currentElection=selElection.value;
-  selectedCandidate='';vsCandidate1='';vsCandidate2='';
-  const cfg=TYPE_CFG[currentType];
-  if(cfg&&(cfg.mode==='countywide'||cfg.mode==='single'))populateRaces();
-  else if(currentRaceKey){updateViewOpts();render()}
-});
-
-document.querySelectorAll('.mode-btn').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');currentMode=btn.dataset.mode;
+document.querySelectorAll('.mode-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentMode = btn.dataset.mode;
     updateViewOpts();
-    if(currentRaceKey)render();else updateLegend();
+    if (currentRaceId || currentMode === 'turnout') render();
+    else updateLegend();
   });
 });
 
-function clearMap(){
-  if(precinctLayer){map.removeLayer(precinctLayer);precinctLayer=null}
-  if(boundaryLayer){map.removeLayer(boundaryLayer);boundaryLayer=null}
-  infoPanel.classList.remove('visible');headerStats.innerHTML='';viewOpts.innerHTML='';
-  landing.style.display='';map.setView([41.8337,-87.732],10);
+function clearMap() {
+  if (precinctLayer) { map.removeLayer(precinctLayer); precinctLayer = null; }
+  if (bgLayer) { map.removeLayer(bgLayer); bgLayer = null; }
+  infoPanel.classList.remove('visible');
+  headerStats.innerHTML = '';
+  viewOpts.innerHTML = '';
+  legendEl.innerHTML = '';
+  landing.style.display = '';
+  map.setView([41.8337, -87.732], 10);
 }
 
-/* ═══════════════════════════ INIT ═══════════════════════════ */
-function initMap(){
-  map=L.map('map',{center:[41.8337,-87.732],zoom:10,zoomControl:true,attributionControl:false});
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png',{subdomains:'abcd',maxZoom:19}).addTo(map);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png',{subdomains:'abcd',maxZoom:19,pane:'overlayPane'}).addTo(map);
-  map.on('click',()=>{infoPanel.classList.remove('visible')});
+/* ═══════════════════ INIT ═══════════════════ */
+function initMap() {
+  map = L.map('map', { center: [41.8337, -87.732], zoom: 10, zoomControl: true, attributionControl: false });
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', { subdomains: 'abcd', maxZoom: 19 }).addTo(map);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png', { subdomains: 'abcd', maxZoom: 19, pane: 'overlayPane' }).addTo(map);
+  map.on('click', () => { infoPanel.classList.remove('visible'); });
 }
-async function init(){initMap();updateLegend();await initData()}
+
+async function init() {
+  initMap();
+  pushLoading();
+  try {
+    await Promise.all([loadGeoJSON(), loadElections()]);
+    populateTypeDropdown();
+    updateLegend();
+  } catch (err) {
+    console.error('Init error:', err);
+  }
+  popLoading();
+}
+
 init();
 
 })();

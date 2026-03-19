@@ -1,0 +1,848 @@
+===== LINES 150-260 =====
+ 150:     <div class="info-panel" id="infoPanel"></div>
+ 151:     <div class="legend" id="legend"></div>
+ 152:   </div>
+ 153: 
+ 154:   <div class="footer">
+ 155:     <span>Data: IL State Board of Elections · Chicago Board of Elections · Cook County Clerk</span>
+ 156:     <a href="https://www.perplexity.ai/computer" target="_blank" rel="noopener noreferrer">Created with Perplexity Computer</a>
+ 157:   </div>
+ 158: </div>
+ 159: 
+ 160: <script>
+ 161: (function(){
+ 162: 'use strict';
+ 163: 
+ 164: /* ═══════════════════ SUPABASE CONFIG ═══════════════════ */
+ 165: const SUPA_URL = 'https://nfjfqdffulhqhszhlymo.supabase.co';
+ 166: const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5mamZxZGZmdWxocWhzemhseW1vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NTAzMDgsImV4cCI6MjA4OTUyNjMwOH0.vNrXz0iCwA4scUCP2O75KWaLyh7LVQrYmUdnEGMnnCE';
+ 167: 
+ 168: async function rpc(fn, params) {
+ 169:   const r = await fetch(`${SUPA_URL}/rest/v1/rpc/${fn}`, {
+ 170:     method: 'POST',
+ 171:     headers: {
+ 172:       'apikey': SUPA_KEY,
+ 173:       'Authorization': `Bearer ${SUPA_KEY}`,
+ 174:       'Content-Type': 'application/json'
+ 175:     },
+ 176:     body: JSON.stringify(params || {})
+ 177:   });
+ 178:   if (!r.ok) {
+ 179:     const err = await r.text();
+ 180:     throw new Error(`RPC ${fn} failed: ${r.status} ${err}`);
+ 181:   }
+ 182:   return r.json();
+ 183: }
+ 184: 
+ 185: /* ═══════════════════ MD5 PRECINCT ID ═══════════════════ */
+ 186: function makeId(...parts) {
+ 187:   const raw = parts.map(p => String(p).trim().toLowerCase()).join('|');
+ 188:   return SparkMD5.hash(raw).substring(0, 16);
+ 189: }
+ 190: 
+ 191: function pad2(n) { return String(n).padStart(2, '0'); }
+ 192: 
+ 193: function chicagoPrecinctId(ward, precinct) {
+ 194:   const name = `Ward ${pad2(ward)} Precinct ${pad2(precinct)}`;
+ 195:   return makeId('chicago', name);
+ 196: }
+ 197: 
+ 198: function suburbanPrecinctId(precinctid) {
+ 199:   return makeId('cook_suburban', precinctid);
+ 200: }
+ 201: 
+ 202: /* ═══════════════════ STATE ═══════════════════ */
+ 203: let map, precinctLayer;
+ 204: let geoFeatures = [];          // merged GeoJSON features with ._pid computed
+ 205: let pidToFeatureIdx = {};      // precinct_id → index in geoFeatures
+ 206: 
+ 207: let elections = [];            // from get_elections
+ 208: let racesForElection = {};     // cache: election_id → [races]
+ 209: let raceMapCache = {};         // cache: race_id → {pid: {total_votes, candidates}}
+ 210: let turnoutCache = {};         // cache: election_id → {pid: {registered_voters, ballots_cast, turnout_pct}}
+ 211: 
+ 212: let currentElectionId = '';
+ 213: let currentRaceType = '';
+ 214: let currentRaceId = '';
+ 215: let currentMode = 'turnout';
+ 216: let compareElectionId = '';
+ 217: let selectedCandidate = '';
+ 218: let vsCandidate1 = '';
+ 219: let vsCandidate2 = '';
+ 220: let candidateColorMap = {};
+ 221: 
+ 222: const $ = id => document.getElementById(id);
+ 223: const selElection = $('selElection'), selType = $('selType'), selRace = $('selRace');
+ 224: const infoPanel = $('infoPanel'), headerStats = $('headerStats'), legendEl = $('legend');
+ 225: const landing = $('landing'), loader = $('loader'), viewOpts = $('viewOpts');
+ 226: 
+ 227: /* ═══════════════════ DISTRICT TYPE CONFIG ═══════════════════ */
+ 228: // Maps UI category to DB race_type values
+ 229: const TYPE_GROUPS = [
+ 230:   { label: 'Legislative', items: [
+ 231:     { value: 'state_rep', label: 'State House' },
+ 232:     { value: 'state_senate', label: 'State Senate' },
+ 233:     { value: 'congress', label: 'Congressional' },
+ 234:   ]},
+ 235:   { label: 'Municipal', items: [
+ 236:     { value: 'mayor', label: 'Mayor' },
+ 237:     { value: 'aldermanic_ward', label: 'Alderman' },
+ 238:     { value: 'city_clerk', label: 'City Clerk' },
+ 239:     { value: 'city_treasurer', label: 'City Treasurer' },
+ 240:   ]},
+ 241:   { label: 'Cook County', items: [
+ 242:     { value: 'cook_commissioner', label: 'Commissioner' },
+ 243:     { value: 'cook_president', label: 'Board President' },
+ 244:     { value: 'mwrd', label: 'MWRD' },
+ 245:   ]},
+ 246:   { label: 'Judicial', items: [
+ 247:     { value: 'circuit_court', label: 'Circuit Court' },
+ 248:     { value: 'subcircuit', label: 'Subcircuit' },
+ 249:     { value: 'appellate_court', label: 'Appellate Court' },
+ 250:     { value: 'supreme_court', label: 'Supreme Court' },
+ 251:   ]},
+ 252:   { label: 'Education', items: [
+ 253:     { value: 'school_board', label: 'School Board' },
+ 254:   ]},
+ 255:   { label: 'State-wide', items: [
+ 256:     { value: 'president', label: 'President' },
+ 257:     { value: 'governor', label: 'Governor' },
+ 258:     { value: 'us_senate', label: 'U.S. Senate' },
+ 259:     { value: 'attorney_general', label: 'Attorney General' },
+ 260:     { value: 'secretary_of_state', label: 'Sec. of State' },
+===== LINES 260-430 =====
+ 260:     { value: 'secretary_of_state', label: 'Sec. of State' },
+ 261:     { value: 'comptroller', label: 'Comptroller' },
+ 262:     { value: 'treasurer_state', label: 'State Treasurer' },
+ 263:   ]},
+ 264: ];
+ 265: 
+ 266: const NO_DATA = '#333';
+ 267: 
+ 268: /* ═══════════════════ COLOR SCALES ═══════════════════ */
+ 269: function scaleColor(v, scale) {
+ 270:   if (v == null) return NO_DATA;
+ 271:   for (const [t, c] of scale) if (v >= t) return c;
+ 272:   return scale[scale.length - 1][1];
+ 273: }
+ 274: 
+ 275: const TURNOUT_SC = [[55,'#fdd835'],[45,'#ffb300'],[35,'#f57c00'],[25,'#e65100'],[15,'#bf360c'],[5,'#6d4c41'],[0,'#3e2723']];
+ 276: const MARGIN_SC  = [[40,'#b71c1c'],[30,'#c62828'],[20,'#e53935'],[10,'#ef5350'],[5,'#ef9a9a'],[0,'#ffcdd2']];
+ 277: const CAND_SC    = [[60,'#4a148c'],[50,'#6a1b9a'],[40,'#8e24aa'],[30,'#ab47bc'],[20,'#ce93d8'],[10,'#e1bee7'],[0,'#f3e5f5']];
+ 278: const VOLUME_SC  = [[800,'#0d47a1'],[600,'#1565c0'],[400,'#1976d2'],[300,'#42a5f5'],[200,'#90caf9'],[100,'#bbdefb'],[0,'#e3f2fd']];
+ 279: 
+ 280: const CANDIDATE_PALETTE = [
+ 281:   '#4fc3f7','#ff8a65','#ce93d8','#81c784','#fdd835',
+ 282:   '#ef5350','#26c6da','#ffb74d','#7986cb','#a1887f',
+ 283:   '#4db6ac','#f06292','#aed581','#90a4ae','#fff176'
+ 284: ];
+ 285: 
+ 286: function deltaColor(d) {
+ 287:   if (d == null) return NO_DATA;
+ 288:   if (d >= 10) return '#1b5e20'; if (d >= 5) return '#2e7d32';
+ 289:   if (d >= 2) return '#43a047';  if (d >= 0) return '#a5d6a7';
+ 290:   if (d >= -2) return '#ef9a9a'; if (d >= -5) return '#e57373';
+ 291:   return '#c62828';
+ 292: }
+ 293: 
+ 294: function vsColor(d) {
+ 295:   if (d == null) return NO_DATA;
+ 296:   if (d >= 30) return '#0d47a1'; if (d >= 20) return '#1565c0';
+ 297:   if (d >= 10) return '#42a5f5'; if (d >= 5)  return '#90caf9';
+ 298:   if (d >= 0)  return '#e3f2fd';
+ 299:   if (d >= -5) return '#ffcdd2'; if (d >= -10) return '#ef9a9a';
+ 300:   if (d >= -20) return '#e57373';
+ 301:   return '#c62828';
+ 302: }
+ 303: 
+ 304: /* ═══════════════════ LOADING ═══════════════════ */
+ 305: function showLoading(v) { loader.classList.toggle('visible', v); }
+ 306: 
+ 307: /* ═══════════════════ INIT DATA ═══════════════════ */
+ 308: async function loadGeoJSON() {
+ 309:   const [chiRes, subRes] = await Promise.all([
+ 310:     fetch('data/precincts_chicago.geojson').then(r => r.json()),
+ 311:     fetch('data/precincts_suburban.geojson').then(r => r.json())
+ 312:   ]);
+ 313: 
+ 314:   geoFeatures = [];
+ 315:   pidToFeatureIdx = {};
+ 316: 
+ 317:   // Chicago
+ 318:   for (const f of chiRes.features) {
+ 319:     const p = f.properties;
+ 320:     const pid = chicagoPrecinctId(p.ward, p.precinct);
+ 321:     f._pid = pid;
+ 322:     f._label = p.name;
+ 323:     pidToFeatureIdx[pid] = geoFeatures.length;
+ 324:     geoFeatures.push(f);
+ 325:   }
+ 326: 
+ 327:   // Suburban
+ 328:   for (const f of subRes.features) {
+ 329:     const p = f.properties;
+ 330:     const pid = suburbanPrecinctId(p.precinctid);
+ 331:     f._pid = pid;
+ 332:     f._label = p.name;
+ 333:     pidToFeatureIdx[pid] = geoFeatures.length;
+ 334:     geoFeatures.push(f);
+ 335:   }
+ 336: 
+ 337:   console.log(`GeoJSON loaded: ${geoFeatures.length} features (${chiRes.features.length} Chicago + ${subRes.features.length} suburban)`);
+ 338: }
+ 339: 
+ 340: async function loadElections() {
+ 341:   elections = await rpc('get_elections');
+ 342:   selElection.innerHTML = '';
+ 343:   for (const e of elections) {
+ 344:     const o = document.createElement('option');
+ 345:     o.value = e.id;
+ 346:     o.textContent = e.election_name;
+ 347:     selElection.appendChild(o);
+ 348:   }
+ 349:   if (elections.length) {
+ 350:     currentElectionId = elections[0].id;
+ 351:     selElection.value = currentElectionId;
+ 352:   }
+ 353: }
+ 354: 
+ 355: async function fetchRaces(electionId) {
+ 356:   if (racesForElection[electionId]) return racesForElection[electionId];
+ 357:   const races = await rpc('get_races', { p_election_id: electionId });
+ 358:   racesForElection[electionId] = races;
+ 359:   return races;
+ 360: }
+ 361: 
+ 362: async function fetchRaceMap(raceId) {
+ 363:   if (raceMapCache[raceId]) return raceMapCache[raceId];
+ 364:   showLoading(true);
+ 365:   try {
+ 366:     const rows = await rpc('get_race_map', { p_race_id: raceId });
+ 367:     const m = {};
+ 368:     for (const r of rows) {
+ 369:       m[r.precinct_id] = {
+ 370:         totalVotes: r.total_votes,
+ 371:         candidates: r.candidates // [{n, v, p}]
+ 372:       };
+ 373:     }
+ 374:     raceMapCache[raceId] = m;
+ 375:     return m;
+ 376:   } finally {
+ 377:     showLoading(false);
+ 378:   }
+ 379: }
+ 380: 
+ 381: async function fetchTurnout(electionId) {
+ 382:   if (turnoutCache[electionId]) return turnoutCache[electionId];
+ 383:   showLoading(true);
+ 384:   try {
+ 385:     const rows = await rpc('get_race_turnout', { p_election_id: electionId });
+ 386:     const m = {};
+ 387:     for (const r of rows) {
+ 388:       m[r.precinct_id] = {
+ 389:         registered: r.registered_voters,
+ 390:         ballots: r.ballots_cast,
+ 391:         turnout: r.turnout_pct
+ 392:       };
+ 393:     }
+ 394:     turnoutCache[electionId] = m;
+ 395:     return m;
+ 396:   } finally {
+ 397:     showLoading(false);
+ 398:   }
+ 399: }
+ 400: 
+ 401: /* ═══════════════════ POPULATE DROPDOWNS ═══════════════════ */
+ 402: function populateTypeDropdown() {
+ 403:   selType.innerHTML = '<option value="">Select Type…</option>';
+ 404:   for (const g of TYPE_GROUPS) {
+ 405:     const og = document.createElement('optgroup');
+ 406:     og.label = g.label;
+ 407:     for (const it of g.items) {
+ 408:       const o = document.createElement('option');
+ 409:       o.value = it.value;
+ 410:       o.textContent = it.label;
+ 411:       og.appendChild(o);
+ 412:     }
+ 413:     selType.appendChild(og);
+ 414:   }
+ 415: }
+ 416: 
+ 417: async function populateRaceDropdown() {
+ 418:   selRace.innerHTML = '<option value="">Loading…</option>';
+ 419:   selRace.disabled = true;
+ 420:   if (!currentElectionId || !currentRaceType) {
+ 421:     selRace.innerHTML = '<option value="">Select Race…</option>';
+ 422:     return;
+ 423:   }
+ 424: 
+ 425:   const races = await fetchRaces(currentElectionId);
+ 426:   const filtered = races.filter(r => r.race_type === currentRaceType);
+ 427:   
+ 428:   selRace.innerHTML = '';
+ 429:   if (!filtered.length) {
+ 430:     selRace.innerHTML = '<option value="">No races this election</option>';
+===== LINES 430-620 =====
+ 430:     selRace.innerHTML = '<option value="">No races this election</option>';
+ 431:     return;
+ 432:   }
+ 433: 
+ 434:   // Sort: extract any number from the name for natural sorting
+ 435:   filtered.sort((a, b) => {
+ 436:     const na = a.race_name.match(/(\d+)/);
+ 437:     const nb = b.race_name.match(/(\d+)/);
+ 438:     if (na && nb) return parseInt(na[1]) - parseInt(nb[1]);
+ 439:     return a.race_name.localeCompare(b.race_name);
+ 440:   });
+ 441: 
+ 442:   // If only one race, auto-select it
+ 443:   if (filtered.length === 1) {
+ 444:     const o = document.createElement('option');
+ 445:     o.value = filtered[0].id;
+ 446:     o.textContent = filtered[0].race_name;
+ 447:     selRace.appendChild(o);
+ 448:     selRace.disabled = true;
+ 449:     currentRaceId = filtered[0].id;
+ 450:     onRaceSelected();
+ 451:     return;
+ 452:   }
+ 453: 
+ 454:   const def = document.createElement('option');
+ 455:   def.value = '';
+ 456:   def.textContent = 'Select Race…';
+ 457:   selRace.appendChild(def);
+ 458: 
+ 459:   for (const r of filtered) {
+ 460:     const o = document.createElement('option');
+ 461:     o.value = r.id;
+ 462:     o.textContent = r.race_name;
+ 463:     selRace.appendChild(o);
+ 464:   }
+ 465:   selRace.disabled = false;
+ 466: }
+ 467: 
+ 468: /* ═══════════════════ CANDIDATE HELPERS ═══════════════════ */
+ 469: function aggregateCandidates(raceData) {
+ 470:   // raceData = {pid: {totalVotes, candidates: [{n,v,p}]}}
+ 471:   const totals = {};
+ 472:   for (const pid of Object.keys(raceData)) {
+ 473:     const d = raceData[pid];
+ 474:     if (!d.candidates) continue;
+ 475:     for (const c of d.candidates) {
+ 476:       totals[c.n] = (totals[c.n] || 0) + c.v;
+ 477:     }
+ 478:   }
+ 479:   return Object.entries(totals).sort((a, b) => b[1] - a[1]);
+ 480: }
+ 481: 
+ 482: function buildCandidateColors(sortedCands) {
+ 483:   const m = {};
+ 484:   sortedCands.forEach(([name], i) => {
+ 485:     m[name] = CANDIDATE_PALETTE[i % CANDIDATE_PALETTE.length];
+ 486:   });
+ 487:   return m;
+ 488: }
+ 489: 
+ 490: function shortName(n, max) { return n.length > max ? n.substring(0, max - 1) + '…' : n; }
+ 491: 
+ 492: /* ═══════════════════ VIEW OPTIONS ═══════════════════ */
+ 493: async function updateViewOpts() {
+ 494:   viewOpts.innerHTML = '';
+ 495:   const needsCandidates = ['candidate', 'vs', 'swing'].includes(currentMode);
+ 496:   const needsCompare = ['turnout_delta', 'swing'].includes(currentMode);
+ 497: 
+ 498:   if (needsCompare) {
+ 499:     const s = document.createElement('select');
+ 500:     elections.filter(e => e.id !== currentElectionId).forEach(e => {
+ 501:       const o = document.createElement('option');
+ 502:       o.value = e.id;
+ 503:       o.textContent = 'vs ' + e.election_name;
+ 504:       s.appendChild(o);
+ 505:     });
+ 506:     if (compareElectionId && compareElectionId !== currentElectionId) s.value = compareElectionId;
+ 507:     compareElectionId = s.value;
+ 508:     s.addEventListener('change', () => { compareElectionId = s.value; render(); });
+ 509:     viewOpts.appendChild(s);
+ 510:   }
+ 511: 
+ 512:   if (!needsCandidates || !currentRaceId) return;
+ 513:   const raceData = raceMapCache[currentRaceId];
+ 514:   if (!raceData) return;
+ 515: 
+ 516:   const sorted = aggregateCandidates(raceData);
+ 517:   if (!sorted.length) return;
+ 518:   const names = sorted.map(x => x[0]);
+ 519: 
+ 520:   if (currentMode === 'candidate' || currentMode === 'swing') {
+ 521:     const s = document.createElement('select');
+ 522:     const d = document.createElement('option');
+ 523:     d.value = ''; d.textContent = 'Select Candidate…';
+ 524:     s.appendChild(d);
+ 525:     names.forEach(n => {
+ 526:       const o = document.createElement('option');
+ 527:       o.value = n; o.textContent = shortName(n, 30);
+ 528:       s.appendChild(o);
+ 529:     });
+ 530:     if (selectedCandidate && names.includes(selectedCandidate)) s.value = selectedCandidate;
+ 531:     s.addEventListener('change', () => { selectedCandidate = s.value; if (selectedCandidate) render(); });
+ 532:     viewOpts.appendChild(s);
+ 533:   }
+ 534: 
+ 535:   if (currentMode === 'vs') {
+ 536:     const s1 = document.createElement('select');
+ 537:     const s2 = document.createElement('select');
+ 538:     names.forEach(n => {
+ 539:       const o1 = document.createElement('option');
+ 540:       o1.value = n; o1.textContent = shortName(n, 24);
+ 541:       s1.appendChild(o1);
+ 542:       const o2 = document.createElement('option');
+ 543:       o2.value = n; o2.textContent = shortName(n, 24);
+ 544:       s2.appendChild(o2);
+ 545:     });
+ 546:     vsCandidate1 = vsCandidate1 && names.includes(vsCandidate1) ? vsCandidate1 : names[0];
+ 547:     vsCandidate2 = vsCandidate2 && names.includes(vsCandidate2) ? vsCandidate2 : (names[1] || names[0]);
+ 548:     s1.value = vsCandidate1; s2.value = vsCandidate2;
+ 549:     const lbl = document.createElement('span');
+ 550:     lbl.className = 'vs-lbl'; lbl.textContent = 'vs';
+ 551:     s1.addEventListener('change', () => { vsCandidate1 = s1.value; render(); });
+ 552:     s2.addEventListener('change', () => { vsCandidate2 = s2.value; render(); });
+ 553:     viewOpts.appendChild(s1); viewOpts.appendChild(lbl); viewOpts.appendChild(s2);
+ 554:   }
+ 555: }
+ 556: 
+ 557: /* ═══════════════════ STYLE PER FEATURE ═══════════════════ */
+ 558: function getStyle(pid, turnout, raceData, turnout2, raceData2) {
+ 559:   const t = turnout ? turnout[pid] : null;
+ 560:   const rd = raceData ? raceData[pid] : null;
+ 561:   let fill = NO_DATA, dash = null;
+ 562: 
+ 563:   if (currentMode === 'turnout') {
+ 564:     fill = t ? scaleColor(t.turnout, TURNOUT_SC) : NO_DATA;
+ 565:     if (!t) dash = '4 4';
+ 566: 
+ 567:   } else if (currentMode === 'winner') {
+ 568:     if (rd && rd.candidates && rd.candidates.length) {
+ 569:       const winner = rd.candidates[0].n;
+ 570:       fill = candidateColorMap[winner] || CANDIDATE_PALETTE[0];
+ 571:     } else { fill = NO_DATA; if (!t) dash = '4 4'; }
+ 572: 
+ 573:   } else if (currentMode === 'margin') {
+ 574:     if (rd && rd.candidates && rd.candidates.length >= 2) {
+ 575:       fill = scaleColor(rd.candidates[0].p - rd.candidates[1].p, MARGIN_SC);
+ 576:     } else if (rd && rd.candidates && rd.candidates.length === 1) {
+ 577:       fill = MARGIN_SC[0][1];
+ 578:     } else { fill = NO_DATA; if (!t) dash = '4 4'; }
+ 579: 
+ 580:   } else if (currentMode === 'candidate') {
+ 581:     if (!selectedCandidate) { fill = NO_DATA; }
+ 582:     else if (rd && rd.candidates) {
+ 583:       const c = rd.candidates.find(x => x.n === selectedCandidate);
+ 584:       fill = c ? scaleColor(c.p, CAND_SC) : NO_DATA;
+ 585:     } else { fill = NO_DATA; if (!t) dash = '4 4'; }
+ 586: 
+ 587:   } else if (currentMode === 'vs') {
+ 588:     if (!vsCandidate1 || !vsCandidate2) { fill = NO_DATA; }
+ 589:     else if (rd && rd.candidates) {
+ 590:       const a = rd.candidates.find(x => x.n === vsCandidate1);
+ 591:       const b = rd.candidates.find(x => x.n === vsCandidate2);
+ 592:       fill = (a && b) ? vsColor(a.p - b.p) : NO_DATA;
+ 593:     } else { fill = NO_DATA; if (!t) dash = '4 4'; }
+ 594: 
+ 595:   } else if (currentMode === 'turnout_delta') {
+ 596:     const t2 = turnout2 ? turnout2[pid] : null;
+ 597:     if (t && t2 && t.turnout != null && t2.turnout != null) {
+ 598:       fill = deltaColor(t.turnout - t2.turnout);
+ 599:     } else { fill = NO_DATA; dash = '4 4'; }
+ 600: 
+ 601:   } else if (currentMode === 'swing') {
+ 602:     if (!selectedCandidate) { fill = NO_DATA; }
+ 603:     else {
+ 604:       const rd2 = raceData2 ? raceData2[pid] : null;
+ 605:       let v1 = null, v2 = null;
+ 606:       if (rd && rd.candidates) {
+ 607:         const c = rd.candidates.find(x => x.n === selectedCandidate);
+ 608:         if (c) v1 = c.p;
+ 609:       }
+ 610:       if (rd2 && rd2.candidates) {
+ 611:         const c = rd2.candidates.find(x => x.n === selectedCandidate);
+ 612:         if (c) v2 = c.p;
+ 613:       }
+ 614:       if (v1 != null && v2 != null) fill = deltaColor(v1 - v2);
+ 615:       else { fill = NO_DATA; dash = '4 4'; }
+ 616:     }
+ 617: 
+ 618:   } else if (currentMode === 'votes') {
+ 619:     if (rd) fill = scaleColor(rd.totalVotes, VOLUME_SC);
+ 620:     else if (t) fill = scaleColor(t.ballots, VOLUME_SC);
+===== LINES 620-820 =====
+ 620:     else if (t) fill = scaleColor(t.ballots, VOLUME_SC);
+ 621:     else { fill = NO_DATA; dash = '4 4'; }
+ 622:   }
+ 623: 
+ 624:   return { fillColor: fill, color: '#1a1d27', weight: 1, fillOpacity: 0.85, dashArray: dash };
+ 625: }
+ 626: 
+ 627: /* ═══════════════════ RENDER ═══════════════════ */
+ 628: let bgLayer = null; // gray background precincts outside current race
+ 629: 
+ 630: async function render() {
+ 631:   if (!currentRaceId && currentMode !== 'turnout') return;
+ 632:   showLoading(true);
+ 633:   landing.style.display = 'none';
+ 634: 
+ 635:   try {
+ 636:     // Fetch turnout for current election
+ 637:     const turnout = await fetchTurnout(currentElectionId);
+ 638: 
+ 639:     // Fetch race data if we have a race selected
+ 640:     let raceData = null;
+ 641:     if (currentRaceId) {
+ 642:       raceData = await fetchRaceMap(currentRaceId);
+ 643:     }
+ 644: 
+ 645:     // Fetch comparison data if needed
+ 646:     let turnout2 = null, raceData2 = null;
+ 647:     if (currentMode === 'turnout_delta' && compareElectionId) {
+ 648:       turnout2 = await fetchTurnout(compareElectionId);
+ 649:     }
+ 650:     if (currentMode === 'swing' && compareElectionId && currentRaceId) {
+ 651:       const compareRaces = await fetchRaces(compareElectionId);
+ 652:       const currentRaces = racesForElection[currentElectionId] || [];
+ 653:       const thisRace = currentRaces.find(r => r.id === currentRaceId);
+ 654:       if (thisRace) {
+ 655:         const matchRace = compareRaces.find(r =>
+ 656:           r.race_type === thisRace.race_type && r.race_name === thisRace.race_name
+ 657:         );
+ 658:         if (matchRace) {
+ 659:           raceData2 = await fetchRaceMap(matchRace.id);
+ 660:         }
+ 661:       }
+ 662:     }
+ 663: 
+ 664:     // Build candidate color map for winner mode
+ 665:     if (currentMode === 'winner' && raceData) {
+ 666:       const sorted = aggregateCandidates(raceData);
+ 667:       candidateColorMap = buildCandidateColors(sorted);
+ 668:     }
+ 669: 
+ 670:     // Determine active precincts: race data precincts are primary
+ 671:     const racePids = raceData ? new Set(Object.keys(raceData)) : new Set();
+ 672:     const turnoutPids = turnout ? new Set(Object.keys(turnout)) : new Set();
+ 673: 
+ 674:     // If we have a race, only show race precincts as "active"
+ 675:     // All other precincts are background (gray)
+ 676:     const activePids = racePids.size > 0 ? racePids : turnoutPids;
+ 677: 
+ 678:     const activeFeats = geoFeatures.filter(f => activePids.has(f._pid));
+ 679:     const bgFeats = racePids.size > 0
+ 680:       ? geoFeatures.filter(f => !racePids.has(f._pid) && turnoutPids.has(f._pid))
+ 681:       : [];
+ 682: 
+ 683:     // Clear old layers
+ 684:     if (precinctLayer) { map.removeLayer(precinctLayer); precinctLayer = null; }
+ 685:     if (bgLayer) { map.removeLayer(bgLayer); bgLayer = null; }
+ 686: 
+ 687:     // Background layer (gray, non-interactive) for context
+ 688:     if (bgFeats.length > 0) {
+ 689:       bgLayer = L.geoJSON({ type: 'FeatureCollection', features: bgFeats }, {
+ 690:         style: () => ({ fillColor: '#1e2028', color: '#1a1d27', weight: 0.5, fillOpacity: 0.4 }),
+ 691:         interactive: false
+ 692:       }).addTo(map);
+ 693:     }
+ 694: 
+ 695:     // Active precinct layer
+ 696:     precinctLayer = L.geoJSON({ type: 'FeatureCollection', features: activeFeats }, {
+ 697:       style: f => getStyle(f._pid, turnout, raceData, turnout2, raceData2),
+ 698:       onEachFeature: (f, l) => {
+ 699:         l.on('mouseover', () => {
+ 700:           if (precinctLayer) precinctLayer.eachLayer(x => { x.setStyle({ color: '#1a1d27', weight: 1 }); });
+ 701:           l.setStyle({ color: '#fff', weight: 2.5 });
+ 702:           l.bringToFront();
+ 703:           showInfo(f, turnout, raceData, turnout2, raceData2);
+ 704:         });
+ 705:         l.on('mouseout', () => {
+ 706:           if (precinctLayer) precinctLayer.eachLayer(x => { x.setStyle({ color: '#1a1d27', weight: 1 }); });
+ 707:           infoPanel.classList.remove('visible');
+ 708:         });
+ 709:       }
+ 710:     }).addTo(map);
+ 711: 
+ 712:     if (precinctLayer.getLayers().length) {
+ 713:       map.fitBounds(precinctLayer.getBounds(), { padding: [30, 30], maxZoom: 14 });
+ 714:     }
+ 715: 
+ 716:     // Stats only for active (race) precincts
+ 717:     updateStats(turnout, raceData, activePids);
+ 718:     updateLegend(raceData);
+ 719:   } catch (err) {
+ 720:     console.error('Render error:', err);
+ 721:   }
+ 722:   showLoading(false);
+ 723: }
+ 724: 
+ 725: /* ═══════════════════ ON RACE SELECTED ═══════════════════ */
+ 726: async function onRaceSelected() {
+ 727:   selectedCandidate = '';
+ 728:   vsCandidate1 = '';
+ 729:   vsCandidate2 = '';
+ 730: 
+ 731:   if (currentRaceId) {
+ 732:     await fetchRaceMap(currentRaceId);
+ 733:   }
+ 734:   await updateViewOpts();
+ 735:   render();
+ 736: }
+ 737: 
+ 738: /* ═══════════════════ INFO PANEL ═══════════════════ */
+ 739: function showInfo(feature, turnout, raceData, turnout2, raceData2) {
+ 740:   const pid = feature._pid;
+ 741:   const label = feature._label;
+ 742:   const t = turnout ? turnout[pid] : null;
+ 743:   const rd = raceData ? raceData[pid] : null;
+ 744: 
+ 745:   let h = `<h3>${label || 'Precinct'}</h3>`;
+ 746: 
+ 747:   if (t) {
+ 748:     h += `<div class="info-row"><span>Registered</span><span class="val">${(t.registered || 0).toLocaleString()}</span></div>`;
+ 749:     h += `<div class="info-row"><span>Ballots</span><span class="val">${(t.ballots || 0).toLocaleString()}</span></div>`;
+ 750:     h += `<div class="info-row"><span>Turnout</span><span class="val">${t.turnout != null ? t.turnout.toFixed(1) + '%' : '—'}</span></div>`;
+ 751:   } else {
+ 752:     h += '<div class="info-row"><span>No turnout data</span></div>';
+ 753:   }
+ 754: 
+ 755:   if (currentMode === 'turnout_delta') {
+ 756:     const t2 = turnout2 ? turnout2[pid] : null;
+ 757:     if (t && t2 && t.turnout != null && t2.turnout != null) {
+ 758:       const d = t.turnout - t2.turnout;
+ 759:       const s = d >= 0 ? '+' : '';
+ 760:       h += `<div class="info-row"><span>&Delta; Turnout</span><span class="val" style="color:${d >= 0 ? '#43a047' : '#e57373'}">${s}${d.toFixed(1)}pp</span></div>`;
+ 761:     }
+ 762:   }
+ 763: 
+ 764:   if (rd && rd.candidates && rd.candidates.length) {
+ 765:     h += '<div class="info-divider"></div>';
+ 766:     if (rd.candidates.length >= 2) {
+ 767:       const mg = rd.candidates[0].p - rd.candidates[1].p;
+ 768:       h += `<div class="info-row"><span>Margin (#1 - #2)</span><span class="val">${mg.toFixed(1)}pp</span></div>`;
+ 769:     }
+ 770:     rd.candidates.forEach((c, i) => {
+ 771:       const col = candidateColorMap[c.n] || CANDIDATE_PALETTE[i % CANDIDATE_PALETTE.length];
+ 772:       const hl = (currentMode === 'candidate' && c.n === selectedCandidate) ||
+ 773:                  (currentMode === 'swing' && c.n === selectedCandidate) ||
+ 774:                  (currentMode === 'vs' && (c.n === vsCandidate1 || c.n === vsCandidate2));
+ 775:       h += `<div class="cand-row${hl ? ' hl' : ''}">
+ 776:         <span class="cand-swatch" style="background:${col}"></span>
+ 777:         <span class="cand-name" title="${c.n}">${c.n}</span>
+ 778:         <div class="cand-bar-wrap"><div class="cand-bar" style="width:${c.p}%;background:${col}"></div></div>
+ 779:         <span class="cand-pct">${c.p.toFixed(1)}%</span>
+ 780:         <span class="cand-votes">${c.v.toLocaleString()}</span>
+ 781:       </div>`;
+ 782:     });
+ 783: 
+ 784:     if (currentMode === 'swing' && selectedCandidate && raceData2) {
+ 785:       const rd2 = raceData2[pid];
+ 786:       if (rd2 && rd2.candidates) {
+ 787:         const c1 = rd.candidates.find(x => x.n === selectedCandidate);
+ 788:         const c2 = rd2.candidates.find(x => x.n === selectedCandidate);
+ 789:         if (c1 && c2) {
+ 790:           const sw = c1.p - c2.p;
+ 791:           const s = sw >= 0 ? '+' : '';
+ 792:           h += `<div class="info-divider"></div><div class="info-row"><span>Swing</span><span class="val" style="color:${sw >= 0 ? '#43a047' : '#e57373'}">${s}${sw.toFixed(1)}pp</span></div>`;
+ 793:         }
+ 794:       }
+ 795:     }
+ 796:   } else if (currentRaceId) {
+ 797:     h += '<div class="info-divider"></div><div class="info-row"><span>No race data</span></div>';
+ 798:   }
+ 799: 
+ 800:   infoPanel.innerHTML = h;
+ 801:   infoPanel.classList.add('visible');
+ 802: }
+ 803: 
+ 804: /* ═══════════════════ HEADER STATS ═══════════════════ */
+ 805: function updateStats(turnout, raceData, activePids) {
+ 806:   if (!turnout && !raceData) { headerStats.innerHTML = ''; return; }
+ 807: 
+ 808:   let tReg = 0, tBal = 0;
+ 809:   const pidsToCount = activePids || (turnout ? new Set(Object.keys(turnout)) : new Set());
+ 810:   if (turnout) {
+ 811:     for (const pid of pidsToCount) {
+ 812:       const t = turnout[pid];
+ 813:       if (!t) continue;
+ 814:       tReg += t.registered || 0;
+ 815:       tBal += t.ballots || 0;
+ 816:     }
+ 817:   }
+ 818:   const to = tReg > 0 ? (tBal / tReg * 100).toFixed(1) : '—';
+ 819: 
+ 820:   let h = `<div class="stat"><span class="stat-val">${tReg.toLocaleString()}</span><span class="stat-label">Registered</span></div>
+===== LINES 820-988 =====
+ 820:   let h = `<div class="stat"><span class="stat-val">${tReg.toLocaleString()}</span><span class="stat-label">Registered</span></div>
+ 821:     <div class="stat"><span class="stat-val">${tBal.toLocaleString()}</span><span class="stat-label">Ballots</span></div>
+ 822:     <div class="stat"><span class="stat-val">${to}%</span><span class="stat-label">Turnout</span></div>`;
+ 823: 
+ 824:   if (raceData) {
+ 825:     const sorted = aggregateCandidates(raceData);
+ 826:     if (sorted.length >= 1) {
+ 827:       const totalV = sorted.reduce((s, x) => s + x[1], 0);
+ 828:       const w = sorted[0];
+ 829:       const wp = totalV > 0 ? (w[1] / totalV * 100).toFixed(1) : '—';
+ 830:       h += `<div class="stat"><span class="stat-val" title="${w[0]}">${shortName(w[0], 20)}</span><span class="stat-label">Winner · ${wp}%</span></div>`;
+ 831:       if (sorted.length >= 2) {
+ 832:         const mg = totalV > 0 ? ((sorted[0][1] - sorted[1][1]) / totalV * 100).toFixed(1) : '—';
+ 833:         h += `<div class="stat"><span class="stat-val">${mg}pp</span><span class="stat-label">Margin</span></div>`;
+ 834:       }
+ 835:     }
+ 836:   }
+ 837:   headerStats.innerHTML = h;
+ 838: }
+ 839: 
+ 840: /* ═══════════════════ LEGEND ═══════════════════ */
+ 841: function updateLegend(raceData) {
+ 842:   let h = '';
+ 843:   if (currentMode === 'turnout') {
+ 844:     h = '<div class="legend-title">Turnout %</div>';
+ 845:     [['55%+','#fdd835'],['45–55','#ffb300'],['35–45','#f57c00'],['25–35','#e65100'],['15–25','#bf360c'],['5–15','#6d4c41'],['<5%','#3e2723'],['No data','#333']].forEach(([l,c]) => {
+ 846:       h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`;
+ 847:     });
+ 848: 
+ 849:   } else if (currentMode === 'winner') {
+ 850:     h = '<div class="legend-title">Winner by Precinct</div>';
+ 851:     if (raceData) {
+ 852:       const agg = aggregateCandidates(raceData);
+ 853:       agg.forEach(([name]) => {
+ 854:         const col = candidateColorMap[name] || '#999';
+ 855:         h += `<div class="legend-row"><span class="legend-swatch" style="background:${col}"></span>${shortName(name, 22)}</div>`;
+ 856:       });
+ 857:     }
+ 858:     h += '<div class="legend-row"><span class="legend-swatch" style="background:#333"></span>No data</div>';
+ 859: 
+ 860:   } else if (currentMode === 'margin') {
+ 861:     h = '<div class="legend-title">Margin (#1 - #2)</div>';
+ 862:     [['40pp+','#b71c1c'],['30–40pp','#c62828'],['20–30pp','#e53935'],['10–20pp','#ef5350'],['5–10pp','#ef9a9a'],['<5pp','#ffcdd2'],['No data','#333']].forEach(([l,c]) => {
+ 863:       h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`;
+ 864:     });
+ 865: 
+ 866:   } else if (currentMode === 'candidate') {
+ 867:     const nm = selectedCandidate ? shortName(selectedCandidate, 18) : 'Candidate';
+ 868:     h = `<div class="legend-title">${nm} Vote %</div>`;
+ 869:     [['60%+','#4a148c'],['50–60','#6a1b9a'],['40–50','#8e24aa'],['30–40','#ab47bc'],['20–30','#ce93d8'],['10–20','#e1bee7'],['<10%','#f3e5f5'],['No data','#333']].forEach(([l,c]) => {
+ 870:       h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`;
+ 871:     });
+ 872: 
+ 873:   } else if (currentMode === 'vs') {
+ 874:     const n1 = vsCandidate1 ? shortName(vsCandidate1, 12) : 'Cand 1';
+ 875:     const n2 = vsCandidate2 ? shortName(vsCandidate2, 12) : 'Cand 2';
+ 876:     h = `<div class="legend-title">${n1} vs ${n2}</div>`;
+ 877:     [[`${n1} +30+`,'#0d47a1'],['+20','#1565c0'],['+10','#42a5f5'],['+5','#90caf9'],['Even','#e3f2fd'],
+ 878:      [`${n2} +5`,'#ffcdd2'],['+10','#ef9a9a'],['+20','#e57373'],['+30+','#c62828'],['No data','#333']].forEach(([l,c]) => {
+ 879:       h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`;
+ 880:     });
+ 881: 
+ 882:   } else if (currentMode === 'turnout_delta') {
+ 883:     h = '<div class="legend-title">Turnout &Delta; (pp)</div>';
+ 884:     [['+10+','#1b5e20'],['+5 to +10','#2e7d32'],['+2 to +5','#43a047'],['0 to +2','#a5d6a7'],['0 to -2','#ef9a9a'],['-2 to -5','#e57373'],['-5+','#c62828'],['No data','#333']].forEach(([l,c]) => {
+ 885:       h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`;
+ 886:     });
+ 887: 
+ 888:   } else if (currentMode === 'swing') {
+ 889:     const nm = selectedCandidate ? shortName(selectedCandidate, 16) : 'Candidate';
+ 890:     h = `<div class="legend-title">${nm} Swing (pp)</div>`;
+ 891:     [['+10+','#1b5e20'],['+5 to +10','#2e7d32'],['+2 to +5','#43a047'],['0 to +2','#a5d6a7'],['0 to -2','#ef9a9a'],['-2 to -5','#e57373'],['-5+','#c62828'],['No data','#333']].forEach(([l,c]) => {
+ 892:       h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`;
+ 893:     });
+ 894: 
+ 895:   } else if (currentMode === 'votes') {
+ 896:     h = '<div class="legend-title">Total Votes</div>';
+ 897:     [['800+','#0d47a1'],['600–800','#1565c0'],['400–600','#1976d2'],['300–400','#42a5f5'],['200–300','#90caf9'],['100–200','#bbdefb'],['<100','#e3f2fd'],['No data','#333']].forEach(([l,c]) => {
+ 898:       h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`;
+ 899:     });
+ 900:   }
+ 901:   legendEl.innerHTML = h;
+ 902: }
+ 903: 
+ 904: /* ═══════════════════ EVENTS ═══════════════════ */
+ 905: selElection.addEventListener('change', async () => {
+ 906:   currentElectionId = selElection.value;
+ 907:   currentRaceId = '';
+ 908:   selectedCandidate = ''; vsCandidate1 = ''; vsCandidate2 = '';
+ 909:   viewOpts.innerHTML = '';
+ 910:   if (currentRaceType) {
+ 911:     await populateRaceDropdown();
+ 912:   }
+ 913: });
+ 914: 
+ 915: selType.addEventListener('change', async () => {
+ 916:   currentRaceType = selType.value;
+ 917:   currentRaceId = '';
+ 918:   selectedCandidate = ''; vsCandidate1 = ''; vsCandidate2 = '';
+ 919:   viewOpts.innerHTML = '';
+ 920:   if (currentRaceType) {
+ 921:     await populateRaceDropdown();
+ 922:   } else {
+ 923:     selRace.innerHTML = '<option value="">Select Race…</option>';
+ 924:     selRace.disabled = true;
+ 925:     clearMap();
+ 926:   }
+ 927: });
+ 928: 
+ 929: selRace.addEventListener('change', () => {
+ 930:   const v = selRace.value;
+ 931:   if (v) {
+ 932:     currentRaceId = v;
+ 933:     onRaceSelected();
+ 934:   } else {
+ 935:     currentRaceId = '';
+ 936:     clearMap();
+ 937:   }
+ 938: });
+ 939: 
+ 940: document.querySelectorAll('.mode-btn').forEach(btn => {
+ 941:   btn.addEventListener('click', () => {
+ 942:     document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+ 943:     btn.classList.add('active');
+ 944:     currentMode = btn.dataset.mode;
+ 945:     updateViewOpts();
+ 946:     if (currentRaceId || currentMode === 'turnout') render();
+ 947:     else updateLegend();
+ 948:   });
+ 949: });
+ 950: 
+ 951: function clearMap() {
+ 952:   if (precinctLayer) { map.removeLayer(precinctLayer); precinctLayer = null; }
+ 953:   if (bgLayer) { map.removeLayer(bgLayer); bgLayer = null; }
+ 954:   infoPanel.classList.remove('visible');
+ 955:   headerStats.innerHTML = '';
+ 956:   viewOpts.innerHTML = '';
+ 957:   legendEl.innerHTML = '';
+ 958:   landing.style.display = '';
+ 959:   map.setView([41.8337, -87.732], 10);
+ 960: }
+ 961: 
+ 962: /* ═══════════════════ INIT ═══════════════════ */
+ 963: function initMap() {
+ 964:   map = L.map('map', { center: [41.8337, -87.732], zoom: 10, zoomControl: true, attributionControl: false });
+ 965:   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', { subdomains: 'abcd', maxZoom: 19 }).addTo(map);
+ 966:   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png', { subdomains: 'abcd', maxZoom: 19, pane: 'overlayPane' }).addTo(map);
+ 967:   map.on('click', () => { infoPanel.classList.remove('visible'); });
+ 968: }
+ 969: 
+ 970: async function init() {
+ 971:   initMap();
+ 972:   showLoading(true);
+ 973:   try {
+ 974:     await Promise.all([loadGeoJSON(), loadElections()]);
+ 975:     populateTypeDropdown();
+ 976:     updateLegend();
+ 977:   } catch (err) {
+ 978:     console.error('Init error:', err);
+ 979:   }
+ 980:   showLoading(false);
+ 981: }
+ 982: 
+ 983: init();
+ 984: 
+ 985: })();
+ 986: </script>
+ 987: </body>
+ 988: </html>
