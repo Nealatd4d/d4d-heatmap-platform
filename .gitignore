@@ -1,0 +1,22 @@
+# Data files (too large for git, stored in Supabase)
+*.csv
+data/*.json
+data/*.geojson
+data/municipal_2023/
+data/municipal_2023_runoff/
+data/cook_county_2022/
+
+# Python
+__pycache__/
+*.pyc
+.env
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Staging
+supabase_staging/
