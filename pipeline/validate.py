@@ -429,48 +429,54 @@ def check_precinct_match_rate(conn, election_id=None):
 # ═══════════════════════════════════════════════════════════════
 
 def check_cross_election(conn, election_id=None):
-    """Flag anomalies when comparing the same race across elections."""
+    """Flag anomalies comparing same race type across SAME-TYPE elections.
+    
+    Only compares primaries to primaries, generals to generals, etc.
+    Consolidated/municipal elections have fundamentally different race mixes,
+    so comparing them to primaries/generals would just be noise.
+    """
     cur = conn.cursor()
     results = []
 
-    # Compare race counts per race_type across elections (lightweight)
+    # Group elections by type for apples-to-apples comparison
     cur.execute("""
-        SELECT e.name, r.race_type, COUNT(*) as race_count
+        SELECT e.id, e.name, e.type, r.race_type, COUNT(*) as race_count
         FROM races r
         JOIN elections e ON r.election_id = e.id
-        GROUP BY e.name, r.race_type
-        ORDER BY r.race_type, e.name;
+        GROUP BY e.id, e.name, e.type, r.race_type
+        ORDER BY e.type, r.race_type, e.name;
     """)
     rows = cur.fetchall()
 
-    # Group by race_type
-    by_type = defaultdict(list)
-    for ename, rtype, rcount in rows:
-        by_type[rtype].append((ename, rcount))
+    # Group by (election_type, race_type) for same-type comparison
+    by_group = defaultdict(list)
+    for eid, ename, etype, rtype, rcount in rows:
+        by_group[(etype, rtype)].append((ename, rcount))
 
     anomalies = []
-    for rtype, entries in by_type.items():
+    for (etype, rtype), entries in by_group.items():
         if len(entries) < 2:
             continue
-        # Check if race counts vary wildly (>3x difference)
+        # Only flag if same-type elections have wildly different counts
         rcounts = [e[1] for e in entries]
         if max(rcounts) > 0 and min(rcounts) > 0:
             ratio = max(rcounts) / min(rcounts)
             if ratio > 5:
+                elections_str = ', '.join(f"{e[0]}={e[1]}" for e in entries)
                 anomalies.append(
-                    f"{rtype}: race count varies {min(rcounts)}–{max(rcounts)} "
-                    f"(ratio {ratio:.1f}x) across elections")
+                    f"{rtype} ({etype}): {elections_str} "
+                    f"(ratio {ratio:.1f}x)")
 
     if anomalies:
         results.append(ValidationResult(
             'Cross-Election Anomalies', 'warn',
-            f"{len(anomalies)} race types show large precinct count variance",
+            f"{len(anomalies)} race types show large variance within same election type",
             anomalies
         ))
     else:
         results.append(ValidationResult(
             'Cross-Election Consistency', 'pass',
-            'No major anomalies between elections'))
+            'No major anomalies between same-type elections'))
 
     return results
 
@@ -548,10 +554,10 @@ def check_vote_sanity(conn, election_id=None):
                 else "SELECT COUNT(*) FROM results WHERE votes < 0;")
     neg_votes = cur.fetchone()[0]
 
-    # Turnout > 100%
+    # Turnout > 105% (Illinois allows same-day registration, so ≤105% is normal)
     cur.execute(f"""
         SELECT COUNT(*) FROM turnout
-        {where + ' AND' if where else 'WHERE'} turnout_pct > 100;
+        {where + ' AND' if where else 'WHERE'} turnout_pct > 105;
     """)
     over_turnout = cur.fetchone()[0]
 
@@ -578,15 +584,14 @@ def check_vote_sanity(conn, election_id=None):
         details.append(f"Negative vote counts: {neg_votes}")
         status = 'fail'
     if over_turnout > 0:
-        details.append(f"Turnout > 100%: {over_turnout}")
-        status = 'warn'
+        details.append(f"Turnout > 105%: {over_turnout} (extreme — possible data error)")
+        status = 'fail'
     if zero_reg > 0:
         details.append(f"Zero registered / nonzero ballots: {zero_reg}")
         status = 'warn'
     if empty_races > 0:
         details.append(f"Races with no results: {empty_races}")
-        if empty_races > 10:
-            status = 'warn'
+        status = 'fail'  # Every race should have results
 
     if not details:
         results.append(ValidationResult(

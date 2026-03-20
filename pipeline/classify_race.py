@@ -95,7 +95,8 @@ def classify_race_type(contest_name, source='auto'):
     # ═══════════════════════════════════════════════════════════════
 
     # Governor (must check BEFORE lt_governor)
-    if 'GOVERNOR AND LIEUTENANT GOVERNOR' in upper:
+    # "Governor & Lieutenant Governor" is a combined ticket → governor
+    if 'GOVERNOR AND LIEUTENANT GOVERNOR' in upper or 'GOVERNOR & LIEUTENANT GOVERNOR' in upper:
         return ('governor', 0)
     if re.match(r'^GOVERNOR\b', upper) and 'LT' not in upper and 'LIEUTENANT' not in upper:
         return ('governor', 0)
@@ -235,7 +236,8 @@ def classify_race_type(contest_name, source='auto'):
     if 'board of review' in lower:
         return ('board_of_review', 0)
 
-    # MWRD
+    # MWRD (Metropolitan Water Reclamation District)
+    # Both "MWRD" and "Water Reclamation" refer to the same entity
     if any(x in upper for x in ['WATER RECLAMATION', 'MWRD']):
         return ('mwrd', 0)
 
@@ -243,17 +245,22 @@ def classify_race_type(contest_name, source='auto'):
     # 7. CHICAGO MUNICIPAL
     # ═══════════════════════════════════════════════════════════════
 
+    # Referendum catch: "Adopt Strong Mayor Form" is a referendum, not a mayor race
+    if 'mayor' in lower and any(x in lower for x in [
+        'adopt', 'form of government', 'referendum', 'shall', 'proposition'
+    ]):
+        return ('referendum', 0)
+
     # Chicago-specific: only exact Chicago offices get chicago types
     # "Mayor, City of Chicago" → mayor; "Mayor, City of Palos Hills" → municipal
     if 'mayor' in lower:
-        if 'chicago' in lower or source in ('sboe', 'school_board'):
-            return ('mayor', 0)
-        # Suburban mayors from cook_clerk are 'municipal'
-        if source == 'cook_clerk' or source == 'suburban':
+        # Suburban mayors always have "City of <suburb>" or "Village of"
+        if ('city of' in lower or 'village of' in lower) and 'chicago' not in lower:
             return ('municipal', 0)
-        # Auto: check if it says "city of" (suburban) vs just "mayor"
-        if 'city of' in lower and 'chicago' not in lower:
+        # Explicit suburban sources
+        if source == 'suburban':
             return ('municipal', 0)
+        # Everything else (plain "Mayor", Chicago sources, SBOE) → mayor
         return ('mayor', 0)
 
     # "Alderperson, City of X" = suburban municipal_ward (not Chicago aldermanic_ward)
@@ -264,20 +271,16 @@ def classify_race_type(contest_name, source='auto'):
         return ('aldermanic_ward', int(m.group(1)) if m else 0)
 
     if 'city clerk' in lower or 'clerk, city' in lower:
-        if 'chicago' in lower or source in ('sboe', 'school_board'):
-            return ('city_clerk', 0)
-        if source == 'cook_clerk' or source == 'suburban':
+        if ('city of' in lower or 'village of' in lower) and 'chicago' not in lower:
             return ('municipal', 0)
-        if 'city of' in lower and 'chicago' not in lower:
+        if source == 'suburban':
             return ('municipal', 0)
         return ('city_clerk', 0)
 
     if 'city treasurer' in lower or 'treasurer, city' in lower:
-        if 'chicago' in lower or source in ('sboe', 'school_board'):
-            return ('city_treasurer', 0)
-        if source == 'cook_clerk' or source == 'suburban':
+        if ('city of' in lower or 'village of' in lower) and 'chicago' not in lower:
             return ('municipal', 0)
-        if 'city of' in lower and 'chicago' not in lower:
+        if source == 'suburban':
             return ('municipal', 0)
         return ('city_treasurer', 0)
 
@@ -350,9 +353,9 @@ def classify_race_type(contest_name, source='auto'):
     if 'library' in lower:
         return ('library', 0)
 
-    # Water/sanitary
+    # Water/sanitary → mwrd
     if any(x in lower for x in ['water reclamation', 'sanitary', 'water district']):
-        return ('water_reclamation', 0)
+        return ('mwrd', 0)
 
     # ═══════════════════════════════════════════════════════════════
     # 10. EDUCATION (after special districts)
