@@ -432,10 +432,65 @@ function scaleColor(v, scale) {
   return scale[scale.length - 1][1];
 }
 
-const TURNOUT_SC = [[55,'#fdd835'],[45,'#ffb300'],[35,'#f57c00'],[25,'#e65100'],[15,'#bf360c'],[5,'#6d4c41'],[0,'#3e2723']];
+// Fixed scales (used as fallbacks / for modes that don't need adaptive)
 const MARGIN_SC  = [[40,'#b71c1c'],[30,'#c62828'],[20,'#e53935'],[10,'#ef5350'],[5,'#ef9a9a'],[0,'#ffcdd2']];
-const CAND_SC    = [[60,'#4a148c'],[50,'#6a1b9a'],[40,'#8e24aa'],[30,'#ab47bc'],[20,'#ce93d8'],[10,'#e1bee7'],[0,'#f3e5f5']];
-const VOLUME_SC  = [[800,'#0d47a1'],[600,'#1565c0'],[400,'#1976d2'],[300,'#42a5f5'],[200,'#90caf9'],[100,'#bbdefb'],[0,'#e3f2fd']];
+
+// Adaptive scale colors (7 stops, warm for turnout, purple for candidate, blue for votes)
+const TURNOUT_COLORS = ['#fdd835','#ffb300','#f57c00','#e65100','#bf360c','#6d4c41','#3e2723'];
+const CAND_COLORS    = ['#4a148c','#6a1b9a','#8e24aa','#ab47bc','#ce93d8','#e1bee7','#f3e5f5'];
+const VOLUME_COLORS  = ['#0d47a1','#1565c0','#1976d2','#42a5f5','#90caf9','#bbdefb','#e3f2fd'];
+
+// Build an adaptive scale from data values using quantile breakpoints
+// Returns [[threshold, color], ...] sorted descending (same format as fixed scales)
+function buildAdaptiveScale(values, colors) {
+  if (!values.length) return colors.map((c, i) => [100 - i * 15, c]); // fallback
+  const sorted = [...values].sort((a, b) => a - b);
+  const n = sorted.length;
+  const stops = colors.length;
+  // Use quantile breakpoints: evenly spaced percentiles
+  const scale = [];
+  for (let i = 0; i < stops; i++) {
+    // Top color = highest quantile, bottom color = lowest
+    const pctile = 1 - (i / (stops - 1)); // 1.0, 0.83, 0.67, 0.5, 0.33, 0.17, 0.0
+    const idx = Math.min(Math.floor(pctile * (n - 1)), n - 1);
+    const threshold = Math.round(sorted[idx] * 10) / 10; // round to 1 decimal
+    scale.push([threshold, colors[i]]);
+  }
+  // Deduplicate thresholds (if data is very clustered, multiple stops hit same value)
+  // Keep distinct by nudging down slightly
+  for (let i = 1; i < scale.length; i++) {
+    if (scale[i][0] >= scale[i-1][0]) {
+      scale[i][0] = scale[i-1][0] - 0.1;
+    }
+  }
+  return scale;
+}
+
+// Currently active adaptive scales (recomputed each render)
+let activeTurnoutScale = null;
+let activeCandScale = null;
+let activeVolumeScale = null;
+
+// Build legend labels from an adaptive scale
+function adaptiveLegendRows(scale, suffix) {
+  const rows = [];
+  for (let i = 0; i < scale.length; i++) {
+    const val = scale[i][0];
+    const color = scale[i][1];
+    const nextVal = i > 0 ? scale[i-1][0] : null;
+    let label;
+    if (i === 0) {
+      label = `${fmtNum(val)}${suffix}+`;
+    } else if (i === scale.length - 1) {
+      label = `<${fmtNum(scale[i-1][0])}${suffix}`;
+    } else {
+      label = `${fmtNum(val)}–${fmtNum(scale[i-1][0])}${suffix}`;
+    }
+    rows.push([label, color]);
+  }
+  return rows;
+}
+function fmtNum(n) { return n >= 100 ? Math.round(n).toLocaleString() : Math.round(n * 10) / 10; }
 
 const CANDIDATE_PALETTE = [
   '#4fc3f7','#ff8a65','#ce93d8','#81c784','#fdd835',
@@ -640,6 +695,32 @@ async function populateTypeDropdown() {
   }
 }
 
+// Extract a grouping label from a race name (municipality, township, district name)
+function extractGroupName(raceName) {
+  // Patterns: "Title, City of X", "Title, Village of X", "Title, X Township"
+  // "School B.M., District Name 123, 4yr", "Cmsnr., District Name, 6yr."
+  // "Alderperson, City of Blue Island, Ward 3"
+  let m;
+  // "..., City/Village/Town of X" or "..., X Township"
+  m = raceName.match(/,\s*(City|Village|Town)\s+of\s+([^,]+)/i);
+  if (m) return `${m[1]} of ${m[2].trim()}`;
+  m = raceName.match(/,\s*([^,]+Township)/i);
+  if (m) return m[1].trim();
+  // "School B.M., Name 123, 4yr" → extract Name 123
+  m = raceName.match(/School\s+B\.?M\.?,\s*([^,]+)/i);
+  if (m) return m[1].trim();
+  // "Cmsnr., Name District, 4yr" / "Trst, Name District, 6yr"
+  m = raceName.match(/(?:Cmsnr|Trst|Trustee)\.?,\s*([^,]+)/i);
+  if (m) return m[1].trim();
+  // "Library Trustee, Town of X" 
+  m = raceName.match(/Library\s+Trustee,\s*(.+?)\s*\d*\s*yr/i);
+  if (m) return m[1].trim();
+  return null;
+}
+
+// Threshold: group into optgroups when there are this many+ races
+const GROUP_THRESHOLD = 15;
+
 async function populateRaceDropdown() {
   selRace.innerHTML = '<option value="">Loading…</option>';
   selRace.disabled = true;
@@ -682,9 +763,56 @@ async function populateRaceDropdown() {
 
     const def = document.createElement('option');
     def.value = '';
-    def.textContent = 'Select Race…';
+    def.textContent = `Select Race… (${filtered.length})`;
     selRace.appendChild(def);
 
+    // If many races, try to sub-group by municipality/township/district
+    if (filtered.length >= GROUP_THRESHOLD) {
+      const groups = new Map(); // groupName → [races]
+      const ungrouped = [];
+      for (const r of filtered) {
+        const g = extractGroupName(r.race_name);
+        if (g) {
+          if (!groups.has(g)) groups.set(g, []);
+          groups.get(g).push(r);
+        } else {
+          ungrouped.push(r);
+        }
+      }
+
+      // Only use optgroups if we actually got meaningful groups
+      if (groups.size >= 2) {
+        // Sort group names alphabetically
+        const sortedGroups = [...groups.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+        for (const [gName, gRaces] of sortedGroups) {
+          const og = document.createElement('optgroup');
+          og.label = gName;
+          for (const r of gRaces) {
+            const o = document.createElement('option');
+            o.value = r.id;
+            o.textContent = r.race_name;
+            og.appendChild(o);
+          }
+          selRace.appendChild(og);
+        }
+        // Add ungrouped at the end
+        if (ungrouped.length) {
+          const og = document.createElement('optgroup');
+          og.label = 'Other';
+          for (const r of ungrouped) {
+            const o = document.createElement('option');
+            o.value = r.id;
+            o.textContent = r.race_name;
+            og.appendChild(o);
+          }
+          selRace.appendChild(og);
+        }
+        selRace.disabled = false;
+        return;
+      }
+    }
+
+    // Default flat list (small number of races or no grouping found)
     for (const r of filtered) {
       const o = document.createElement('option');
       o.value = r.id;
@@ -864,7 +992,7 @@ function getStyle(pid, turnout, raceData, turnout2, raceData2) {
   let fill = NO_DATA, dash = null, fillOpacity = 0.85;
 
   if (currentMode === 'turnout') {
-    fill = t ? scaleColor(t.turnout, TURNOUT_SC) : NO_DATA;
+    fill = t ? scaleColor(t.turnout, activeTurnoutScale || TURNOUT_COLORS.map((c,i) => [55-i*8, c])) : NO_DATA;
     if (!t) dash = '4 4';
 
   } else if (currentMode === 'winner') {
@@ -892,7 +1020,7 @@ function getStyle(pid, turnout, raceData, turnout2, raceData2) {
     if (!selectedCandidate) { fill = NO_DATA; }
     else if (rd && rd.candidates) {
       const c = rd.candidates.find(x => x.n === selectedCandidate);
-      fill = c ? scaleColor(c.p, CAND_SC) : NO_DATA;
+      fill = c ? scaleColor(c.p, activeCandScale || CAND_COLORS.map((c,i) => [60-i*10, c])) : NO_DATA;
     } else { fill = NO_DATA; if (!t) dash = '4 4'; }
 
   } else if (currentMode === 'vs') {
@@ -940,8 +1068,8 @@ function getStyle(pid, turnout, raceData, turnout2, raceData2) {
     }
 
   } else if (currentMode === 'votes') {
-    if (rd) fill = scaleColor(rd.totalVotes, VOLUME_SC);
-    else if (t) fill = scaleColor(t.ballots, VOLUME_SC);
+    if (rd) fill = scaleColor(rd.totalVotes, activeVolumeScale || VOLUME_COLORS.map((c,i) => [800-i*120, c]));
+    else if (t) fill = scaleColor(t.ballots, activeVolumeScale || VOLUME_COLORS.map((c,i) => [800-i*120, c]));
     else { fill = NO_DATA; dash = '4 4'; }
   }
 
@@ -990,6 +1118,23 @@ async function render() {
           if (mySeq !== renderSeq) return;
         }
       }
+    }
+
+    // Compute adaptive scales from current data
+    activeTurnoutScale = null;
+    activeCandScale = null;
+    activeVolumeScale = null;
+    if (turnout) {
+      const turnoutVals = Object.values(turnout).map(t => t.turnout).filter(v => v != null);
+      if (turnoutVals.length) activeTurnoutScale = buildAdaptiveScale(turnoutVals, TURNOUT_COLORS);
+      const ballotVals = Object.values(turnout).map(t => t.ballots).filter(v => v != null && v > 0);
+      if (ballotVals.length) activeVolumeScale = buildAdaptiveScale(ballotVals, VOLUME_COLORS);
+    }
+    if (raceData && selectedCandidate) {
+      const candVals = Object.values(raceData)
+        .map(rd => rd.candidates ? rd.candidates.find(c => c.n === selectedCandidate) : null)
+        .filter(c => c).map(c => c.p);
+      if (candVals.length) activeCandScale = buildAdaptiveScale(candVals, CAND_COLORS);
     }
 
     // Build candidate color map on every render (consistent across all modes)
@@ -1198,9 +1343,11 @@ function updateLegend(raceData) {
   let h = '';
   if (currentMode === 'turnout') {
     h = '<div class="legend-title">Turnout %</div>';
-    [['55%+','#fdd835'],['45–55','#ffb300'],['35–45','#f57c00'],['25–35','#e65100'],['15–25','#bf360c'],['5–15','#6d4c41'],['<5%','#3e2723'],['No data','#333']].forEach(([l,c]) => {
+    const sc = activeTurnoutScale || TURNOUT_COLORS.map((c,i) => [55-i*8, c]);
+    adaptiveLegendRows(sc, '%').forEach(([l,c]) => {
       h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`;
     });
+    h += '<div class="legend-row"><span class="legend-swatch" style="background:#333"></span>No data</div>';
 
   } else if (currentMode === 'winner') {
     h = '<div class="legend-title">Winner by Precinct</div>';
@@ -1222,9 +1369,11 @@ function updateLegend(raceData) {
   } else if (currentMode === 'candidate') {
     const nm = selectedCandidate ? shortName(selectedCandidate, 18) : 'Candidate';
     h = `<div class="legend-title">${nm} Vote %</div>`;
-    [['60%+','#4a148c'],['50–60','#6a1b9a'],['40–50','#8e24aa'],['30–40','#ab47bc'],['20–30','#ce93d8'],['10–20','#e1bee7'],['<10%','#f3e5f5'],['No data','#333']].forEach(([l,c]) => {
+    const sc = activeCandScale || CAND_COLORS.map((c,i) => [60-i*10, c]);
+    adaptiveLegendRows(sc, '%').forEach(([l,c]) => {
       h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`;
     });
+    h += '<div class="legend-row"><span class="legend-swatch" style="background:#333"></span>No data</div>';
 
   } else if (currentMode === 'vs') {
     if (vsCandidates.length >= 2) {
@@ -1257,9 +1406,11 @@ function updateLegend(raceData) {
 
   } else if (currentMode === 'votes') {
     h = '<div class="legend-title">Total Votes</div>';
-    [['800+','#0d47a1'],['600–800','#1565c0'],['400–600','#1976d2'],['300–400','#42a5f5'],['200–300','#90caf9'],['100–200','#bbdefb'],['<100','#e3f2fd'],['No data','#333']].forEach(([l,c]) => {
+    const sc = activeVolumeScale || VOLUME_COLORS.map((c,i) => [800-i*120, c]);
+    adaptiveLegendRows(sc, '').forEach(([l,c]) => {
       h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`;
     });
+    h += '<div class="legend-row"><span class="legend-swatch" style="background:#333"></span>No data</div>';
   }
   if (isMobile) {
     // On mobile: wrap rows in .legend-body for collapsible behavior
