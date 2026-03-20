@@ -251,7 +251,7 @@ html,body{
 .cand-votes{min-width:36px;text-align:right;color:var(--text-dim);font-variant-numeric:tabular-nums;font-size:12px}
 
 /* ── Legend ── */
-.legend{position:absolute;bottom:16px;left:16px;z-index:450;pointer-events:none;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;box-shadow:0 4px 20px rgba(0,0,0,.4);max-height:60vh;overflow-y:auto}
+.legend{position:absolute;bottom:10px;left:10px;z-index:450;pointer-events:none;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;box-shadow:0 4px 20px rgba(0,0,0,.4);max-height:60vh;overflow-y:auto}
 .legend-title{font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em;font-weight:600;margin-bottom:6px}
 .legend-row{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted);padding:1px 0}
 .legend-swatch{width:14px;height:10px;border-radius:2px;flex-shrink:0}
@@ -1701,6 +1701,7 @@ async function render() {
 
     updateStats(turnout, raceData, activePids);
     updateLegend(raceData);
+    if (pidsChanged) setTimeout(positionLegend, 100);
   } catch (err) {
     console.error('Render error:', err);
   } finally {
@@ -1823,6 +1824,52 @@ function updateStats(turnout, raceData, activePids) {
     }
   }
   headerStats.innerHTML = h;
+}
+
+/* ═══════════════════ LEGEND POSITIONING ═══════════════════ */
+function positionLegend() {
+  if (!legendEl || !precinctLayer || !map) return;
+  const layers = precinctLayer.getLayers();
+  if (!layers.length) return;
+
+  // Get map container dimensions
+  const mapContainer = map.getContainer();
+  const mapRect = mapContainer.getBoundingClientRect();
+  const mapW = mapRect.width;
+  const mapH = mapRect.height;
+
+  // Get pixel bounding box of all visible precincts
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  layers.forEach(layer => {
+    if (!layer.getBounds) return;
+    const b = layer.getBounds();
+    const nw = map.latLngToContainerPoint(b.getNorthWest());
+    const se = map.latLngToContainerPoint(b.getSouthEast());
+    minX = Math.min(minX, nw.x, se.x);
+    minY = Math.min(minY, nw.y, se.y);
+    maxX = Math.max(maxX, nw.x, se.x);
+    maxY = Math.max(maxY, nw.y, se.y);
+  });
+
+  // Measure empty space in each corner
+  const legendRect = legendEl.getBoundingClientRect();
+  const lW = legendRect.width || 130;
+  const lH = legendRect.height || 180;
+  const pad = 10;
+
+  // Available space in each corner (distance from district edge to map edge)
+  const corners = [
+    { name: 'bl', space: (mapH - maxY) * (minX), css: { bottom: pad+'px', left: pad+'px', top: 'auto', right: 'auto' } },
+    { name: 'br', space: (mapH - maxY) * (mapW - maxX), css: { bottom: pad+'px', right: pad+'px', top: 'auto', left: 'auto' } },
+    { name: 'tl', space: minY * minX, css: { top: pad+'px', left: pad+'px', bottom: 'auto', right: 'auto' } },
+    { name: 'tr', space: minY * (mapW - maxX), css: { top: pad+'px', right: pad+'px', bottom: 'auto', left: 'auto' } },
+  ];
+
+  // Pick corner with most space, but prefer bottom-left as default
+  corners.sort((a, b) => b.space - a.space);
+  const best = corners[0];
+
+  Object.assign(legendEl.style, best.css);
 }
 
 /* ═══════════════════ LEGEND ═══════════════════ */
@@ -2663,6 +2710,7 @@ async function renderFinance() {
       map.fitBounds(precinctLayer.getBounds(), { padding: [5, 5], maxZoom: 17 });
     }
 
+    if (pidsChanged) setTimeout(positionLegend, 100);
     updateFinanceStats(financeData);
     updateFinanceLegend(financeData);
     updateFocusOptions();
@@ -2815,6 +2863,9 @@ async function exportPNG() {
       map.invalidateSize();
     }
   }
+
+  // Reposition legend to best corner for this district shape
+  positionLegend();
 
   try {
     // Wait for tiles to load after fit
