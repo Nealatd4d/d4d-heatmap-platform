@@ -1,0 +1,685 @@
+2758416	2822204	22260	394263		Chicago Federation of Labor &IUC		2010-01-04 00:00:00	1500	0	0			130 E. Randolph	Prudential Plaza Suite 2600	Chicago	IL	60601     	1A							  	          	True		False
+2764764	2828554	22260	395240		Chicago Federation of Labor &IUC		2010-01-04 00:00:00	1500	0	0			130 E. Randolph	Prudential Plaza Suite 2600	Chicago	IL	60601     	1A							  	          	True		False
+2767149	2830939	22260	395509		Associated Beer Distributors of Illinois Political Action Committee		2010-01-11 00:00:00	1000	0	0			P.O. Box 396		Springfield	IL	62705     	2A							  	          	True		False
+2767150	2830940	22260	395509		Peters	Howard	2010-01-11 00:00:00	2000	0	0			Illinois Hospital Association 700		Springfield	IL	62704     	2A							  	          	True		False
+2767151	2830941	22260	395509		SEIU HealthCare IL IN PAC		2010-01-11 00:00:00	5000	0	0			209 W. Jackson Blvd. Suite 200		Chicago IL	IL	60606     	2A							  	          	True		False
+2775759	2839551	22260	396603		Illinois Chamber Political Action Committee		2010-01-16 00:00:00	1000	0	0			215 East Adams		Springfield	IL	60202     	2A							  	          	True		False
+2775760	2839552	22260	396603		Illinois Trial Lawyers Association Political Action Committee		2010-01-16 00:00:00	2000	0	0			401 W. Edwards Street		Springfield	IL	62704-1917	2A							  	          	True		False
+2826167	2890023	22260	398926		Greene	Susan	2009-09-11 00:00:00	1000	1000	0	Consultant	SGA	922 Asbury		Evanston	IL	60202     	1A							  	          	False		False
+2826168	2890024	22260	398926		Groesch	David	2009-12-08 00:00:00	250	250	0			61 Martin Lane		Elk Grove	IL	60007     	1A							  	          	False		False
+2826169	2890025	22260	398926		Gunzberg	Joan	2009-12-07 00:00:00	250	250	0			1021 Lee St.		Evanston	IL	60202     	1A							  	          	False		False
+2826170	2890026	22260	398926		Handelman	Phyllis	2009-12-16 00:00:00	50	50	0			1044 Judson Ave		Evanston	IL	60202     	1A							  	          	False		False
+2826171	2890027	22260	398926		Handler	Ivan	2009-09-04 00:00:00	1900	1900	0	chief information officer	State of Illinois	905 Forest		Evanston	IL	60202     	1A							  	          	False		False
+2826172	2890028	22260	398926		Hebeisen	Keith	2009-12-20 00:00:00	500	500	0			2828 Woodmere Court		Northbrook	IL	60062     	1A							  	          	False		False
+2826173	2890029	22260	398926		Hoffman	Arthur	2009-12-31 00:00:00	250	250	0			1175 Lake Cook Road	Apt 310	Northbrook	IL	60062     	1A							  	          	False		False
+2826174	2889959	22260	398926		Ablan	Thelma	2009-10-18 00:00:00	100	200	0			50 E Chestnut Street		Chicago	IL	60611     	1A							  	          	False		False
+2826175	2889960	22260	398926		Ablan	Thelma	2009-12-25 00:00:00	100	200	0			50 E Chestnut Street		Chicago	IL	60611     	1A							  	          	False		False
+2826176	2889961	22260	398926		Abramson	Rachael	2009-09-08 00:00:00	100	300	0			6538 N. Maplewood		Chicago	IL	60645     	1A							  	          	False		False
+2826177	2889962	22260	398926		Abramson	Rachael	2009-10-18 00:00:00	100	300	0			6538 N. Maplewood		Chicago	IL	60645     	1A							  	          	False		False
+2826178	2889963	22260	398926		Abramson	Rachael	2009-12-12 00:00:00	100	300	0			6538 N. Maplewood		Chicago	IL	60645     	1A							  	          	False		False
+2826179	2889964	22260	398926		Addus Health Care		2009-12-21 00:00:00	2500	2500	0			2401 S. Plum Grove Rd		Palatine	IL	60067     	1A							  	          	False		False
+2826180	2889965	22260	398926		Africk	Julie and Joel	2009-10-14 00:00:00	250	250	0			1221 Ashland Ave.		Wilmette	IL	60091     	1A							  	          	False		False
+2826181	2889966	22260	398926		Alberts	Susan	2009-12-11 00:00:00	250	250	0			200 Dempster St		Evanston	IL	60201     	1A							  	          	False		False
+2826182	2889967	22260	398926		Alfred G. Ronan Ltd.		2009-12-09 00:00:00	300	300	0			328 S. Oak Park Ave #1		Oak Park	IL	60302     	1A							  	          	False		False
+2826183	2889968	22260	398926		Allen	Scott	2009-10-11 00:00:00	250	250	0			3546 W Wrightwood		Chicago	IL	60647     	1A							  	          	False		False
+2826184	2889969	22260	398926		Appel	Florence	2009-09-09 00:00:00	250	250	0			157 E. Sunset Ave.		Lombard	IL	60148     	1A							  	          	False		False
+2826185	2890037	22260	398926		Kritz	Lisa	2009-12-08 00:00:00	100	600	0	Project Director	IL Maternal & Child Health Coalition	3083 Priscilla Ave		Highland Park	IL	60035     	1A							  	          	False		False
+2826186	2890038	22260	398926		Laing	Katherine	2009-11-02 00:00:00	250	250	0			233 E. 13th St. #1307		Chicago	IL	60605     	1A							  	          	False		False
+2826187	2890039	22260	398926		Langford	Judy	2009-09-28 00:00:00	250	250	0			901 Forest Ave.	Apt 1E	Evanston	IL	60202     	1A							  	          	False		False
+2826188	2890040	22260	398926		Latt	Henry	2009-10-12 00:00:00	500	500	0			H L Latt & Co. Inc	117 N Jefferson Street Suite 306	Chicago	IL	60661     	1A							  	          	False		False
+2826189	2890041	22260	398926		Lattyak	Loretta	2009-11-18 00:00:00	200	200	0			400 N. Harvey		Oak Park	IL	60302     	1A							  	          	False		False
+2826190	2890042	22260	398926		Lehman	Lucy	2009-09-23 00:00:00	500	500	0			2717 Sheridan Rd.		Evanston	IL	60201     	1A							  	          	False		False
+2826191	2890043	22260	398926		Lekich	John	2009-12-30 00:00:00	500	500	0			606 West 116 Street #41		New York	NY	10027     	1A							  	          	False		False
+2826192	2890044	22260	398926		Lopez	Gabriel	2009-11-04 00:00:00	250	250	0			3108 W. Irving Park Rd.		Chicago	IL	60618     	1A							  	          	False		False
+2826193	2890045	22260	398926		Love	Marcena W.	2009-11-19 00:00:00	500	500	0			1175 Pelham Rd.		Winnetka	IL	60093     	1A							  	          	False		False
+2826194	2890046	22260	398926		Marchetti	Ann	2009-09-17 00:00:00	1000	2000	0	consultant	self	P.O. Box 11817		Ft. Lauderdale	FL	33339     	1A							  	          	False		False
+2826195	2890047	22260	398926		Marchetti	Ann	2009-12-06 00:00:00	1000	2000	0	consultant	self	P.O. Box 11817		Ft. Lauderdale	FL	33339     	1A							  	          	False		False
+2826196	2890048	22260	398926		Martin	Leslie	2009-11-16 00:00:00	500	500	0			903 S. Anderson St.		Urbana	IL	61801     	1A							  	          	False		False
+2826197	2890049	22260	398926		Mason	Ellen	2009-11-15 00:00:00	216	366	0			2844 W. Lunt		Chicago	IL	60645     	1A							  	          	False		False
+2826198	2890050	22260	398926		Mason	Ellen	2009-12-12 00:00:00	150	366	0			2844 W. Lunt		Chicago	IL	60645     	1A							  	          	False		False
+2826199	2890051	22260	398926		McAlpine	Laura Eileen	2009-09-14 00:00:00	250	400	0			4730 N. Virginia		Chicago	IL	60625     	1A							  	          	False		False
+2826200	2890052	22260	398926		McAlpine	Laura Eileen	2009-12-16 00:00:00	150	400	0			4730 N. Virginia		Chicago	IL	60625     	1A							  	          	False		False
+2826201	2890053	22260	398926		McLane Company Inc.		2009-12-28 00:00:00	300	300	0			P.O. Box 6131		Temple	TX	76503     	1A							  	          	False		False
+2826202	2890054	22260	398926		McRaith	Michael	2009-12-27 00:00:00	1000	1000	0	Public Service Administrator	State of Illinois	1740 S. Lowell Avenue		Springfield	IL	62704     	1A							  	          	False		False
+2826203	2890055	22260	398926		McWhorter	Dorri	2009-10-11 00:00:00	250	250	0			319 Jonathon Drive		Racine	WI	53402     	1A							  	          	False		False
+2826204	2890056	22260	398926		Moore	Jo G.	2009-12-03 00:00:00	250	250	0			2120 N. Lincoln Park West		Chicago	IL	60614     	1A							  	          	False		False
+2826205	2890057	22260	398926		Morrill	Stephen	2009-10-06 00:00:00	250	250	0			203 N. LaSalle St.	15th Flr	Chicago	IL	60601     	1A							  	          	False		False
+2826206	2890058	22260	398926		Morten	Mary	2009-12-09 00:00:00	250	275	0			5210 N. Wayne		Chicago	IL	60640     	1A							  	          	False		False
+2826207	2890059	22260	398926		Morten	Mary	2009-12-16 00:00:00	25	275	0			5210 N. Wayne		Chicago	IL	60640     	1A							  	          	False		False
+2826208	2890060	22260	398926		Muir Landes	Elizabeth	2009-11-18 00:00:00	200	200	0			848 Tower Rd.		Winnetka	IL	60093     	1A							  	          	False		False
+2826209	2890061	22260	398926		Murphy	Anne Marie	2009-11-15 00:00:00	300	300	0			944 N. Taylor Ave		Oak Park	IL	60302     	1A							  	          	False		False
+2826210	2890062	22260	398926		Myers	Nancy	2009-09-21 00:00:00	500	500	0			807 Davis St.	#2104	Evanston	IL	60201     	1A							  	          	False		False
+2826211	2890063	22260	398926		Nardulli	Joyce	2009-12-22 00:00:00	300	300	0			524 S. Second St. Suite 600		Springfield	IL	62701     	1A							  	          	False		False
+2826212	2890064	22260	398926		Neafsey	Judith	2009-12-06 00:00:00	500	500	0			2133 W. Cortez		Chicago	IL	60622     	1A							  	          	False		False
+2826213	2890065	22260	398926		Netsch	Dawn Clark	2009-12-31 00:00:00	250	250	0			1526 N Mohawk Street		Chicago	IL	60610     	1A							  	          	False		False
+2826214	2890066	22260	398926		Newman	Donna E.	2009-12-22 00:00:00	500	500	0			2556 W. 80th St.		Chicago	IL	60652     	1A							  	          	False		False
+2826215	2889970	22260	398926		Arlington Park Race Course		2009-11-05 00:00:00	250	250	0			2200 W. Euclid Ave		Arlington Heights	IL	60006     	1A							  	          	False		False
+2826216	2889971	22260	398926		Ascoli	Lucy	2009-12-31 00:00:00	200	200	0			1333 Maple Ave 5F		Evanston	IL	60201     	1A							  	          	False		False
+2826217	2889972	22260	398926		Ash	Arlene	2009-11-18 00:00:00	200	200	0			73 Hemmenway St. #207		Boston	MA	02115     	1A							  	          	False		False
+2826218	2889973	22260	398926		Axeley	Cheryl	2009-10-12 00:00:00	1000	1000	0	attorney	self	121 S. Emerson St.		Mt. Prospect	IL	60056     	1A							  	          	False		False
+2826219	2889974	22260	398926		Ayers	William	2009-12-01 00:00:00	250	250	0			1329 E. 50th St.		Chicago	IL	60615     	1A							  	          	False		False
+2826220	2889975	22260	398926		Balanoff	Clem	2009-10-18 00:00:00	200	300	0			Redaction Requested					1A							  	          	False		True
+2826221	2889976	22260	398926		Balanoff	Clem	2009-12-17 00:00:00	100	300	0			Redaction Requested					1A							  	          	False		True
+2826222	2889977	22260	398926		Balanoff	Robert	2009-10-29 00:00:00	250	250	0			Redaction Requested					1A							  	          	False		True
+2826223	2889978	22260	398926		Bechily-Hodes	Maria	2009-09-24 00:00:00	500	500	0			1540 N. Lake Shore Drive	Unit 16N	Chicago	IL	60610     	1A							  	          	False		False
+2826224	2889979	22260	398926		Benjamin	Ellen	2009-09-28 00:00:00	250	250	0			622 W Briar Place		Chicago	IL	60657     	1A							  	          	False		False
+2826225	2889980	22260	398926		Benson	Janice	2009-09-10 00:00:00	200	275	0			2658 N. Southport		Chicago	IL	60614     	1A							  	          	False		False
+2826226	2889981	22260	398926		Benson	Janice	2009-12-31 00:00:00	75	275	0			2658 N. Southport		Chicago	IL	60614     	1A							  	          	False		False
+2826227	2889982	22260	398926		Benton	Charles	2009-09-11 00:00:00	300	600	0	Foundation Executive	Benton Foundation	581 Ingleside Park		Evanston	IL	60201     	1A							  	          	False		False
+2826228	2889983	22260	398926		Benton	Charles	2009-09-14 00:00:00	300	600	0	Foundation Executive	Benton Foundation	581 Ingleside Park		Evanston	IL	60201     	1A							  	          	False		False
+2826229	2889984	22260	398926		Berkeley Nickels	Lon Leslie	2009-12-12 00:00:00	250	250	0			1720 Maple Ave.	Unit 750	Evanston	IL	60201     	1A							  	          	False		False
+2826230	2889985	22260	398926		Berman	Arthur	2009-12-16 00:00:00	200	200	0			6007 N. Sheridan Rd. #18A		Chicago	IL	60660     	1A							  	          	False		False
+2826231	2889986	22260	398926		Bork	Christine	2009-10-06 00:00:00	250	250	0			2369 Overlook Court		Naperville	IL	60563     	1A							  	          	False		False
+2826232	2889987	22260	398926		Claiborne	Toure	2009-10-13 00:00:00	250	250	0			4 Dogwood Road		Rolling Meadows	IL	60008     	1A							  	          	False		False
+2826233	2889988	22260	398926		Clark	Susan	2009-11-09 00:00:00	500	500	0			P.O. Box 1735		Springfield	IL	62705     	1A							  	          	False		False
+2826234	2889989	22260	398926		Cohen	Charlotte	2009-10-28 00:00:00	100	200	0			1630 Chicago Avenue	Apt 1312	Evanston	IL	60201     	1A							  	          	False		False
+2826235	2889990	22260	398926		Cohen	Charlotte	2009-12-06 00:00:00	100	200	0			1630 Chicago Avenue	Apt 1312	Evanston	IL	60201     	1A							  	          	False		False
+2826236	2889991	22260	398926		Cohen	Mardge	2009-09-16 00:00:00	200	200	0			50 Parley Avenue		Jamaica Plain	MA	02130     	1A							  	          	False		False
+2826237	2889992	22260	398926		Conant	Doris	2009-12-16 00:00:00	250	250	0			736 Greenacres Ln		Glenview	IL	60025     	1A							  	          	False		False
+2826238	2889993	22260	398926		Cox	Wendy	2009-11-12 00:00:00	200	200	0			10 Williamsburg Rd		Sherman	IL	62684     	1A							  	          	False		False
+2826239	2889994	22260	398926		Cutler	Elyse Forkosh	2009-11-14 00:00:00	250	250	0			1041 N. Euclid Ave		Oak Park	IL	60302     	1A							  	          	False		False
+2826240	2889995	22260	398926		Cutler	Lynn	2009-10-18 00:00:00	500	500	0			1526 N Mohawk Street		Chicago	IL	60610     	1A							  	          	False		False
+2826241	2889996	22260	398926		Donenberg	Jim	2009-11-13 00:00:00	250	300	0			95 Revere Drive Suite D		Northbrook	IL	60062     	1A							  	          	False		False
+2826242	2889997	22260	398926		Donenberg	Jim	2009-12-31 00:00:00	50	300	0			95 Revere Drive Suite D		Northbrook	IL	60062     	1A							  	          	False		False
+2826243	2889998	22260	398926		Driscoll	Mary	2009-09-24 00:00:00	100	400	0			1247 W. Wrightwood Ave.		Chicago	IL	60614     	1A							  	          	False		False
+2826244	2889999	22260	398926		Driscoll	Mary	2009-11-15 00:00:00	250	400	0			1247 W. Wrightwood Ave.		Chicago	IL	60614     	1A							  	          	False		False
+2826245	2890000	22260	398926		Driscoll	Mary	2009-12-15 00:00:00	50	400	0			1247 W. Wrightwood Ave.		Chicago	IL	60614     	1A							  	          	False		False
+2826246	2890001	22260	398926		Drummonds	Mario	2009-11-21 00:00:00	175	175	0			118 Clifton Pl		Brooklyn	NY	11238     	1A							  	          	False		False
+2826247	2890002	22260	398926		Dublin	Margaret A.	2009-09-23 00:00:00	150	250	0			1422 W. Thorndale		Chicago	IL	60660     	1A							  	          	False		False
+2826248	2890003	22260	398926		Dublin	Margaret A.	2009-11-08 00:00:00	50	250	0			1422 W. Thorndale		Chicago	IL	60660     	1A							  	          	False		False
+2826249	2890004	22260	398926		Dublin	Margaret A.	2009-12-16 00:00:00	50	250	0			1422 W. Thorndale		Chicago	IL	60660     	1A							  	          	False		False
+2826250	2890005	22260	398926		Eftekhari	Ehsan	2009-10-22 00:00:00	200	200	0			701 Main Street	Suite 203	Evanston	IL	60202     	1A							  	          	False		False
+2826251	2890006	22260	398926		Ellinger	Jacquetta	2009-12-16 00:00:00	200	300	0			4610 N. Saint Louis Ave		Chicago	IL	60625     	1A							  	          	False		False
+2826252	2890007	22260	398926		Ellinger	Jacquetta	2009-12-31 00:00:00	100	300	0			4610 N. Saint Louis Ave		Chicago	IL	60625     	1A							  	          	False		False
+2826253	2890008	22260	398926		Feinglass	Joseph	2009-09-17 00:00:00	250	300	0			2641 Prairie Ave.		Evanston	IL	60201     	1A							  	          	False		False
+2826254	2890030	22260	398926		Hovanec	George	2009-09-29 00:00:00	500	500	0			5 North Oxford Rd.		Springfield	IL	62702     	1A							  	          	False		False
+2826255	2890031	22260	398926		Hoyt	Joshua	2009-12-13 00:00:00	200	200	0			4814 N. Winchester Ave.		Chicago	IL	60640     	1A							  	          	False		False
+2826256	2890032	22260	398926		Jones	Fred	2009-09-21 00:00:00	500	1000	0	president	Paradigm Solutions	4913 S. Princeton Ave.		Chicago	IL	60609     	1A							  	          	False		False
+2826257	2890033	22260	398926		Jones	Fred	2009-09-25 00:00:00	500	1000	0	president	Paradigm Solutions	4913 S. Princeton Ave.		Chicago	IL	60609     	1A							  	          	False		False
+2826258	2890034	22260	398926		Katz	Marilyn	2009-10-14 00:00:00	250	250	0			2622 North Hampden Court		Chicago	IL	60614     	1A							  	          	False		False
+2826259	2890035	22260	398926		Kramer	Andrea	2009-11-04 00:00:00	250	250	0			227 W. Monroe St.		Chicago	IL	60606     	1A							  	          	False		False
+2826260	2890036	22260	398926		Kritz	Lisa	2009-08-29 00:00:00	500	600	0	Project Director	IL Maternal & Child Health Coalition	3083 Priscilla Ave		Highland Park	IL	60035     	1A							  	          	False		False
+2826261	2890067	22260	398926		Ngai	Mae	2009-10-05 00:00:00	250	250	0			606 West 116 Street #41		New York	NY	10027     	1A							  	          	False		False
+2826262	2890068	22260	398926		Norris	Coral	2009-11-30 00:00:00	200	200	0			932 Wesley Ave		Evanston	IL	60202     	1A							  	          	False		False
+2826263	2890069	22260	398926		Oppenheimer	Susan	2009-12-20 00:00:00	300	300	0			1501 N. State Parkway		Chicago	IL	60610     	1A							  	          	False		False
+2826264	2890070	22260	398926		Otto	Barbara	2009-11-14 00:00:00	300	300	0			917 Wisconsin Ave		Oak Park	IL	60304     	1A							  	          	False		False
+2826265	2890071	22260	398926		Overholt	Leticia	2009-11-22 00:00:00	200	200	0			511 Greenleaf Ave.		Wilmette	IL	60091     	1A							  	          	False		False
+2826266	2890072	22260	398926		Palmer	Eric	2009-12-13 00:00:00	200	200	0			1421 Sherman		Evanston	IL	60201     	1A							  	          	False		False
+2826267	2890073	22260	398926		Pollak	Michael	2009-11-18 00:00:00	500	500	0			2221 Birchwood Lane		Northfield	IL	60093     	1A							  	          	False		False
+2826268	2890074	22260	398926		Puisis	Michael	2009-09-20 00:00:00	250	250	0			932 Wesley Ave.		Evanston	IL	60202-1655	1A							  	          	False		False
+2826269	2890075	22260	398926		Robbins	Bruce	2009-09-21 00:00:00	250	250	0			4338 N. Ridgeway		Chicago	IL	60618     	1A							  	          	False		False
+2826270	2890076	22260	398926		Rosenberg	Deborah	2009-11-29 00:00:00	250	250	0			1000 W. Adams #807		Chicago	IL	60607     	1A							  	          	False		False
+2826271	2890077	22260	398926		Rosenfeld	Paul	2009-10-27 00:00:00	500	500	0			Government Navigation Group	320 W. Ohio St Ste 501	Chicago	IL	60610     	1A							  	          	False		False
+2826272	2890078	22260	398926		Rothstein	Ruth	2009-09-22 00:00:00	250	250	0			950 N. Michigan Ave.	#2204	Chicago	IL	60611     	1A							  	          	False		False
+2826273	2890079	22260	398926		Ruder	Maureen	2009-11-15 00:00:00	250	250	0			735 Wesley Ave		Evanston	IL	60202     	1A							  	          	False		False
+2826274	2890080	22260	398926		Saltzman	Bettylu	2009-10-21 00:00:00	250	500	0			415 E North Water Street	#W605	Chicago	IL	60611     	1A							  	          	False		False
+2826275	2890081	22260	398926		Saltzman	Bettylu	2009-12-29 00:00:00	250	500	0			415 E North Water Street	#W605	Chicago	IL	60611     	1A							  	          	False		False
+2826276	2890082	22260	398926		Saunders	Deborah	2009-10-30 00:00:00	300	300	0			5 Orchard Ln		Springfield	IL	62707     	1A							  	          	False		False
+2826277	2890083	22260	398926		Schlofrock	John	2009-11-02 00:00:00	500	500	0			465 Central Ave Suite 100		Northfield	IL	60093     	1A							  	          	False		False
+2826278	2890084	22260	398926		Schnorf	Stephen	2009-09-30 00:00:00	250	250	0			701 Heathrow Ln		Rochester	IL	62563     	1A							  	          	False		False
+2826279	2890085	22260	398926		Shea	John	2009-10-30 00:00:00	500	500	0			710 Sheridan Rd.		Evanston	IL	60202     	1A							  	          	False		False
+2826280	2890086	22260	398926		Simon	Phil	2009-09-10 00:00:00	750	750	0	retired	retired	4545 Touhy Ave Apt 215		Lincolnwood	IL	60646     	1A							  	          	False		False
+2826281	2890087	22260	398926		Sive	Rebecca	2009-10-26 00:00:00	350	350	0			1235 Astor	3N	Chicago	IL	60610     	1A							  	          	False		False
+2826282	2890088	22260	398926		Solock	Maurine	2009-09-20 00:00:00	250	250	0			4751 N. Artesian		Chicago	IL	60625     	1A							  	          	False		False
+2826283	2890089	22260	398926		Soule	Whitman	2009-11-03 00:00:00	200	200	0			1333 Maple Ave 5F		Evanston	IL	60201     	1A							  	          	False		False
+2826284	2890090	22260	398926		Spinazze	Angela	2009-10-18 00:00:00	250	250	0			3270 N Lake Shore Drive	#5E	Chicago	IL	60657     	1A							  	          	False		False
+2826285	2890091	22260	398926		Swinney	Daniel	2009-10-18 00:00:00	200	200	0			2751 W Logan Blvd		Chicago	IL	60647     	1A							  	          	False		False
+2826286	2890092	22260	398926		Tauber	Gayle	2009-09-27 00:00:00	500	500	0			7910 Ivanhoe Ave.	#337	La Jolla	CA	92037     	1A							  	          	False		False
+2826287	2890093	22260	398926		Terrell	Patricia	2009-10-03 00:00:00	250	250	0			434 W. Oakdale #2		Chicago	IL	60657     	1A							  	          	False		False
+2826288	2890094	22260	398926		Tockman	Lee	2009-10-10 00:00:00	200	200	0			105 W Adams Street	Suite 3000	Chicago	IL	60603     	1A							  	          	False		False
+2826289	2890095	22260	398926		Torres	Maria	2009-11-05 00:00:00	350	350	0			2747 N. Seminary Ave		Chicago	IL	60614     	1A							  	          	False		False
+2826290	2890096	22260	398926		Tucker	Laura	2009-12-05 00:00:00	250	250	0			1741 Hinman Ave		Evanston	IL	60201     	1A							  	          	False		False
+2826291	2890097	22260	398926		Uhe	Robert	2009-11-17 00:00:00	350	350	0			312 S. 4th St. Ste 200		Springfield	IL	62701     	1A							  	          	False		False
+2826292	2890098	22260	398926		Vickers	Dennis	2009-09-14 00:00:00	250	250	0			5316 N. Leavitt		Chicago	IL	60625     	1A							  	          	False		False
+2826293	2890099	22260	398926		Vinik	Nina	2009-11-01 00:00:00	200	200	0			2401 Pioneer Road		Evanston	IL	60201     	1A							  	          	False		False
+2826294	2890100	22260	398926		Wayne	Candace	2009-09-21 00:00:00	350	350	0			Law Offices of Wayne and Jemilo	134 N. La Salle Suite 1200	Chicago	IL	60602     	1A							  	          	False		False
+2826295	2890101	22260	398926		Weissbourd	Bernice	2009-11-25 00:00:00	300	300	0			2737 Sheridan Rd.		Evanston	IL	60201     	1A							  	          	False		False
+2826296	2890102	22260	398926		Weissbourd	Marie	2009-09-30 00:00:00	1000	1000	0	Therapist	Northwestern University Hospital	1843 North Dayton		Chicago	IL	60614     	1A							  	          	False		False
+2826297	2890103	22260	398926		Williams	Erma Brooks	2009-11-10 00:00:00	250	250	0			9346 S. Longwood		Chicago	IL	60620     	1A							  	          	False		False
+2826298	2890104	22260	398926		Williams	Paul	2009-10-15 00:00:00	250	250	0			1919 W 87th Street	2nd Floor	Chicago	IL	60620     	1A							  	          	False		False
+2826299	2890105	22260	398926		Witter	Randi	2009-11-09 00:00:00	250	250	0			225 E. Cook St		Springfield	IL	62704     	1A							  	          	False		False
+2826300	2890106	22260	398926		Wolen	Deborah	2009-12-12 00:00:00	150	250	0			1812 W. Mulford		Evanston	IL	60202     	1A							  	          	False		False
+2826301	2890107	22260	398926		Wolen	Deborah	2009-12-12 00:00:00	100	250	0			1812 W. Mulford		Evanston	IL	60202     	1A							  	          	False		False
+2826302	2890108	22260	398926		Wollack	Fran	2009-10-11 00:00:00	200	200	0			2500 Indigo Ln.		Glenview	IL	60016     	1A							  	          	False		False
+2826303	2890109	22260	398926		Zaremba	Laura	2009-11-30 00:00:00	250	250	0			232 E. Cullerton		Chicago	IL	60616     	1A							  	          	False		False
+2826304	2890110	22260	398926		Associated Beer Distributors of Illinois Political Action Committee		2009-11-06 00:00:00	1000	1000	0			P.O. Box 396		Springfield	IL	62705     	2A							  	          	False		False
+2826305	2890111	22260	398926		Barbara Flynn Currie for State Representative		2009-12-08 00:00:00	5000	5000	0			P.O. Box 377649		Chicago	IL	60637     	2A							  	          	False		False
+2826306	2890112	22260	398926		Citizens for Lisa Hernandez		2009-12-28 00:00:00	1000	1000	0			2137 S. Lombard Ave Suite 204		Cicero	IL	60804     	2A							  	          	False		False
+2826307	2890113	22260	398926		Citizens for Lou Lang		2009-10-07 00:00:00	1000	6000	0			P.O. Box 1815		Skokie	IL	60076     	2A							  	          	False		False
+2826308	2890114	22260	398926		Citizens for Lou Lang		2009-12-07 00:00:00	5000	6000	0			P.O. Box 1815		Skokie	IL	60076     	2A							  	          	False		False
+2826309	2890115	22260	398926		Citizens for Sara Feigenholtz		2009-12-31 00:00:00	1000	1000	0			Redaction Requested					2A							  	          	False		True
+2826310	2890116	22260	398926		ComEDPAC		2009-12-21 00:00:00	500	500	0			1 Financial Pl.	33rd Floor	Chicago	IL	60605     	2A							  	          	False		False
+2826311	2890117	22260	398926		Community BancPAC		2009-11-04 00:00:00	500	500	0			901 Community Drive		Springfield	IL	62703     	2A							  	          	False		False
+2826312	2890118	22260	398926		Consumer Lending Alliance		2009-12-14 00:00:00	250	250	0			92 Royster Drive		Crawfordville	FL	32327-4625	2A							  	          	False		False
+2826313	2890119	22260	398926		Cook County College Teachers Union-COPE		2009-10-30 00:00:00	500	500	0			208 W. Kinzie		Chicago	IL	60610     	2A							  	          	False		False
+2826314	2890120	22260	398926		Dent-IL PAC		2009-09-23 00:00:00	1000	1000	0			P.O. Box 5120		Springfield	IL	62705-5120	2A							  	          	False		False
+2826315	2890121	22260	398926		Freinds of Maggie Crotty		2009-12-03 00:00:00	1000	1000	0			P.O. Box 203		Oak Forest	IL	60452     	2A							  	          	False		False
+2826316	2890122	22260	398926		Friends of Donne E. Trotter		2009-09-20 00:00:00	1000	3000	0			8704 S. Constance Ave. Ste 324		Chicago	IL	60617     	2A							  	          	False		False
+2826317	2890123	22260	398926		Friends of Donne E. Trotter		2009-12-18 00:00:00	2000	3000	0			8704 S. Constance Ave. Ste 324		Chicago	IL	60617     	2A							  	          	False		False
+2826318	2890124	22260	398926		Illinois Hospital Assocation		2009-10-21 00:00:00	3000	3000	0			700 South Second St.		Springfield	IL	62704     	2A							  	          	False		False
+2826319	2890125	22260	398926		Illinois Merchants Political Action		2009-12-08 00:00:00	500	500	0			19 S. LaSalle Suite 300		Chicago	IL	60603     	2A							  	          	False		False
+2826320	2890126	22260	398926		IMAPAC		2009-12-14 00:00:00	250	250	0			20 N. Michigan	Suite 700	Chicago	IL	60602     	2A							  	          	False		False
+2826321	2890127	22260	398926		Local Union No.9  IBEW Political Committee		2009-11-04 00:00:00	300	300	0			4415 Harrison Street		Hillside	IL	60162-1905	2A							  	          	False		False
+2826322	2890128	22260	398926		Merck & Co.		2009-10-13 00:00:00	1000	1000	0			436 E. 58th Street		Westmont	IL	60559     	2A							  	          	False		False
+2826323	2890129	22260	398926		NAWBO Chicago PAC		2009-12-15 00:00:00	500	500	0			230 E. Ohio Suite 400		Chicago	IL	60611     	2A							  	          	False		False
+2826324	2890130	22260	398926		Schakowsky for Congress		2009-12-14 00:00:00	250	250	0			P.O. Box 5130		Evanston	IL	60204     	2A							  	          	False		False
+2826325	2890131	22260	398926		Volunteers for Delgado		2009-12-31 00:00:00	500	500	0			4150 W. Armitage Ave		Chicago	IL	60639     	2A							  	          	False		False
+2826326	2890132	22260	398926		Abrams	Kym	2009-09-30 00:00:00	5000	5000	0	graphic designer	Kym Abrams Design	213 W. Institute Pl.		Chicago	IL	60610     	5A	computer - services	Kym Abrams Design		213 W. Institute Pl.		Chicago	IL	60610     	False		False
+2826327	2890133	22260	398926		Africk	Julie and Joel	2009-11-18 00:00:00	20	50	0			1221 Ashland Ave.		Wilmette	IL	60091     	5A	food and beverage	Jewel-Osco		411 Green Bay Rd.		Wilmette	IL	60091     	False		False
+2826328	2890134	22260	398926		Africk	Julie and Joel	2009-11-18 00:00:00	30	50	0			1221 Ashland Ave.		Wilmette	IL	60091     	5A	food and beverage	Dominick's		2748 Green Bay Road		Evanston	IL	60201     	False		False
+2826329	2890135	22260	398926		Associated Beer Distributors of Illinois Political Action Committee		2009-12-16 00:00:00	219.65	219.65	0			P.O. Box 396		Springfield	IL	62705     	5A	beer	Louis Glunz Beer Inc.		7100 North Capital Drive		Lincolnwood	IL	60712     	False		False
+2826330	2890136	22260	398926		Cohen	Charlotte	2009-10-25 00:00:00	35	55	0			1630 Chicago Avenue	Apt 1312	Evanston	IL	60201     	5A	snacks	Whole Foods		1640 Chicago Ave.		Evanston	IL	60201     	False		False
+2826331	2890137	22260	398926		Cohen	Charlotte	2009-10-25 00:00:00	20	55	0			1630 Chicago Avenue	Apt 1312	Evanston	IL	60201     	5A	coffee	Peet's Coffee & Tea		1620 Chicago Ave.		Evanston	IL	60201     	False		False
+2826332	2890138	22260	398926		Fischer	Sunny	2009-12-06 00:00:00	200	200	0			1114 Mulford Street		Evanston	IL	60202     	5A	food beverage paper plates & cups	Sam's Club		2450 Main St.		Evanston	IL	60202     	False		False
+2826333	2890139	22260	398926		Handelman	Phyllis	2009-10-19 00:00:00	30	188	0			1044 Judson Ave		Evanston	IL	60202     	5A	snacks	Whole Foods		1640 Chicago Ave.		Evanston	IL	60201     	False		False
+2826334	2890140	22260	398926		Handelman	Phyllis	2009-10-19 00:00:00	70	188	0			1044 Judson Ave		Evanston	IL	60202     	5A	wine and beverages	Vinic		1509 Chicago Ave.		Evanston	IL	60201     	False		False
+2826335	2890141	22260	398926		Handelman	Phyllis	2009-10-19 00:00:00	88	188	0			1044 Judson Ave		Evanston	IL	60202     	5A	postage	USPS		1101 Davis St.		Evanston	IL	60202     	False		False
+2826336	2890142	22260	398926		Langford	Judy	2009-12-03 00:00:00	90	90	0			901 Forest Ave.	Apt 1E	Evanston	IL	60202     	5A	food and beverage	Whole Foods		1111 Chicago Ave.		Evanston	IL	60202     	False		False
+2826337	2890143	22260	398926		Sive	Rebecca	2009-10-18 00:00:00	100	250	0			1235 Astor	3N	Chicago	IL	60610     	5A	snacks and beverages	Jewel-Osco		1210 N. Clark Street		Chicago	IL	60610     	False		False
+2826338	2890144	22260	398926		Sive	Rebecca	2009-10-18 00:00:00	150	250	0			1235 Astor	3N	Chicago	IL	60610     	5A	fund raising - food	L'Appetito		875 N. Michigan Ave.		Chicago	IL	60611     	False		False
+2826339	2890145	22260	398926		Wolen	Deborah	2009-11-29 00:00:00	50	50	0			1812 W. Mulford		Evanston	IL	60202     	5A	food and beverage	Jewel-Osco		2485 Howard St.		Evanston	IL	60202     	False		False
+2826340	2890009	22260	398926		Feinglass	Joseph	2009-12-15 00:00:00	50	300	0			2641 Prairie Ave.		Evanston	IL	60201     	1A							  	          	False		False
+2826341	2890010	22260	398926		Fischer	Sunny	2009-09-29 00:00:00	250	250	0			1114 Mulford Street		Evanston	IL	60202     	1A							  	          	False		False
+2826342	2890011	22260	398926		Flanagan	Joseph	2009-11-09 00:00:00	250	250	0			1200 Forest Ave		Evanston	IL	60202     	1A							  	          	False		False
+2826343	2890012	22260	398926		Freeborn and Peters		2009-09-24 00:00:00	300	300	0			311 S. Wacker Dr. Suite 3000		Chicago	IL	60606-6677	1A							  	          	False		False
+2826344	2890013	22260	398926		Friedman Strassberger	Suzanne	2009-10-18 00:00:00	250	250	0			8130 Lorel		Skokie	IL	60077     	1A							  	          	False		False
+2826345	2890014	22260	398926		Friedman	Carol	2009-09-08 00:00:00	150	300	0			1945 W. Newport		Chicago	IL	60657     	1A							  	          	False		False
+2826346	2890015	22260	398926		Friedman	Carol	2009-11-15 00:00:00	100	300	0			1945 W. Newport		Chicago	IL	60657     	1A							  	          	False		False
+2826347	2890016	22260	398926		Friedman	Carol	2009-12-16 00:00:00	50	300	0			1945 W. Newport		Chicago	IL	60657     	1A							  	          	False		False
+2826348	2890017	22260	398926		Gabel	Amy	2009-09-10 00:00:00	200	200	0			5055 Broughton St.		Roswell	GA	30075     	1A							  	          	False		False
+2826349	2890018	22260	398926		Gabel	Robyn	2009-08-29 00:00:00	500	500	0			Redaction Requested					1A							  	          	False		True
+2826350	2890019	22260	398926		Gabel	Seymour	2009-09-08 00:00:00	1000	1000	0	Retired	Retired	3100 Lexington		Glenview	IL	60026     	1A							  	          	False		False
+2826351	2890020	22260	398926		Gamm	Audrey	2009-10-02 00:00:00	250	250	0			1115 W. Altgeld		Chicago	IL	60614     	1A							  	          	False		False
+2826352	2890021	22260	398926		Gardner	Dorothy Hannon	2009-09-18 00:00:00	500	500	0			230 E. Delaware PL	#6E	Chicago	IL	60611     	1A							  	          	False		False
+2826353	2890022	22260	398926		Getz	Marjorie	2009-12-29 00:00:00	180	180	0			726 Echo Lane		Glenview	IL	60035     	1A							  	          	False		False
+2842584	2906376	22260	399767		CUPAC		2010-01-23 00:00:00	1000	0	0			1807 W. Diehl Road	P.O. Box 3107	Naperville	IL	60566-7107	2A							  	          	True		False
+2842588	2906381	22260	399772		Schakowsky for Congress		2010-01-25 00:00:00	1000	0	0			P.O. Box 5130		Evanston	IL	60204     	2A							  	          	True		False
+2842589	2906380	22260	399772		Citizens for Sara Feigenholtz		2010-01-24 00:00:00	1000	0	0			Redaction Requested					2A							  	          	True		True
+2843263	2907055	22260	399887		SEIU HealthCare IL IN PAC		2010-01-22 00:00:00	675.11	0	0			209 W. Jackson Blvd. Suite 200		Chicago IL	IL	60606     	5A	canvassing	SEIU HealthCare IL IN PAC		209 W. Jackson Blvd. Suite 200		Chicago IL	IL	60606     	True		False
+2843376	2907168	22260	399929		SEIU HealthCare IL IN PAC		2010-01-26 00:00:00	1390.16	0	0			209 W. Jackson Blvd. Suite 200		Chicago IL	IL	60606     	5A	canvassing	SEIU HealthCare IL IN PAC		209 W. Jackson Blvd. Suite 200		Chicago IL	IL	60606     	True		False
+2844840	2908632	22260	400251		Gutierrez For Congress		2010-01-27 00:00:00	750	0	0			5310 W. Cullom		Chicago	IL	60641     	2A							  	          	True		False
+2844841	2908633	22260	400252		SEIU HealthCare IL IN PAC		2010-01-27 00:00:00	5000	0	0			209 W. Jackson Blvd. Suite 200		Chicago IL	IL	60606     	2A							  	          	True		False
+2845397	2909189	22260	400392		EMILY's List-NF Fund		2010-01-29 00:00:00	1000	0	0			1120 Connecticut Avenue	NW Ste 1100	Washington	DC	20036     	2A							  	          	True		False
+2846595	2910388	22260	400665		HCCI PAC		2010-02-01 00:00:00	9872	0	0			3500 W. Peterson Ave.	Suite 400	Chicago	IL	60659     	5A	printing mail	The Public Response Group Inc.		12400 South Harlem Avenue		Palos Heights	IL	60463-1476	True		False
+2846597	2910390	22260	400667		AT&T Illinois Employee PAC		2010-02-01 00:00:00	1000	0	0			225 W. Randolph St.	27B	Chicago	IL	60606     	2A							  	          	True		False
+2846598	2910391	22260	400668		Simmons Attorneys at Law		2010-02-01 00:00:00	2000	0	0			707 Berkshire Blvd.	P.O. Box 521	East Alton	IL	62024     	1A							  	          	True		False
+2846599	2910392	22260	400669	400669-104	Gabel	Robyn	2010-02-01 00:00:00	5000	0	5000	Executive Director	Illinois Maternal & Child Health Coalition	Redaction Requested					3A		Gabel	Robyn	905 Forest Ave.		Evanston	IL	60202     	True		True
+2846603	2910396	22260	400671		O'Brien	Daniel	2010-02-01 00:00:00	600	0	0			1435 Q S. Prairie		Chicago	IL	60605     	1A							  	          	True		False
+2935622	2999637	22260	406868		Dent-IL-PAC		2010-01-08 00:00:00	500	500	0			1010 S. 2nd Street		Springfield	IL	62705     	2A							  	          	True		False
+2935623	2999638	22260	406868		Emergency Medicine PAC of IL		2010-02-12 00:00:00	250	250	0			1 S 280 Summit Ave.	Court B	Oak Brook Terrace	IL	60181     	2A							  	          	True		False
+2935624	2999639	22260	406868		EMILY's List-NF Fund		2010-01-27 00:00:00	1000	1000	0			1120 Connecticut Ave NW	Suite 1100	Washington	DC	20036     	2A							  	          	True		False
+2935625	2999640	22260	406868		Gutierrez for Congress		2010-01-19 00:00:00	750	750	0			2846 N River Walk Drive		Chicago	IL	60618     	2A							  	          	True		False
+2935626	2999641	22260	406868		Humana		2010-04-01 00:00:00	2500	2500	0			P.O. Box 294		Springfield	IL	62705     	2A							  	          	True		False
+2935627	2999642	22260	406868		IL Laborers' Legislative Committee		2010-03-08 00:00:00	2500	2500	0			1 North Old State Capitol Plaza	Suite 525	Springfield	IL	62701     	2A							  	          	True		False
+2935628	2999643	22260	406868		IL Pipe Trades Association		2010-03-15 00:00:00	2000	2000	0			P.O. Box 1626		Bloomington	IL	61702     	2A							  	          	True		False
+2935629	2999644	22260	406868		IL State Medical Society		2010-03-11 00:00:00	500	500	0			20 N Michigan Ave.	Suite 700	Chicago	IL	60602     	2A							  	          	True		False
+2935630	2999645	22260	406868		Illinois Broadcasters Association		2010-01-01 00:00:00	250	250	0			200 Missouri Ave		Caterville	IL	62918     	2A							  	          	True		False
+2935631	2999646	22260	406868		Illinois Chamber Political Action Committee		2010-01-07 00:00:00	1000	1000	0			215 E. Adams		Springfield	IL	62701     	2A							  	          	True		False
+2935632	2999647	22260	406868		Illinois Consulting Engineers PAC		2010-01-13 00:00:00	250	250	0			5221 S. 6th St. Rd.	Suite 120	Springfield	IL	62703     	2A							  	          	True		False
+2935633	2999648	22260	406868		Illinois Hospital Association		2010-01-07 00:00:00	2000	2000	0			700 S. Second St.		Springfield	IL	62704     	2A							  	          	True		False
+2935634	2999649	22260	406868		Illinois Optometric Assocation P.A.C.		2010-01-18 00:00:00	200	200	0			304 W. Washington St.		Springfield	IL	62701     	2A							  	          	True		False
+2935635	2999650	22260	406868		Illinois Road Builders		2010-01-14 00:00:00	300	300	0			500 Park Blvd.	Suite 1250	Itasca	IL	60143     	2A							  	          	True		False
+2935636	2999651	22260	406868		Local No. 9-I.B.E.W Political Committee		2010-01-15 00:00:00	250	250	0			4415 W. Harrison St	Suite 330	Hillside	IL	60162     	2A							  	          	True		False
+2935637	2999652	22260	406868		Medimmune		2010-03-19 00:00:00	1000	1000	0			One Medimmune Way		Gaithersburg	MD	20878     	2A							  	          	True		False
+2935638	2999653	22260	406868		REALTORS PAC		2010-03-11 00:00:00	500	500	0			P.O. Box 19451		Springfield	IL	62794     	2A							  	          	True		False
+2935639	2999654	22260	406868		Sanofi Pasteur Inc. PAC		2010-01-11 00:00:00	500	500	0			Sanofi Pasteur	Discovery Drive	Swiftwater	PA	18370     	2A							  	          	True		False
+2935640	2999655	22260	406868		Schakowsky for Congress		2010-01-22 00:00:00	1000	1000	0			P.O. Box 5130		Evanston	IL	60204     	2A							  	          	True		False
+2935641	2999656	22260	406868		SEIU HealthCare IL In PAC		2010-01-07 00:00:00	5000	10000	0			209 W. Jackson Blvd	Suite 200	Chicago	IL	60606     	2A							  	          	True		False
+2935642	2999657	22260	406868		SEIU HealthCare IL In PAC		2010-01-26 00:00:00	5000	10000	0			209 W. Jackson Blvd	Suite 200	Chicago	IL	60606     	2A							  	          	True		False
+2935643	2999658	22260	406868		UAW IL PAC		2010-03-23 00:00:00	250	250	0			680 Barclay Blvd.		Lincolnshire	IL	60069     	2A							  	          	True		False
+2935644	2999659	22260	406868		UFCW Local 881		2010-03-01 00:00:00	1000	1000	0			10400 W Higgins Road	Suite 500	Rosemont	IL	60018-3705	2A							  	          	True		False
+2935645	2999660	22260	406868		USW Local 17 PAC Fund		2010-01-29 00:00:00	200	200	0			4570 S Archer Ave		Chicago	IL	60632-2954	2A							  	          	True		False
+2935646	2999661	22260	406868		UTU PAC		2010-02-15 00:00:00	250	500	0			8 S. Michigan Ave.	Suite 2006	Chicago	IL	60603     	2A							  	          	True		False
+2935647	2999662	22260	406868		UTU PAC		2010-03-01 00:00:00	250	500	0			8 S. Michigan Ave.	Suite 2006	Chicago	IL	60603     	2A							  	          	True		False
+2935648	2999663	22260	406868		Walgreens		2010-01-28 00:00:00	500	500	0			200 Wilmont Rd.		Deerfield	IL	60015     	2A							  	          	True		False
+2935649	2999664	22260	406868		WIRTZ Beverage Illinois		2010-01-15 00:00:00	500	500	0			1925 Busse Rd.		Elk Grove Village	IL	60007     	2A							  	          	True		False
+2935650	2999665	22260	406868	406868-74	Gabel	Robyn	2010-02-01 00:00:00	5000	5000	5000			Redaction Requested					3A							  	          	True		True
+2935651	2999596	22260	406868		Kahnweiler	Gerri	2010-01-18 00:00:00	250	250	0			1070 Westmoor Rd.		Winnetka	IL	60093     	1A							  	          	True		False
+2935652	2999597	22260	406868		Knight	Millicent	2010-01-12 00:00:00	250	500	0			2757 Ridge Ave.		Evanston	IL	60201     	1A							  	          	True		False
+2935653	2999598	22260	406868		Knight	Millicent	2010-03-07 00:00:00	250	500	0			2757 Ridge Ave.		Evanston	IL	60201     	1A							  	          	True		False
+2935654	2999599	22260	406868		Monsanto Company		2010-02-03 00:00:00	250	250	0			800 North Lindbergh		St. Louis	MO	63167     	1A							  	          	True		False
+2935655	2999600	22260	406868		Moore	Joe	2010-03-07 00:00:00	250	250	0			1431 W Fargo Ave		Chicago	IL	60626     	1A							  	          	True		False
+2935656	2999601	22260	406868		Morrison	Fred	2010-01-15 00:00:00	500	500	0			2373 E. 70th St.	Apt 506	Chicago	IL	60649     	1A							  	          	True		False
+2935657	2999602	22260	406868		Moss	Marilyn	2010-03-07 00:00:00	250	250	0			1503 Oak Ave.	Apt. 112	Evanston	IL	60201-4223	1A							  	          	True		False
+2935658	2999603	22260	406868		Myers	Nancy	2010-01-13 00:00:00	500	500	0			807 Davis St.	#2104	Evanston	IL	60201     	1A							  	          	True		False
+2935659	2999604	22260	406868		Nekritz	Elaine	2010-05-13 00:00:00	500	500	0			3 The Court of Island Pt.		Northbrook	IL	60062-3210	1A							  	          	True		False
+2935660	2999605	22260	406868		Nelson	James	2010-01-27 00:00:00	250	250	0			21 Fairview Lane		Springfield	IL	62711     	1A							  	          	True		False
+2935661	2999606	22260	406868		Nurridin	Salim	2010-01-11 00:00:00	250	250	0			139 E. 115th St.		Chicago	IL	60628     	1A							  	          	True		False
+2935662	2999607	22260	406868		O'Brien	Daniel	2010-01-20 00:00:00	600	600	0	retired	retired	1435 Q S. Prairie		Chicago	IL	60605     	1A							  	          	True		False
+2935663	2999608	22260	406868		O'Connell	John	2010-01-22 00:00:00	250	250	0			129 Indian Wod Lane		Indian Head Park	IL	60525     	1A							  	          	True		False
+2935664	2999609	22260	406868		O'Connor	Michael	2010-01-23 00:00:00	200	200	0			1427 W. Howard St.		Chicago	IL	60626     	1A							  	          	True		False
+2935665	2999610	22260	406868		Overholt	Leticia	2010-01-31 00:00:00	250	250	0			511 Greenleaf Ave		Wilmette	IL	60091     	1A							  	          	True		False
+2935666	2999611	22260	406868		Palmer	Eric	2010-03-07 00:00:00	250	250	0			1421 Sherman Ave		Evanston	IL	60201     	1A							  	          	True		False
+2935667	2999612	22260	406868		Pfizer Inc.		2010-01-25 00:00:00	500	500	0						IL	          	1A							  	          	True		False
+2935668	2999613	22260	406868		Pruzan	Gloria	2010-01-17 00:00:00	350	350	0			2708 N. Wayne		Chicago	IL	60614     	1A							  	          	True		False
+2935669	2999614	22260	406868		Rees	Miryam	2010-01-23 00:00:00	250	250	0			319 Wesley Ave.		Evanston	IL	60202     	1A							  	          	True		False
+2935670	2999615	22260	406868		Simmons Attorneys at Law		2010-01-26 00:00:00	2000	2000	0			707 Berkshire Blvd.	P.O. Box 521	East Alton	IL	62024     	1A							  	          	True		False
+2935671	2999616	22260	406868		Simon	Philip	2010-01-14 00:00:00	200	200	0						IL	          	1A							  	          	True		False
+2935672	2999564	22260	406868		Alberts	Susan	2010-03-07 00:00:00	250	250	0			200 Dempster St		Evanston	IL	60202-1406	1A							  	          	True		False
+2935673	2999565	22260	406868		Balanoff	Miriam	2010-01-19 00:00:00	200	200	0			1111 Ontario	Apt 1003	Oak Park	IL	60302     	1A							  	          	True		False
+2935674	2999566	22260	406868		Beidler	Prudence	2010-01-31 00:00:00	250	250	0			20 S Stonegate Rd		Lake Forest	IL	60045     	1A							  	          	True		False
+2935675	2999567	22260	406868		Berkeley	Lon	2010-01-31 00:00:00	75	175	0			1720 Maple Ave	Unit 750	Evanston	IL	60201     	1A							  	          	True		False
+2935676	2999568	22260	406868		Berkeley	Lon	2010-03-07 00:00:00	100	175	0			1720 Maple Ave	Unit 750	Evanston	IL	60201     	1A							  	          	True		False
+2935677	2999569	22260	406868		Bowman	H. Woods	2010-03-21 00:00:00	500	500	0			400 E Randolph St.	#3619	Chicago	IL	60601-7343	1A							  	          	True		False
+2935678	2999570	22260	406868		Brunsvold	Elizabeth	2010-01-10 00:00:00	500	500	0			340 Old Town Ct.		Chicago	IL	60610     	1A							  	          	True		False
+2935679	2999571	22260	406868		Bushnell	John	2010-01-11 00:00:00	500	750	0	professor	Northwestern University	1805 Crain St.		Evanston	IL	60202     	1A							  	          	True		False
+2935680	2999572	22260	406868		Bushnell	John	2010-04-18 00:00:00	250	750	0	professor	Northwestern University	1805 Crain St.		Evanston	IL	60202     	1A							  	          	True		False
+2935681	2999573	22260	406868		Carlock	Helen	2010-01-26 00:00:00	100	200	0			7729 N Ashland	Apt. 3	Chicago	IL	60626     	1A							  	          	True		False
+2935682	2999574	22260	406868		Carlock	Helen	2010-03-07 00:00:00	100	200	0			7729 N Ashland	Apt. 3	Chicago	IL	60626     	1A							  	          	True		False
+2935683	2999575	22260	406868		Clancy	Thomas	2010-03-22 00:00:00	500	500	0			29 S. LaSalle St.	Barrister Hall Suite 220	Chicago	IL	60603     	1A							  	          	True		False
+2935684	2999576	22260	406868		Clark Netsch	Dawn	2010-04-18 00:00:00	250	250	0			1700 N Hudson		Chicago	IL	60614     	1A							  	          	True		False
+2935685	2999577	22260	406868		Cohen	Steven	2010-01-13 00:00:00	500	500	0			Redaction Requested					1A							  	          	True		True
+2935686	2999578	22260	406868		Cutler	Lynn	2010-03-07 00:00:00	250	250	0			1526 N Mohawk St		Chicago	IL	60610     	1A							  	          	True		False
+2935687	2999579	22260	406868		Ellinger	Jacquetta	2010-01-31 00:00:00	100	250	0			4610 N. Saint Louis Ave.		Chicago	IL	60625     	1A							  	          	True		False
+2935688	2999580	22260	406868		Ellinger	Jacquetta	2010-03-07 00:00:00	50	250	0			4610 N. Saint Louis Ave.		Chicago	IL	60625     	1A							  	          	True		False
+2935689	2999581	22260	406868		Ellinger	Jacquetta	2010-04-18 00:00:00	100	250	0			4610 N. Saint Louis Ave.		Chicago	IL	60625     	1A							  	          	True		False
+2935690	2999582	22260	406868		Engel	Barbara	2010-01-17 00:00:00	200	300	0			5413 S. Blackstone		Chicago	IL	60615     	1A							  	          	True		False
+2935691	2999583	22260	406868		Engel	Barbara	2010-04-17 00:00:00	100	300	0			5413 S. Blackstone		Chicago	IL	60615     	1A							  	          	True		False
+2935692	2999584	22260	406868		Ettner	Fred	2010-03-07 00:00:00	200	200	0			800 Austin St.	Suite 308	Evanston	IL	60202     	1A							  	          	True		False
+2935693	2999585	22260	406868		Eychaner	Fred	2010-03-04 00:00:00	1500	1500	0	owner	Newsweb Corporation	1645 W Fullerton Ave		Chicago	IL	60614     	1A							  	          	True		False
+2935694	2999586	22260	406868		Firman Community Services		2010-01-14 00:00:00	250	250	0			37 W. 47th St.		Chicago	IL	60609     	1A							  	          	True		False
+2935695	2999587	22260	406868		Fletch O'Brien Kasper & Nottage PC		2010-01-20 00:00:00	250	250	0			Redaction Requested					1A							  	          	True		True
+2935696	2999588	22260	406868		Gills	Thurman	2010-02-03 00:00:00	300	300	0			5202 North Kenmore Ave		Chicago	IL	60640     	1A							  	          	True		False
+2935697	2999589	22260	406868		Greene	Susan	2010-01-23 00:00:00	200	200	0			922 Asbury Ave.		Evanston	IL	60202     	1A							  	          	True		False
+2935698	2999590	22260	406868		Greer	Jill	2010-01-31 00:00:00	300	300	0			1321 Jenks Street		Evanston	IL	60201     	1A							  	          	True		False
+2935699	2999591	22260	406868		Hale	Philip	2010-03-07 00:00:00	250	250	0			1054 W. North Shore Ave.	#2E	Chicago	IL	60626     	1A							  	          	True		False
+2935700	2999592	22260	406868		Havonec	George	2010-03-21 00:00:00	750	750	0			5 North Oxford Road		Springfield	IL	62702     	1A							  	          	True		False
+2935701	2999593	22260	406868		Illinois Governmental Consulting Group LLC.		2010-01-27 00:00:00	500	500	0			500 N Dearborn	Suite 1030	Chicago	IL	60610     	1A							  	          	True		False
+2935702	2999594	22260	406868		Jeffrey A. Wolfson		2010-01-26 00:00:00	1000	1000	0			440 S LaSalle Street	Suite 950	Chicago	IL	60605     	1A							  	          	True		False
+2935703	2999595	22260	406868		Johnston	John	2010-01-18 00:00:00	250	250	0			26435 S. Dixie Hwy		Crete	IL	60417     	1A							  	          	True		False
+2935704	2999617	22260	406868		Smith	Leo	2010-03-03 00:00:00	1000	1000	0	teacher		5348 N Lakewood		Chicago	IL	60640     	1A							  	          	True		False
+2935705	2999618	22260	406868		Sommers	Mary	2010-01-22 00:00:00	250	250	0			134 Lincoln		Oregon	WI	53575     	1A							  	          	True		False
+2935706	2999619	22260	406868		Suffredin, Jr.	Lawrence J.	2010-03-07 00:00:00	250	250	0			2431 Pioneer Rd.		Evanston	IL	60201     	1A							  	          	True		False
+2935707	2999620	22260	406868		Tizdahl	Elizabeth	2010-03-07 00:00:00	1000	1000	0	Mayor	City of Evanston	2 Martha Lane		Evanston	IL	60201     	1A							  	          	True		False
+2935708	2999621	22260	406868		Tucker	Laura	2010-03-07 00:00:00	250	250	0			1741 Hinman Ave		Evanston	IL	60201     	1A							  	          	True		False
+2935709	2999622	22260	406868		Wayne	Candace	2010-01-20 00:00:00	250	250	0			134 N. LaSalle Street		Chicago	IL	60602     	1A							  	          	True		False
+2935710	2999623	22260	406868		Weissbourd	Bernice	2010-01-11 00:00:00	300	300	0			2737 Sheridan Rd.		Evanston	IL	60201     	1A							  	          	True		False
+2935711	2999624	22260	406868		Wolen	Deborah	2010-01-10 00:00:00	100	410	0			1812 W Mulford		Evanston	IL	60202     	1A							  	          	True		False
+2935712	2999625	22260	406868		Wolen	Deborah	2010-01-23 00:00:00	60	410	0			1812 W Mulford		Evanston	IL	60202     	1A							  	          	True		False
+2935713	2999626	22260	406868		Wolen	Deborah	2010-01-24 00:00:00	250	410	0			1812 W Mulford		Evanston	IL	60202     	1A							  	          	True		False
+2935714	2999627	22260	406868		Ameren CILCO		2010-01-01 00:00:00	500	500	0			P.O. Box 66892		St. Louis	MO	63166     	2A							  	          	True		False
+2935715	2999628	22260	406868		Associated Beer Distributors of Illinois		2010-01-05 00:00:00	1000	1000	0			P.O. Box 396		Springfield	IL	62705     	2A							  	          	True		False
+2935716	2999629	22260	406868		AT&T Illinois Employee PAC		2010-01-14 00:00:00	1000	3000	0			225 W Randolph St.	27B	Chicago	IL	60606     	2A							  	          	True		False
+2935717	2999630	22260	406868		AT&T Illinois Employee PAC		2010-04-13 00:00:00	2000	3000	0			225 W Randolph St.	27B	Chicago	IL	60606     	2A							  	          	True		False
+2935718	2999631	22260	406868		C.N.A Citizens for Good State and Local Government		2010-01-20 00:00:00	250	250	0			C.N.A Plaza		Chicago	IL	60685-0001	2A							  	          	True		False
+2935719	2999632	22260	406868		CAR of Illinois		2010-01-21 00:00:00	250	250	0			300 W. Edwards	P.O. Box 3045	Springfield	IL	62708     	2A							  	          	True		False
+2935720	2999633	22260	406868		CCCTU		2010-04-01 00:00:00	2000	2000	0			208 West Kinzie		Chicago	IL	60610     	2A							  	          	True		False
+2935721	2999634	22260	406868		Chicagoland Chamber of Commerce		2010-01-11 00:00:00	500	500	0			200 E. Randolph St.	Suite 2200	Chicago	IL	60601     	2A							  	          	True		False
+2935722	2999635	22260	406868		Citizens for Sara Feigenholtz		2010-01-24 00:00:00	1000	1000	0			Redaction Requested					2A							  	          	True		True
+2935723	2999636	22260	406868		Credith Union Political Action Council		2010-01-21 00:00:00	1000	1000	0			1807 W. Diehl Rd.	P.O. Box 3107	Naperville	IL	60566     	2A							  	          	True		False
+2949959	3013988	22260	408646		EMILY's List-NF Fund		2010-01-27 00:00:00	1000	1000	0			1120 Connecticut Ave NW	Suite 1100	Washington	DC	20036     	2A							  	          	True		False
+2949960	3013989	22260	408646		Emergency Medicine PAC of IL		2010-02-12 00:00:00	250	250	0			1 S 280 Summit Ave.	Court B	Oak Brook Terrace	IL	60181     	2A							  	          	True		False
+2949961	3013990	22260	408646		Dent-IL-PAC		2010-01-08 00:00:00	500	500	0			1010 S. 2nd Street		Springfield	IL	62705     	2A							  	          	True		False
+2949962	3013997	22260	408646		CCCTU		2010-04-01 00:00:00	2000	2000	0			208 West Kinzie		Chicago	IL	60610     	2A							  	          	True		False
+2949963	3013998	22260	408646		CAR of Illinois		2010-01-21 00:00:00	250	250	0			300 W. Edwards	P.O. Box 3045	Springfield	IL	62708     	2A							  	          	True		False
+2949964	3013999	22260	408646		C.N.A Citizens for Good State and Local Government		2010-01-20 00:00:00	250	250	0			C.N.A Plaza		Chicago	IL	60685-0001	2A							  	          	True		False
+2949965	3014000	22260	408646		AT&T Services Inc. on behalf of AT&T Illinois		2010-04-13 00:00:00	2000	2000	0			225 W Randolph		Chicago	IL	60606-1824	2A							  	          	True		False
+2949966	3014001	22260	408646		AT&T Illinois Employee PAC		2010-01-14 00:00:00	1000	1000	0			225 W Randolph St.	27B	Chicago	IL	60606     	2A							  	          	True		False
+2949967	3014002	22260	408646		Associated Beer Distributors of Illinois		2010-01-05 00:00:00	1000	1000	0			P.O. Box 396		Springfield	IL	62705     	2A							  	          	True		False
+2949968	3014003	22260	408646		Ameren CILCO		2010-01-01 00:00:00	500	500	0			P.O. Box 66892		St. Louis	MO	63166     	2A							  	          	True		False
+2949969	3014004	22260	408646	408646-108	Gabel	Robyn	2010-02-01 00:00:00	5000	5000	5000	State Representative	State of Illinois	Redaction Requested					3A							  	          	True		True
+2949970	3014005	22260	408646		SEIU HealthCare IL In PAC		2010-02-02 00:00:00	825	825	0			209 W. Jackson Blvd	Suite 200	Chicago	IL	60606     	5A	election day - staff	SEIU HealthCare IL In PAC		209 W. Jackson Blvd	Suite 200	Chicago	IL	60606     	True		False
+2949971	3013923	22260	408646		Nelson	James	2010-01-27 00:00:00	250	250	0			21 Fairview Lane		Springfield	IL	62711     	1A							  	          	True		False
+2949972	3013924	22260	408646		Myers	Nancy	2010-01-13 00:00:00	500	500	0			807 Davis St.	#2104	Evanston	IL	60201     	1A							  	          	True		False
+2949973	3013925	22260	408646		Moss	Marilyn	2010-03-07 00:00:00	250	250	0			1503 Oak Ave.	Apt. 112	Evanston	IL	60201-4223	1A							  	          	True		False
+2949974	3013926	22260	408646		Morrison	Fred	2010-01-15 00:00:00	500	500	0			2373 E. 70th St.	Apt 506	Chicago	IL	60649     	1A							  	          	True		False
+2949975	3013927	22260	408646		Monsanto Company		2010-02-03 00:00:00	250	250	0			800 North Lindbergh		St. Louis	MO	63167     	1A							  	          	True		False
+2949976	3013928	22260	408646		Knight	Millicent	2010-03-07 00:00:00	250	500	0			2757 Ridge Ave.		Evanston	IL	60201     	1A							  	          	True		False
+2949977	3013929	22260	408646		Knight	Millicent	2010-01-12 00:00:00	250	500	0			2757 Ridge Ave.		Evanston	IL	60201     	1A							  	          	True		False
+2949978	3013930	22260	408646		Kahnweiler	Gerri	2010-01-18 00:00:00	250	250	0			1070 Westmoor Rd.		Winnetka	IL	60093     	1A							  	          	True		False
+2949979	3013931	22260	408646		Johnston	John	2010-01-18 00:00:00	250	250	0			26435 S. Dixie Hwy		Crete	IL	60417     	1A							  	          	True		False
+2949980	3013932	22260	408646		Illinois Governmental Consulting Group LLC.		2010-01-27 00:00:00	500	500	0			500 N Dearborn	Suite 1030	Chicago	IL	60610     	1A							  	          	True		False
+2949981	3013933	22260	408646		Hovanec	George	2010-03-21 00:00:00	750	750	0	Lobbyist	Community Behavioral Healthcare Association of IL	5 North Oxford Road		Springfield	IL	62702     	1A							  	          	True		False
+2949982	3013934	22260	408646		Hale	Philip	2010-03-07 00:00:00	250	250	0			1054 W. North Shore Ave.	#2E	Chicago	IL	60626     	1A							  	          	True		False
+2949983	3013935	22260	408646		Greer	Jill	2010-01-31 00:00:00	300	300	0			1321 Jenks Street		Evanston	IL	60201     	1A							  	          	True		False
+2949984	3013936	22260	408646		Greene	Susan	2010-01-23 00:00:00	200	200	0			922 Asbury Ave.		Evanston	IL	60202     	1A							  	          	True		False
+2949985	3013937	22260	408646		Gills	Thurman	2010-02-03 00:00:00	300	300	0			5202 North Kenmore Ave		Chicago	IL	60640     	1A							  	          	True		False
+2949986	3013938	22260	408646		Fletch O'Brien Kasper & Nottage PC		2010-01-20 00:00:00	250	250	0			Redaction Requested					1A							  	          	True		True
+2949987	3013939	22260	408646		Firman Community Services		2010-01-14 00:00:00	250	250	0			37 W. 47th St.		Chicago	IL	60609     	1A							  	          	True		False
+2949988	3013940	22260	408646		Eychaner	Fred	2010-03-04 00:00:00	1500	1500	0	owner	Newsweb Corporation	1645 W Fullerton Ave		Chicago	IL	60614     	1A							  	          	True		False
+2949989	3013941	22260	408646		Ettner	Fred	2010-03-07 00:00:00	200	200	0			800 Austin St.	Suite 308	Evanston	IL	60202     	1A							  	          	True		False
+2949990	3013942	22260	408646		Engel	Barbara	2010-04-17 00:00:00	100	300	0			5413 S. Blackstone		Chicago	IL	60615     	1A							  	          	True		False
+2949991	3013901	22260	408646		Wolfson	Jeffrey A.	2010-01-26 00:00:00	1000	1000	0	Trader	Self	440 S LaSalle Street	Suite 950	Chicago	IL	60605     	1A							  	          	True		False
+2949992	3013902	22260	408646		Wolen	Deborah	2010-01-24 00:00:00	250	410	0			1812 W Mulford		Evanston	IL	60202     	1A							  	          	True		False
+2949993	3013903	22260	408646		Wolen	Deborah	2010-01-23 00:00:00	60	410	0			1812 W Mulford		Evanston	IL	60202     	1A							  	          	True		False
+2949994	3013904	22260	408646		Wolen	Deborah	2010-01-10 00:00:00	100	410	0			1812 W Mulford		Evanston	IL	60202     	1A							  	          	True		False
+2949995	3013905	22260	408646		Weissbourd	Bernice	2010-01-11 00:00:00	300	300	0			2737 Sheridan Rd.		Evanston	IL	60201     	1A							  	          	True		False
+2949996	3013906	22260	408646		Wayne	Candace	2010-01-20 00:00:00	250	250	0			134 N. LaSalle Street		Chicago	IL	60602     	1A							  	          	True		False
+2949997	3013907	22260	408646		Tucker	Laura	2010-03-07 00:00:00	250	250	0			1741 Hinman Ave		Evanston	IL	60201     	1A							  	          	True		False
+2949998	3013908	22260	408646		Tizdahl	Elizabeth	2010-03-07 00:00:00	1000	1000	0	Mayor	City of Evanston	2 Martha Lane		Evanston	IL	60201     	1A							  	          	True		False
+2949999	3013909	22260	408646		Suffredin, Jr.	Lawrence J.	2010-03-07 00:00:00	250	250	0			2431 Pioneer Rd.		Evanston	IL	60201     	1A							  	          	True		False
+2950000	3013910	22260	408646		Sommers	Mary	2010-01-22 00:00:00	250	250	0			134 Lincoln		Oregon	WI	53575     	1A							  	          	True		False
+2950001	3013911	22260	408646		Smith	Leo	2010-03-03 00:00:00	1000	1000	0	Director	IL Birth to 5 PAC	5348 N Lakewood		Chicago	IL	60640     	1A							  	          	True		False
+2950002	3013912	22260	408646		Simon	Philip	2010-01-14 00:00:00	200	200	0						IL	          	1A							  	          	True		False
+2950003	3013913	22260	408646		Simmons Attorneys at Law		2010-01-26 00:00:00	2000	2000	0			707 Berkshire Blvd.	P.O. Box 521	East Alton	IL	62024     	1A							  	          	True		False
+2950004	3013914	22260	408646		Rees	Miryam	2010-01-23 00:00:00	250	250	0			319 Wesley Ave.		Evanston	IL	60202     	1A							  	          	True		False
+2950005	3013915	22260	408646		Pruzan	Gloria	2010-01-17 00:00:00	350	350	0			2708 N. Wayne		Chicago	IL	60614     	1A							  	          	True		False
+2950006	3013916	22260	408646		Pfizer Inc.		2010-01-25 00:00:00	500	500	0						IL	          	1A							  	          	True		False
+2950007	3013917	22260	408646		Palmer	Eric	2010-03-07 00:00:00	250	250	0			1421 Sherman Ave		Evanston	IL	60201     	1A							  	          	True		False
+2950008	3013918	22260	408646		Overholt	Leticia	2010-01-31 00:00:00	250	250	0			511 Greenleaf Ave		Wilmette	IL	60091     	1A							  	          	True		False
+2950009	3013919	22260	408646		O'Connor	Michael	2010-01-23 00:00:00	200	200	0			1427 W. Howard St.		Chicago	IL	60626     	1A							  	          	True		False
+2950010	3013920	22260	408646		O'Connell	John	2010-01-22 00:00:00	250	250	0			129 Indian Wod Lane		Indian Head Park	IL	60525     	1A							  	          	True		False
+2950011	3013921	22260	408646		O'Brien	Daniel	2010-01-20 00:00:00	600	600	0	retired	retired	1435 Q S. Prairie		Chicago	IL	60605     	1A							  	          	True		False
+2950012	3013922	22260	408646		Nurridin	Salim	2010-01-11 00:00:00	250	250	0			139 E. 115th St.		Chicago	IL	60628     	1A							  	          	True		False
+2950013	3013943	22260	408646		Engel	Barbara	2010-01-17 00:00:00	200	300	0			5413 S. Blackstone		Chicago	IL	60615     	1A							  	          	True		False
+2950014	3013944	22260	408646		Ellinger	Jacquetta	2010-04-18 00:00:00	100	250	0			4610 N. Saint Louis Ave.		Chicago	IL	60625     	1A							  	          	True		False
+2950015	3013945	22260	408646		Ellinger	Jacquetta	2010-03-07 00:00:00	50	250	0			4610 N. Saint Louis Ave.		Chicago	IL	60625     	1A							  	          	True		False
+2950016	3013946	22260	408646		Ellinger	Jacquetta	2010-01-31 00:00:00	100	250	0			4610 N. Saint Louis Ave.		Chicago	IL	60625     	1A							  	          	True		False
+2950017	3013947	22260	408646		Cutler	Lynn	2010-03-07 00:00:00	250	250	0			1526 N Mohawk St		Chicago	IL	60610     	1A							  	          	True		False
+2950018	3013948	22260	408646		Cohen	Steven	2010-01-13 00:00:00	500	500	0			Redaction Requested					1A							  	          	True		True
+2950019	3013949	22260	408646		Clark Netsch	Dawn	2010-04-18 00:00:00	250	250	0			1700 N Hudson		Chicago	IL	60614     	1A							  	          	True		False
+2950020	3013950	22260	408646		Clancy	Thomas	2010-03-22 00:00:00	500	500	0			29 S. LaSalle St.	Barrister Hall Suite 220	Chicago	IL	60603     	1A							  	          	True		False
+2950021	3013951	22260	408646		Carlock	Helen	2010-03-07 00:00:00	100	200	0			7729 N Ashland	Apt. 3	Chicago	IL	60626     	1A							  	          	True		False
+2950022	3013952	22260	408646		Carlock	Helen	2010-01-26 00:00:00	100	200	0			7729 N Ashland	Apt. 3	Chicago	IL	60626     	1A							  	          	True		False
+2950023	3013953	22260	408646		Bushnell	John	2010-04-18 00:00:00	250	750	0	professor	Northwestern University	1805 Crain St.		Evanston	IL	60202     	1A							  	          	True		False
+2950024	3013954	22260	408646		Bushnell	John	2010-01-11 00:00:00	500	750	0	professor	Northwestern University	1805 Crain St.		Evanston	IL	60202     	1A							  	          	True		False
+2950025	3013991	22260	408646		Credith Union Political Action Council		2010-01-21 00:00:00	1000	1000	0			1807 W. Diehl Rd.	P.O. Box 3107	Naperville	IL	60566     	2A							  	          	True		False
+2950026	3013992	22260	408646		Citizens for Sara Feigenholtz		2010-01-24 00:00:00	1000	1000	0			Redaction Requested					2A							  	          	True		True
+2950027	3013993	22260	408646		Citizens for Joe Moore		2010-03-07 00:00:00	250	250	0			1431 W Fargo Ave		Chicago	IL	60626     	2A							  	          	True		False
+2950028	3013994	22260	408646		Citizens for Elaine Nekritz		2010-05-13 00:00:00	500	500	0			PO Box 2563		Glenview	IL	60025     	2A							  	          	True		False
+2950029	3013995	22260	408646		Chicagoland Chamber of Commerce		2010-01-11 00:00:00	500	500	0			200 E. Randolph St.	Suite 2200	Chicago	IL	60601     	2A							  	          	True		False
+2950030	3013996	22260	408646		Chicago Federation of Labor & IUC		2010-01-04 00:00:00	1500	1500	0			130 E. Randolph	Predential Plaza Suite 2600	Chicago	IL	60601     	2A							  	          	True		False
+2950031	3013955	22260	408646		Brunsvold	Elizabeth	2010-01-10 00:00:00	500	500	0			340 Old Town Ct.		Chicago	IL	60610     	1A							  	          	True		False
+2950032	3013956	22260	408646		Bowman	H. Woods	2010-03-21 00:00:00	500	500	0			400 E Randolph St.	#3619	Chicago	IL	60601-7343	1A							  	          	True		False
+2950033	3013957	22260	408646		Berkeley	Lon	2010-03-07 00:00:00	100	175	0			1720 Maple Ave	Unit 750	Evanston	IL	60201     	1A							  	          	True		False
+2950034	3013958	22260	408646		Berkeley	Lon	2010-01-31 00:00:00	75	175	0			1720 Maple Ave	Unit 750	Evanston	IL	60201     	1A							  	          	True		False
+2950035	3013959	22260	408646		Beidler	Prudence	2010-01-31 00:00:00	250	250	0			20 S Stonegate Rd		Lake Forest	IL	60045     	1A							  	          	True		False
+2950036	3013960	22260	408646		Balanoff	Miriam	2010-01-19 00:00:00	200	200	0			1111 Ontario	Apt 1003	Oak Park	IL	60302     	1A							  	          	True		False
+2950037	3013961	22260	408646		Alberts	Susan	2010-03-07 00:00:00	250	250	0			200 Dempster St		Evanston	IL	60202-1406	1A							  	          	True		False
+2950038	3013962	22260	408646		WIRTZ Beverage Illinois		2010-01-15 00:00:00	500	500	0			1925 Busse Rd.		Elk Grove Village	IL	60007     	2A							  	          	True		False
+2950039	3013963	22260	408646		Walgreens		2010-01-28 00:00:00	500	500	0			200 Wilmont Rd.		Deerfield	IL	60015     	2A							  	          	True		False
+2950040	3013964	22260	408646		UTU PAC		2010-03-01 00:00:00	250	500	0			8 S. Michigan Ave.	Suite 2006	Chicago	IL	60603     	2A							  	          	True		False
+2950041	3013965	22260	408646		UTU PAC		2010-02-15 00:00:00	250	500	0			8 S. Michigan Ave.	Suite 2006	Chicago	IL	60603     	2A							  	          	True		False
+2950042	3013966	22260	408646		USW Local 17 PAC Fund		2010-01-29 00:00:00	200	200	0			4570 S Archer Ave		Chicago	IL	60632-2954	2A							  	          	True		False
+2950043	3013967	22260	408646		UFCW Local 881		2010-03-01 00:00:00	1000	1000	0			10400 W Higgins Road	Suite 500	Rosemont	IL	60018-3705	2A							  	          	True		False
+2950044	3013968	22260	408646		UAW IL PAC		2010-03-23 00:00:00	250	250	0			680 Barclay Blvd.		Lincolnshire	IL	60069     	2A							  	          	True		False
+2950045	3013969	22260	408646		SEIU HealthCare IL In PAC		2010-01-26 00:00:00	5000	10000	0			209 W. Jackson Blvd	Suite 200	Chicago	IL	60606     	2A							  	          	True		False
+2950046	3013970	22260	408646		SEIU HealthCare IL In PAC		2010-01-07 00:00:00	5000	10000	0			209 W. Jackson Blvd	Suite 200	Chicago	IL	60606     	2A							  	          	True		False
+2950047	3013971	22260	408646		Schakowsky for Congress		2010-01-22 00:00:00	1000	1000	0			P.O. Box 5130		Evanston	IL	60204     	2A							  	          	True		False
+2950048	3013972	22260	408646		Sanofi Pasteur Inc. PAC		2010-01-11 00:00:00	500	500	0			Sanofi Pasteur	Discovery Drive	Swiftwater	PA	18370     	2A							  	          	True		False
+2950049	3013973	22260	408646		REALTORS PAC		2010-03-11 00:00:00	500	500	0			P.O. Box 19451		Springfield	IL	62794     	2A							  	          	True		False
+2950050	3013974	22260	408646		Medimmune		2010-03-19 00:00:00	1000	1000	0			One Medimmune Way		Gaithersburg	MD	20878     	2A							  	          	True		False
+2950051	3013975	22260	408646		Local No. 9-I.B.E.W Political Committee		2010-01-15 00:00:00	250	250	0			4415 W. Harrison St	Suite 330	Hillside	IL	60162     	2A							  	          	True		False
+2950052	3013976	22260	408646		Illinois Road Builders		2010-01-14 00:00:00	300	300	0			500 Park Blvd.	Suite 1250	Itasca	IL	60143     	2A							  	          	True		False
+2950053	3013977	22260	408646		Illinois Optometric Assocation P.A.C.		2010-01-18 00:00:00	200	200	0			304 W. Washington St.		Springfield	IL	62701     	2A							  	          	True		False
+2950054	3013978	22260	408646		Illinois Hospital Association		2010-01-07 00:00:00	2000	2000	0			700 S. Second St.		Springfield	IL	62704     	2A							  	          	True		False
+2950055	3013979	22260	408646		Illinois Consulting Engineers PAC		2010-01-13 00:00:00	250	250	0			5221 S. 6th St. Rd.	Suite 120	Springfield	IL	62703     	2A							  	          	True		False
+2950056	3013980	22260	408646		Illinois Chamber Political Action Committee		2010-01-07 00:00:00	1000	1000	0			215 E. Adams		Springfield	IL	62701     	2A							  	          	True		False
+2950057	3013981	22260	408646		Illinois Broadcasters Association		2010-01-01 00:00:00	250	250	0			200 Missouri Ave		Caterville	IL	62918     	2A							  	          	True		False
+2950058	3013982	22260	408646		IL Trial Lawyers Association PAC		2010-01-16 00:00:00	2000	2000	0			401 W Edwards St		Springfield	IL	62704-1917	2A							  	          	True		False
+2950059	3013983	22260	408646		IL State Medical Society		2010-03-11 00:00:00	500	500	0			20 N Michigan Ave.	Suite 700	Chicago	IL	60602     	2A							  	          	True		False
+2950060	3013984	22260	408646		IL Pipe Trades Association		2010-03-15 00:00:00	2000	2000	0			P.O. Box 1626		Bloomington	IL	61702     	2A							  	          	True		False
+2950061	3013985	22260	408646		IL Laborers' Legislative Committee		2010-03-08 00:00:00	2500	2500	0			1 North Old State Capitol Plaza	Suite 525	Springfield	IL	62701     	2A							  	          	True		False
+2950062	3013986	22260	408646		Humana		2010-04-01 00:00:00	2500	2500	0			P.O. Box 294		Springfield	IL	62705     	2A							  	          	True		False
+2950063	3013987	22260	408646		Gutierrez for Congress		2010-01-19 00:00:00	750	750	0			2846 N River Walk Drive		Chicago	IL	60618     	2A							  	          	True		False
+2962449	3026391	22260	410967		Associated Beer Distributors of Illinois		2010-10-12 00:00:00	500	0	0			P.O. Box 396		Springfield	IL	62705     	2A							  	          	True		False
+2965262	3029204	22260	411470		Illinois Political Action Committee for Education		2010-10-14 00:00:00	5000	0	0			100 E. Edwards St.		Springfield	IL	62704     	2A							  	          	True		False
+2990384	3054337	22260	413629		Holland & Knight Illinois Committee for Effective Government		2010-08-26 00:00:00	250	750	0			131 S. Dearborn Street 30th Floor		Chicago	IL	60603     	1A							  	          	True		False
+2990385	3054338	22260	413629		Holland & Knight Illinois Committee for Effective Government		2010-09-30 00:00:00	500	750	0			131 S. Dearborn Street 30th Floor		Chicago	IL	60603     	1A							  	          	True		False
+2990386	3054339	22260	413629		Infrastructure Engineering Incorporated		2010-08-31 00:00:00	250	250	0			33 West Monroe Street Suite 1540		Chicago	IL	60603     	1A							  	          	True		False
+2990387	3054340	22260	413629		JPMorgan Chase & Co. PAC		2010-09-03 00:00:00	500	500	0			10 S. Dearborn Street		Chicago	IL	60603     	1A							  	          	True		False
+2990388	3054341	22260	413629		McClain	Michael & Lucinda	2010-08-25 00:00:00	200	200	0			1100 Peach Tree Lane		Quincy	IL	62305     	1A							  	          	True		False
+2990389	3054342	22260	413629		Motorola		2010-09-08 00:00:00	250	250	0			P.O. Box 68429		Schaumburg	IL	60168     	1A							  	          	True		False
+2990390	3054343	22260	413629		Nelson	James	2010-07-19 00:00:00	250	250	0			21 Fairview Lane		Springfield	IL	62711     	1A							  	          	True		False
+2990391	3054344	22260	413629		Pearce	George M.	2010-09-30 00:00:00	250	250	0			132 S. Dearborn Street 30th Floor		Chicago	IL	60603     	1A							  	          	True		False
+2990392	3054345	22260	413629		Stricklin & Associates		2010-08-31 00:00:00	250	250	0			20 S. Clark St. Suite 2900		Chicago	IL	60603     	1A							  	          	True		False
+2990393	3054346	22260	413629		Takeda		2010-09-28 00:00:00	250	250	0			One Takeda Parkway		Deerfield	IL	60015     	1A							  	          	True		False
+2990394	3054347	22260	413629		Tcath	Jay	2010-09-20 00:00:00	500	500	0			222 Birchwood Avenue		Deerfield	IL	60015-4713	1A							  	          	True		False
+2990395	3054348	22260	413629		AFSCME Illinois		2010-09-17 00:00:00	1000	1000	0			615 S. Second St.	P.O. Box 2328	Springfield	IL	62705     	2A							  	          	True		False
+2990396	3054349	22260	413629		Alliance For Living PAC		2010-09-27 00:00:00	500	500	0			One Northfield Plaza Suite 300		Northfield	IL	60093     	2A							  	          	True		False
+2990397	3054350	22260	413629		Associated Fire Fighters of IL PAC Fund		2010-09-03 00:00:00	500	500	0			927 S. Second		Springfield	IL	62704     	2A							  	          	True		False
+2990398	3054351	22260	413629		Dent-IL-PAC		2010-08-26 00:00:00	1000	1000	0			1010 S. 2nd Street		Springfield	IL	62705     	2A							  	          	True		False
+2990399	3054352	22260	413629		Friends of Julie Hamos		2010-08-03 00:00:00	500	500	0			PO Box 5308		Evanston	IL	60204-5308	2A							  	          	True		False
+2990400	3054353	22260	413629		Health Care Council of Illinois PAC		2010-09-30 00:00:00	500	500	0			1029 S 4th St.		Springfield	IL	62703     	2A							  	          	True		False
+2990401	3054354	22260	413629		IL Laborers' Legislative Committee		2010-08-31 00:00:00	500	500	0			1 North Old State Capitol Plaza	Suite 525	Springfield	IL	62701     	2A							  	          	True		False
+2990402	3054355	22260	413629		Illinois Financial Services (IFSA) PAC		2010-10-01 00:00:00	200	200	0			601 West Monroe St.		Springfield	IL	62704     	2A							  	          	True		False
+2990403	3054356	22260	413629		Illinois Hospital Association		2010-08-24 00:00:00	1000	1000	0			700 South Second Street		Springfield	IL	62704     	2A							  	          	True		False
+2990404	3054357	22260	413629		Illinois Lawyers PAC		2010-09-20 00:00:00	500	500	0			424 South Second Street		Springfield	IL	62701     	2A							  	          	True		False
+2990405	3054358	22260	413629		Illinois Merchants Political Action Committee Team		2010-09-22 00:00:00	500	500	0			19 S. LaSalle Suite 300		Chicago	IL	60603     	2A							  	          	True		False
+2990406	3054359	22260	413629		Illinois Political Action Committee for Education		2010-09-22 00:00:00	5000	5000	0			100 E. Edwards St.		Springfield	IL	62704     	2A							  	          	True		False
+2990407	3054360	22260	413629		Illinois Trial Lawyers Association PAC		2010-08-23 00:00:00	3000	3000	0			401 W Edwards St		Springfield	IL	62704-1917	2A							  	          	True		False
+2990408	3054361	22260	413629		Illinois Venture Capital Association (IVCA) PAC		2010-09-16 00:00:00	1000	1000	0			225 W. Wacker Dr. Suite 3000		Chicago	IL	60606     	2A							  	          	True		False
+2990409	3054362	22260	413629		PHRMA		2010-07-23 00:00:00	250	250	0			950 F Street		Washington	DC	20004     	2A							  	          	True		False
+2990410	3054363	22260	413629		Planned Parenthood Illinois Action PAC		2010-09-29 00:00:00	200	200	0			107 W. Cook Suite F		Springfield	IL	62704     	2A							  	          	True		False
+2990411	3054364	22260	413629		SEIU HealthCare IL In PAC		2010-08-03 00:00:00	500	500	0			209 W. Jackson Blvd	Suite 200	Chicago	IL	60606     	2A							  	          	True		False
+2990412	3054365	22260	413629		SEIU Illinois Council PAC Fund		2010-07-26 00:00:00	750	750	0			111 E. Wacker Drive Suite 2500		Chicago	IL	60601     	2A							  	          	True		False
+2990413	3054366	22260	413629		SUAAction		2010-09-21 00:00:00	300	300	0			P.O. Box 1770		Springfield	IL	62705     	2A							  	          	True		False
+2990414	3054326	22260	413629		Addus HealthCare		2010-08-24 00:00:00	250	250	0			2401 South Plum Grove Rd		Palatine	IL	60067     	1A							  	          	True		False
+2990415	3054327	22260	413629		Astellas Pharma US Inc.		2010-09-14 00:00:00	500	500	0			1481 Sandy Hook		Wheaton	IL	60187     	1A							  	          	True		False
+2990416	3054328	22260	413629		Bauer	Michael	2010-10-01 00:00:00	250	250	0			2500 N. Lakeview Ave No. 2005		Chicago	IL	60614     	1A							  	          	True		False
+2990417	3054329	22260	413629		Boehringer Ingelheim Pharmaceuticals Inc.		2010-09-13 00:00:00	250	250	0			P.O. Box 2874		Clinton	IA	52732     	1A							  	          	True		False
+2990418	3054330	22260	413629		Brunsvold	Elizabeth	2010-08-31 00:00:00	250	250	0			340 Old Town Ct.		Chicago	IL	60610     	1A							  	          	True		False
+2990419	3054331	22260	413629		Churchill Downs Inc. Arlington Park Race Course		2010-08-24 00:00:00	500	500	0			P.O. Box 7		Arlington Heights	IL	60006     	1A							  	          	True		False
+2990420	3054332	22260	413629		ComED PAC		2010-10-01 00:00:00	500	500	0			1 Financial Place		Chicago	IL	60605     	1A							  	          	True		False
+2990421	3054333	22260	413629		Conlon Public Strategies Inc.		2010-08-30 00:00:00	500	500	0			350 N. LaSalle St. Ste. 1420		Chicago	IL	60654     	1A							  	          	True		False
+2990422	3054334	22260	413629		Crosley	Lori A.	2010-08-31 00:00:00	250	250	0			728 W. Jackson		Chicago	IL	60661     	1A							  	          	True		False
+2990423	3054335	22260	413629		Curry & Associates LLC		2010-09-19 00:00:00	250	250	0			4804 Fletcher Lane		Mt Zion	IL	62549     	1A							  	          	True		False
+2990424	3054336	22260	413629		Freeborn & Peters LLP		2010-09-14 00:00:00	250	250	0			P.O. Box 6453		Evanston	IL	60204-6453	1A							  	          	True		False
+3005842	3069784	22260	414930		Illinois Federation of Teachers COPE		2010-10-23 00:00:00	1000	0	0			500 Oakmont Lane		Westmont	IL	60559     	2A							  	          	True		False
+3005843	3069798	22260	414931		Infrastructure Engineering Incorporated		2010-08-31 00:00:00	250	250	0			33 West Monroe Street Suite 1540		Chicago	IL	60603     	1A							  	          	True		False
+3005844	3069799	22260	414931		JPMorgan Chase & Co. PAC		2010-09-03 00:00:00	500	500	0			10 S. Dearborn Street		Chicago	IL	60603     	1A							  	          	True		False
+3005845	3069800	22260	414931		McClain	Michael & Lucinda	2010-08-25 00:00:00	200	200	0			1100 Peach Tree Lane		Quincy	IL	62305     	1A							  	          	True		False
+3005846	3069801	22260	414931		Motorola		2010-09-08 00:00:00	250	250	0			P.O. Box 68429		Schaumburg	IL	60168     	1A							  	          	True		False
+3005847	3069802	22260	414931		Nelson	James	2010-07-19 00:00:00	250	250	0			21 Fairview Lane		Springfield	IL	62711     	1A							  	          	True		False
+3005848	3069803	22260	414931		Pearce	George M.	2010-09-30 00:00:00	250	250	0			132 S. Dearborn Street 30th Floor		Chicago	IL	60603     	1A							  	          	True		False
+3005849	3069804	22260	414931		Stricklin & Associates		2010-08-31 00:00:00	250	250	0			20 S. Clark St. Suite 2900		Chicago	IL	60603     	1A							  	          	True		False
+3005850	3069805	22260	414931		Takeda		2010-09-28 00:00:00	250	250	0			One Takeda Parkway		Deerfield	IL	60015     	1A							  	          	True		False
+3005851	3069806	22260	414931		Tcath	Jay	2010-09-20 00:00:00	500	500	0			222 Birchwood Avenue		Deerfield	IL	60015-4713	1A							  	          	True		False
+3005852	3069807	22260	414931		University Public Issues Committee		2010-07-22 00:00:00	2000	2000	0			P.O. Box 62		Evanston	IL	60204     	2A							  	          	True		False
+3005853	3069808	22260	414931		AFSCME Illinois		2010-09-17 00:00:00	1000	1000	0			615 S. Second St.	P.O. Box 2328	Springfield	IL	62705     	2A							  	          	True		False
+3005854	3069809	22260	414931		Alliance For Living PAC		2010-09-27 00:00:00	500	500	0			One Northfield Plaza Suite 300		Northfield	IL	60093     	2A							  	          	True		False
+3005855	3069810	22260	414931		Associated Fire Fighters of IL PAC Fund		2010-09-03 00:00:00	500	500	0			927 S. Second		Springfield	IL	62704     	2A							  	          	True		False
+3005856	3069811	22260	414931		Dent-IL-PAC		2010-08-26 00:00:00	1000	1000	0			1010 S. 2nd Street		Springfield	IL	62705     	2A							  	          	True		False
+3005857	3069812	22260	414931		Friends of Julie Hamos		2010-08-03 00:00:00	500	500	0			PO Box 5308		Evanston	IL	60204-5308	2A							  	          	True		False
+3005858	3069813	22260	414931		Health Care Council of Illinois PAC		2010-09-30 00:00:00	500	500	0			1029 S 4th St.		Springfield	IL	62703     	2A							  	          	True		False
+3005859	3069814	22260	414931		IL Laborers' Legislative Committee		2010-08-31 00:00:00	500	500	0			1 North Old State Capitol Plaza	Suite 525	Springfield	IL	62701     	2A							  	          	True		False
+3005860	3069815	22260	414931		Illinois Financial Services (IFSA) PAC		2010-10-01 00:00:00	200	200	0			601 West Monroe St.		Springfield	IL	62704     	2A							  	          	True		False
+3005861	3069816	22260	414931		Illinois Hospital Association		2010-08-24 00:00:00	1000	1000	0			700 South Second Street		Springfield	IL	62704     	2A							  	          	True		False
+3005862	3069817	22260	414931		Illinois Lawyers PAC		2010-09-20 00:00:00	500	500	0			424 South Second Street		Springfield	IL	62701     	2A							  	          	True		False
+3005863	3069818	22260	414931		Illinois Merchants Political Action Committee Team		2010-09-22 00:00:00	500	500	0			19 S. LaSalle Suite 300		Chicago	IL	60603     	2A							  	          	True		False
+3005864	3069819	22260	414931		Illinois Political Action Committee for Education		2010-09-22 00:00:00	5000	5000	0			100 E. Edwards St.		Springfield	IL	62704     	2A							  	          	True		False
+3005865	3069820	22260	414931		Illinois Trial Lawyers Association PAC		2010-08-23 00:00:00	3000	3000	0			401 W Edwards St		Springfield	IL	62704-1917	2A							  	          	True		False
+3005866	3069821	22260	414931		Illinois Venture Capital Association (IVCA) PAC		2010-09-16 00:00:00	1000	1000	0			225 W. Wacker Dr. Suite 3000		Chicago	IL	60606     	2A							  	          	True		False
+3005867	3069822	22260	414931		PHRMA		2010-07-23 00:00:00	250	250	0			950 F Street		Washington	DC	20004     	2A							  	          	True		False
+3005868	3069823	22260	414931		Planned Parenthood Illinois Action PAC		2010-09-29 00:00:00	200	200	0			107 W. Cook Suite F		Springfield	IL	62704     	2A							  	          	True		False
+3005869	3069824	22260	414931		SEIU HealthCare IL In PAC		2010-08-03 00:00:00	500	500	0			209 W. Jackson Blvd	Suite 200	Chicago	IL	60606     	2A							  	          	True		False
+3005870	3069825	22260	414931		SEIU Illinois Council PAC Fund		2010-07-26 00:00:00	750	750	0			111 E. Wacker Drive Suite 2500		Chicago	IL	60601     	2A							  	          	True		False
+3005871	3069826	22260	414931		SUAAction		2010-09-21 00:00:00	300	300	0			P.O. Box 1770		Springfield	IL	62705     	2A							  	          	True		False
+3005872	3069785	22260	414931		Addus HealthCare		2010-08-24 00:00:00	250	250	0			2401 South Plum Grove Rd		Palatine	IL	60067     	1A							  	          	True		False
+3005873	3069786	22260	414931		Astellas Pharma US Inc.		2010-09-14 00:00:00	500	500	0			1481 Sandy Hook		Wheaton	IL	60187     	1A							  	          	True		False
+3005874	3069787	22260	414931		Bauer	Michael	2010-10-01 00:00:00	250	250	0			2500 N. Lakeview Ave No. 2005		Chicago	IL	60614     	1A							  	          	True		False
+3005875	3069788	22260	414931		Boehringer Ingelheim Pharmaceuticals Inc.		2010-09-13 00:00:00	250	250	0			P.O. Box 2874		Clinton	IA	52732     	1A							  	          	True		False
+3005876	3069789	22260	414931		Brunsvold	Elizabeth	2010-08-31 00:00:00	250	250	0			340 Old Town Ct.		Chicago	IL	60610     	1A							  	          	True		False
+3005877	3069790	22260	414931		Churchill Downs Inc. Arlington Park Race Course		2010-08-24 00:00:00	500	500	0			P.O. Box 7		Arlington Heights	IL	60006     	1A							  	          	True		False
+3005878	3069791	22260	414931		ComED PAC		2010-10-01 00:00:00	500	500	0			1 Financial Place		Chicago	IL	60605     	1A							  	          	True		False
+3005879	3069792	22260	414931		Conlon Public Strategies Inc.		2010-08-30 00:00:00	500	500	0			350 N. LaSalle St. Ste. 1420		Chicago	IL	60654     	1A							  	          	True		False
+3005880	3069793	22260	414931		Crosley	Lori A.	2010-08-31 00:00:00	250	250	0			728 W. Jackson		Chicago	IL	60661     	1A							  	          	True		False
+3005881	3069794	22260	414931		Curry & Associates LLC		2010-09-19 00:00:00	250	250	0			4804 Fletcher Lane		Mt Zion	IL	62549     	1A							  	          	True		False
+3005882	3069795	22260	414931		Freeborn & Peters LLP		2010-09-14 00:00:00	250	250	0			P.O. Box 6453		Evanston	IL	60204-6453	1A							  	          	True		False
+3005883	3069796	22260	414931		Holland & Knight Illinois Committee for Effective Government		2010-08-26 00:00:00	250	750	0			131 S. Dearborn Street 30th Floor		Chicago	IL	60603     	1A							  	          	True		False
+3005884	3069797	22260	414931		Holland & Knight Illinois Committee for Effective Government		2010-09-30 00:00:00	500	750	0			131 S. Dearborn Street 30th Floor		Chicago	IL	60603     	1A							  	          	True		False
+3005885	3069827	22260	414932		University Public Issues Committee		2010-10-23 00:00:00	500	0	0			P.O. Box 62		Evanston	IL	60204     	2A							  	          	True		False
+3008404	3072346	22260	415342		North Suburban Teachers Union COPE		2010-10-26 00:00:00	1500	0	0			9933 N. Lawler Suite 222		Skokie	IL	60077     	2A							  	          	True		False
+3008405	3072347	22260	415343		Merck and Co Inc.		2010-10-26 00:00:00	1000	0	0			436 58th Street		Westmont	IL	60559     	1A							  	          	True		False
+3009565	3073507	22260	415569		Pfizer Inc.		2010-10-27 00:00:00	1000	0	0			122 W. Washington Ave.	Suite 850	Madison	WI	53703     	1A							  	          	True		False
+3011668	3075610	22260	416061		USW Illinois		2010-10-30 00:00:00	2000	0	0			1301 Texas Street Room 200		Gary	IN	46402     	2A							  	          	True		False
+3015195	3079219	22260	416561		Illinois Broadcasters Association		2010-01-01 00:00:00	250	250	0			200 Missouri Ave		Caterville	IL	62918     	2A							  	          	True		False
+3015196	3079220	22260	416561		Illinois Chamber Political Action Committee		2010-01-16 00:00:00	1000	1000	0			215 E. Adams		Springfield	IL	62701     	2A							  	          	True		False
+3015197	3079221	22260	416561		Illinois Consulting Engineers PAC		2010-01-13 00:00:00	250	250	0			5221 S. 6th St. Rd.	Suite 120	Springfield	IL	62703     	2A							  	          	True		False
+3015198	3079222	22260	416561		Illinois Hospital Association		2010-01-07 00:00:00	2000	2000	0			700 South Second Street		Springfield	IL	62704     	2A							  	          	True		False
+3015199	3079223	22260	416561		Illinois Optometric Assocation P.A.C.		2010-01-18 00:00:00	200	200	0			304 W. Washington St.		Springfield	IL	62701     	2A							  	          	True		False
+3015200	3079224	22260	416561		Illinois Road Builders		2010-01-14 00:00:00	300	300	0			500 Park Blvd.	Suite 1250	Itasca	IL	60143     	2A							  	          	True		False
+3015201	3079225	22260	416561		Illinois Trial Lawyers Association PAC		2010-01-16 00:00:00	2000	2000	0			401 W Edwards St		Springfield	IL	62704-1917	2A							  	          	True		False
+3015202	3079226	22260	416561		Local No. 9-I.B.E.W Political Committee		2010-01-15 00:00:00	250	250	0			4415 W. Harrison St	Suite 330	Hillside	IL	60162     	2A							  	          	True		False
+3015203	3079227	22260	416561		Medimmune		2010-03-19 00:00:00	1000	1000	0			One Medimmune Way		Gaithersburg	MD	20878     	2A							  	          	True		False
+3015204	3079228	22260	416561		REALTORS PAC		2010-03-11 00:00:00	500	500	0			P.O. Box 19451		Springfield	IL	62794     	2A							  	          	True		False
+3015205	3079229	22260	416561		Sanofi Pasteur Inc. PAC		2010-01-11 00:00:00	500	500	0			Sanofi Pasteur	Discovery Drive	Swiftwater	PA	18370     	2A							  	          	True		False
+3015206	3079230	22260	416561		Schakowsky for Congress		2010-01-25 00:00:00	1000	1000	0			P.O. Box 5130		Evanston	IL	60204     	2A							  	          	True		False
+3015207	3079231	22260	416561		SEIU HealthCare IL In PAC		2010-01-11 00:00:00	5000	10000	0			209 W. Jackson Blvd	Suite 200	Chicago	IL	60606     	2A							  	          	True		False
+3015208	3079232	22260	416561		SEIU HealthCare IL In PAC		2010-01-27 00:00:00	5000	10000	0			209 W. Jackson Blvd	Suite 200	Chicago	IL	60606     	2A							  	          	True		False
+3015209	3079233	22260	416561		UAW IL PAC		2010-03-23 00:00:00	250	250	0			680 Barclay Blvd.		Lincolnshire	IL	60069     	2A							  	          	True		False
+3015210	3079234	22260	416561		UFCW Local 881		2010-03-01 00:00:00	1000	1000	0			10400 W Higgins Road	Suite 500	Rosemont	IL	60018-3705	2A							  	          	True		False
+3015211	3079235	22260	416561		USW Local 17 PAC Fund		2010-01-29 00:00:00	200	200	0			4570 S Archer Ave		Chicago	IL	60632-2954	2A							  	          	True		False
+3015212	3079236	22260	416561		UTU PAC		2010-02-15 00:00:00	250	500	0			8 S. Michigan Ave.	Suite 2006	Chicago	IL	60603     	2A							  	          	True		False
+3015213	3079237	22260	416561		UTU PAC		2010-03-01 00:00:00	250	500	0			8 S. Michigan Ave.	Suite 2006	Chicago	IL	60603     	2A							  	          	True		False
+3015214	3079238	22260	416561		Walgreens		2010-01-28 00:00:00	500	500	0			200 Wilmont Rd.		Deerfield	IL	60015     	2A							  	          	True		False
+3015215	3079239	22260	416561		WIRTZ Beverage Illinois		2010-01-15 00:00:00	500	500	0			1925 Busse Rd.		Elk Grove Village	IL	60007     	2A							  	          	True		False
+3015216	3079240	22260	416561	416561-3	Gabel	Robyn	2010-02-01 00:00:00	5000	5000	5000	State Representative	State of Illinois	Redaction Requested					3A							  	          	True		True
+3015217	3079241	22260	416561		Health Care Council of Illinois PAC		2010-02-01 00:00:00	9872	9872	0			1029 S 4th St.		Springfield	IL	62703     	5A	mailing						  	          	True		False
+3015218	3079242	22260	416561		SEIU HealthCare IL In PAC		2010-01-22 00:00:00	825	2215.16	0			209 W. Jackson Blvd	Suite 200	Chicago	IL	60606     	5A	election day - staff	SEIU HealthCare IL In PAC		209 W. Jackson Blvd	Suite 200	Chicago	IL	60606     	True		False
+3015219	3079243	22260	416561		SEIU HealthCare IL In PAC		2010-01-26 00:00:00	1390.16	2215.16	0			209 W. Jackson Blvd	Suite 200	Chicago	IL	60606     	5A	election day - expenses						  	          	True		False
+3015220	3079137	22260	416561		Alberts	Susan	2010-03-07 00:00:00	250	250	0			200 Dempster St		Evanston	IL	60202-1406	1A							  	          	True		False
+3015221	3079138	22260	416561		Balanoff	Miriam	2010-01-19 00:00:00	200	200	0			1111 Ontario	Apt 1003	Oak Park	IL	60302     	1A							  	          	True		False
+3015222	3079139	22260	416561		Beidler	Prudence	2010-01-31 00:00:00	250	250	0			20 S Stonegate Rd		Lake Forest	IL	60045     	1A							  	          	True		False
+3015223	3079140	22260	416561		Berkeley	Lon	2010-01-31 00:00:00	75	175	0			1720 Maple Ave	Unit 750	Evanston	IL	60201     	1A							  	          	True		False
+3015224	3079141	22260	416561		Berkeley	Lon	2010-03-07 00:00:00	100	175	0			1720 Maple Ave	Unit 750	Evanston	IL	60201     	1A							  	          	True		False
+3015225	3079142	22260	416561		Bowman	H. Woods	2010-03-21 00:00:00	500	500	0			400 E Randolph St.	#3619	Chicago	IL	60601-7343	1A							  	          	True		False
+3015226	3079143	22260	416561		Brunsvold	Elizabeth	2010-01-10 00:00:00	500	500	0			340 Old Town Ct.		Chicago	IL	60610     	1A							  	          	True		False
+3015227	3079144	22260	416561		Bushnell	John	2010-01-11 00:00:00	500	750	0	professor	Northwestern University	1805 Crain St.		Evanston	IL	60202     	1A							  	          	True		False
+3015228	3079145	22260	416561		Bushnell	John	2010-04-18 00:00:00	250	750	0	professor	Northwestern University	1805 Crain St.		Evanston	IL	60202     	1A							  	          	True		False
+3015229	3079146	22260	416561		Carlock	Helen	2010-01-26 00:00:00	100	200	0			7729 N Ashland	Apt. 3	Chicago	IL	60626     	1A							  	          	True		False
+3015230	3079147	22260	416561		Carlock	Helen	2010-03-07 00:00:00	100	200	0			7729 N Ashland	Apt. 3	Chicago	IL	60626     	1A							  	          	True		False
+3015231	3079148	22260	416561		Clancy	Thomas	2010-03-22 00:00:00	500	500	0			29 S. LaSalle St.	Barrister Hall Suite 220	Chicago	IL	60603     	1A							  	          	True		False
+3015232	3079149	22260	416561		Clark Netsch	Dawn	2010-04-18 00:00:00	250	250	0			1700 N Hudson		Chicago	IL	60614     	1A							  	          	True		False
+3015233	3079150	22260	416561		Cohen	Steven	2010-01-13 00:00:00	500	500	0			Redaction Requested					1A							  	          	True		True
+3015234	3079151	22260	416561		Cutler	Lynn	2010-03-07 00:00:00	250	250	0			1526 N Mohawk St		Chicago	IL	60610     	1A							  	          	True		False
+3015235	3079152	22260	416561		Ellinger	Jacquetta	2010-01-31 00:00:00	100	250	0			4610 N. Saint Louis Ave.		Chicago	IL	60625     	1A							  	          	True		False
+3015236	3079153	22260	416561		Ellinger	Jacquetta	2010-03-07 00:00:00	50	250	0			4610 N. Saint Louis Ave.		Chicago	IL	60625     	1A							  	          	True		False
+3015237	3079154	22260	416561		Ellinger	Jacquetta	2010-04-18 00:00:00	100	250	0			4610 N. Saint Louis Ave.		Chicago	IL	60625     	1A							  	          	True		False
+3015238	3079155	22260	416561		Engel	Barbara	2010-01-17 00:00:00	200	300	0			5413 S. Blackstone		Chicago	IL	60615     	1A							  	          	True		False
+3015239	3079156	22260	416561		Engel	Barbara	2010-04-17 00:00:00	100	300	0			5413 S. Blackstone		Chicago	IL	60615     	1A							  	          	True		False
+3015240	3079157	22260	416561		Ettner	Fred	2010-03-07 00:00:00	200	200	0			800 Austin St.	Suite 308	Evanston	IL	60202     	1A							  	          	True		False
+3015241	3079158	22260	416561		Eychaner	Fred	2010-03-04 00:00:00	1500	1500	0	owner	Newsweb Corporation	1645 W Fullerton Ave		Chicago	IL	60614     	1A							  	          	True		False
+3015242	3079159	22260	416561		Firman Community Services		2010-01-14 00:00:00	250	250	0			37 W. 47th St.		Chicago	IL	60609     	1A							  	          	True		False
+3015243	3079160	22260	416561		Fletch O'Brien Kasper & Nottage PC		2010-01-20 00:00:00	250	250	0			Redaction Requested					1A							  	          	True		True
+3015244	3079161	22260	416561		Gills	Thurman	2010-02-03 00:00:00	300	300	0			5202 North Kenmore Ave		Chicago	IL	60640     	1A							  	          	True		False
+3015245	3079162	22260	416561		Greene	Susan	2010-01-23 00:00:00	200	200	0			922 Asbury Ave.		Evanston	IL	60202     	1A							  	          	True		False
+3015246	3079163	22260	416561		Greer	Jill	2010-01-31 00:00:00	300	300	0			1321 Jenks Street		Evanston	IL	60201     	1A							  	          	True		False
+3015247	3079164	22260	416561		Hale	Philip	2010-03-07 00:00:00	250	250	0			1054 W. North Shore Ave.	#2E	Chicago	IL	60626     	1A							  	          	True		False
+3015248	3079165	22260	416561		Hovanec	George	2010-03-21 00:00:00	750	750	0	Lobbyist	Community Behavioral Healthcare Association of IL	5 North Oxford Road		Springfield	IL	62702     	1A							  	          	True		False
+3015249	3079166	22260	416561		Illinois Governmental Consulting Group LLC.		2010-01-27 00:00:00	500	500	0			500 N Dearborn	Suite 1030	Chicago	IL	60610     	1A							  	          	True		False
+3015250	3079167	22260	416561		Johnston	John	2010-01-18 00:00:00	250	250	0			26435 S. Dixie Hwy		Crete	IL	60417     	1A							  	          	True		False
+3015251	3079168	22260	416561		Kahnweiler	Gerri	2010-01-18 00:00:00	250	250	0			1070 Westmoor Rd.		Winnetka	IL	60093     	1A							  	          	True		False
+3015252	3079169	22260	416561		Knight	Millicent	2010-01-12 00:00:00	250	500	0			2757 Ridge Ave.		Evanston	IL	60201     	1A							  	          	True		False
+3015253	3079170	22260	416561		Knight	Millicent	2010-03-07 00:00:00	250	500	0			2757 Ridge Ave.		Evanston	IL	60201     	1A							  	          	True		False
+3015254	3079171	22260	416561		Monsanto Company		2010-02-03 00:00:00	250	250	0			800 North Lindbergh		St. Louis	MO	63167     	1A							  	          	True		False
+3015255	3079172	22260	416561		Morrison	Fred	2010-01-15 00:00:00	500	500	0			2373 E. 70th St.	Apt 506	Chicago	IL	60649     	1A							  	          	True		False
+3015256	3079173	22260	416561		Moss	Marilyn	2010-03-07 00:00:00	250	250	0			1503 Oak Ave.	Apt. 112	Evanston	IL	60201-4223	1A							  	          	True		False
+3015257	3079174	22260	416561		Myers	Nancy	2010-01-13 00:00:00	500	500	0			807 Davis St.	#2104	Evanston	IL	60201     	1A							  	          	True		False
+3015258	3079175	22260	416561		Nelson	James	2010-01-27 00:00:00	250	250	0			21 Fairview Lane		Springfield	IL	62711     	1A							  	          	True		False
+3015259	3079176	22260	416561		Nurridin	Salim	2010-01-11 00:00:00	250	250	0			139 E. 115th St.		Chicago	IL	60628     	1A							  	          	True		False
+3015260	3079177	22260	416561		O'Brien	Daniel	2010-02-01 00:00:00	600	600	0	retired	retired	1435 Q S. Prairie		Chicago	IL	60605     	1A							  	          	True		False
+3015261	3079178	22260	416561		O'Connell	John	2010-01-22 00:00:00	250	250	0			129 Indian Wod Lane		Indian Head Park	IL	60525     	1A							  	          	True		False
+3015262	3079179	22260	416561		O'Connor	Michael	2010-01-23 00:00:00	200	200	0			1427 W. Howard St.		Chicago	IL	60626     	1A							  	          	True		False
+3015263	3079180	22260	416561		Overholt	Leticia	2010-01-31 00:00:00	250	250	0			511 Greenleaf Ave		Wilmette	IL	60091     	1A							  	          	True		False
+3015264	3079181	22260	416561		Palmer	Eric	2010-03-07 00:00:00	250	250	0			1421 Sherman Ave		Evanston	IL	60201     	1A							  	          	True		False
+3015265	3079182	22260	416561		Pfizer Inc.		2010-01-25 00:00:00	500	500	0			122 W. Washington Ave.	Suite 850	Madison	WI	53703     	1A							  	          	True		False
+3015266	3079183	22260	416561		Pruzan	Gloria	2010-01-17 00:00:00	350	350	0			2708 N. Wayne		Chicago	IL	60614     	1A							  	          	True		False
+3015267	3079184	22260	416561		Rees	Miryam	2010-01-23 00:00:00	250	250	0			319 Wesley Ave.		Evanston	IL	60202     	1A							  	          	True		False
+3015268	3079185	22260	416561		Simmons Attorneys at Law		2010-02-01 00:00:00	2000	2000	0			707 Berkshire Blvd.	P.O. Box 521	East Alton	IL	62024     	1A							  	          	True		False
+3015269	3079186	22260	416561		Simon	Philip	2010-01-14 00:00:00	200	200	0						IL	          	1A							  	          	True		False
+3015270	3079187	22260	416561		Smith	Leo	2010-03-03 00:00:00	1000	1000	0	Director	IL Birth to 5 PAC	5348 N Lakewood		Chicago	IL	60640     	1A							  	          	True		False
+3015271	3079188	22260	416561		Sommers	Mary	2010-01-22 00:00:00	250	250	0			134 Lincoln		Oregon	WI	53575     	1A							  	          	True		False
+3015272	3079189	22260	416561		Suffredin, Jr.	Lawrence J.	2010-03-07 00:00:00	250	250	0			2431 Pioneer Rd.		Evanston	IL	60201     	1A							  	          	True		False
+3015273	3079190	22260	416561		Tizdahl	Elizabeth	2010-03-07 00:00:00	1000	1000	0	Mayor	City of Evanston	2 Martha Lane		Evanston	IL	60201     	1A							  	          	True		False
+3015274	3079191	22260	416561		Tucker	Laura	2010-03-07 00:00:00	250	250	0			1741 Hinman Ave		Evanston	IL	60201     	1A							  	          	True		False
+3015275	3079192	22260	416561		Wayne	Candace	2010-01-20 00:00:00	250	250	0			134 N. LaSalle Street		Chicago	IL	60602     	1A							  	          	True		False
+3015276	3079193	22260	416561		Weissbourd	Bernice	2010-01-11 00:00:00	300	300	0			2737 Sheridan Rd.		Evanston	IL	60201     	1A							  	          	True		False
+3015277	3079194	22260	416561		Wolen	Deborah	2010-01-10 00:00:00	100	410	0			1812 W Mulford		Evanston	IL	60202     	1A							  	          	True		False
+3015278	3079195	22260	416561		Wolen	Deborah	2010-01-23 00:00:00	60	410	0			1812 W Mulford		Evanston	IL	60202     	1A							  	          	True		False
+3015279	3079196	22260	416561		Wolen	Deborah	2010-01-24 00:00:00	250	410	0			1812 W Mulford		Evanston	IL	60202     	1A							  	          	True		False
+3015280	3079197	22260	416561		Wolfson	Jeffrey A.	2010-01-26 00:00:00	1000	1000	0	Trader	Self	440 S LaSalle Street	Suite 950	Chicago	IL	60605     	1A							  	          	True		False
+3015281	3079198	22260	416561		Ameren CILCO		2010-01-01 00:00:00	500	500	0			P.O. Box 66892		St. Louis	MO	63166     	2A							  	          	True		False
+3015282	3079199	22260	416561		Associated Beer Distributors of Illinois		2010-01-11 00:00:00	1000	1000	0			P.O. Box 396		Springfield	IL	62705     	2A							  	          	True		False
+3015283	3079200	22260	416561		AT&T Illinois Employee PAC		2010-02-01 00:00:00	1000	1000	0			225 W Randolph St.	27B	Chicago	IL	60606     	2A							  	          	True		False
+3015284	3079201	22260	416561		AT&T Services Inc. on behalf of AT&T Illinois		2010-04-13 00:00:00	2000	2000	0			225 W Randolph		Chicago	IL	60606-1824	2A							  	          	True		False
+3015285	3079202	22260	416561		C.N.A Citizens for Good State and Local Government		2010-01-20 00:00:00	250	250	0			C.N.A Plaza		Chicago	IL	60685-0001	2A							  	          	True		False
+3015286	3079203	22260	416561		CAR of Illinois		2010-01-21 00:00:00	250	250	0			300 W. Edwards	P.O. Box 3045	Springfield	IL	62708     	2A							  	          	True		False
+3015287	3079204	22260	416561		CCCTU		2010-04-01 00:00:00	2000	2000	0			208 West Kinzie		Chicago	IL	60610     	2A							  	          	True		False
+3015288	3079205	22260	416561		Chicago Federation of Labor & IUC		2010-01-04 00:00:00	1500	1500	0			130 E. Randolph	Predential Plaza Suite 2600	Chicago	IL	60601     	2A							  	          	True		False
+3015289	3079206	22260	416561		Chicagoland Chamber of Commerce		2010-01-11 00:00:00	500	500	0			200 E. Randolph St.	Suite 2200	Chicago	IL	60601     	2A							  	          	True		False
+3015290	3079207	22260	416561		Citizens for Elaine Nekritz		2010-05-13 00:00:00	500	500	0			PO Box 2563		Glenview	IL	60025     	2A							  	          	True		False
+3015291	3079208	22260	416561		Citizens for Joe Moore		2010-03-07 00:00:00	250	250	0			1431 W Fargo Ave		Chicago	IL	60626     	2A							  	          	True		False
+3015292	3079209	22260	416561		Citizens for Sara Feigenholtz		2010-01-24 00:00:00	1000	1000	0			Redaction Requested					2A							  	          	True		True
+3015293	3079210	22260	416561		Credit Union Political Action Council		2010-01-23 00:00:00	1000	1000	0			1807 W. Diehl Rd.	P.O. Box 3107	Naperville	IL	60566     	2A							  	          	True		False
+3015294	3079211	22260	416561		Dent-IL-PAC		2010-01-08 00:00:00	500	500	0			1010 S. 2nd Street		Springfield	IL	62705     	2A							  	          	True		False
+3015295	3079212	22260	416561		Emergency Medicine PAC of IL		2010-02-12 00:00:00	250	250	0			1 S 280 Summit Ave.	Court B	Oak Brook Terrace	IL	60181     	2A							  	          	True		False
+3015296	3079213	22260	416561		EMILY's List-NF Fund		2010-01-29 00:00:00	1000	1000	0			1120 Connecticut Ave NW	Suite 1100	Washington	DC	20036     	2A							  	          	True		False
+3015297	3079214	22260	416561		Gutierrez for Congress		2010-01-27 00:00:00	750	750	0			2846 N River Walk Drive		Chicago	IL	60618     	2A							  	          	True		False
+3015298	3079215	22260	416561		Humana		2010-04-01 00:00:00	2500	2500	0			P.O. Box 294		Springfield	IL	62705     	2A							  	          	True		False
+3015299	3079216	22260	416561		IL Laborers' Legislative Committee		2010-03-08 00:00:00	2500	2500	0			1 North Old State Capitol Plaza	Suite 525	Springfield	IL	62701     	2A							  	          	True		False
+3015300	3079217	22260	416561		IL Pipe Trades Association		2010-03-15 00:00:00	2000	2000	0			P.O. Box 1626		Bloomington	IL	61702     	2A							  	          	True		False
+3015301	3079218	22260	416561		IL State Medical Society		2010-03-11 00:00:00	500	500	0			20 N Michigan Ave.	Suite 700	Chicago	IL	60602     	2A							  	          	True		False
+3106860	3170834	22260	422806		Pfizer Inc.		2010-10-27 00:00:00	1000	1000	0			122 W. Washington Ave.	Suite 850	Madison	WI	53703     	1A							  	          	True		False
+3106861	3170835	22260	422806		Singer	Karen	2010-10-27 00:00:00	250	250	0			1235 Maple St.		Evanston	IL	60201     	1A							  	          	True		False
+3106862	3170836	22260	422806		Stricklin & Associates		2010-08-31 00:00:00	250	250	0			20 S. Clark St. Suite 2900		Chicago	IL	60603     	1A							  	          	True		False
+3106863	3170837	22260	422806		Takeda		2010-09-28 00:00:00	250	250	0			One Takeda Parkway		Deerfield	IL	60015     	1A							  	          	True		False
+3106864	3170838	22260	422806		Tcath	Jay	2010-09-20 00:00:00	500	500	0			222 Birchwood Avenue		Deerfield	IL	60015-4713	1A							  	          	True		False
+3106865	3170839	22260	422806		Tenaska		2010-10-19 00:00:00	250	250	0			1044 N. 115th St.		Omaha	NE	68154     	1A							  	          	True		False
+3106866	3170840	22260	422806		AFSCME Illinois		2010-09-17 00:00:00	1000	1000	0			615 S. Second St.	P.O. Box 2328	Springfield	IL	62705     	2A							  	          	True		False
+3106867	3170841	22260	422806		Alliance For Living PAC		2010-09-27 00:00:00	500	500	0			One Northfield Plaza Suite 300		Northfield	IL	60093     	2A							  	          	True		False
+3106868	3170842	22260	422806		Associated Beer Distributors of Illinois		2010-10-12 00:00:00	500	500	0			P.O. Box 396		Springfield	IL	62705     	2A							  	          	True		False
+3106869	3170843	22260	422806		Associated Fire Fighters of IL PAC Fund		2010-09-03 00:00:00	500	500	0			927 S. Second		Springfield	IL	62704     	2A							  	          	True		False
+3106870	3170844	22260	422806		Chicago Teachers Union		2010-11-01 00:00:00	500	500	0			222 Merchandise Mart Plaza Suite 40		Chicago	IL	60654     	2A							  	          	True		False
+3106871	3170845	22260	422806		Dent-IL-PAC		2010-08-26 00:00:00	1000	1000	0			1010 S. 2nd Street		Springfield	IL	62705     	2A							  	          	True		False
+3106872	3170846	22260	422806		Friends of John Bradley		2010-11-01 00:00:00	500	500	0			501 W. Deyoung St. Suite 4		Marion	IL	62959     	2A							  	          	True		False
+3106873	3170847	22260	422806		Friends of Julie Hamos		2010-08-03 00:00:00	500	500	0			PO Box 5308		Evanston	IL	60204-5308	2A							  	          	True		False
+3106874	3170848	22260	422806		GlaxoSmithKline		2010-12-29 00:00:00	500	500	0			Five Moore Drive		Research Triangle Pa	NC	27709     	2A							  	          	True		False
+3106875	3170849	22260	422806		Health Care Council of Illinois PAC		2010-09-30 00:00:00	500	500	0			1029 S 4th St.		Springfield	IL	62703     	2A							  	          	True		False
+3106876	3170850	22260	422806		Humana		2010-10-20 00:00:00	500	500	0			P.O. Box 294		Springfield	IL	62705     	2A							  	          	True		False
+3106877	3170851	22260	422806		IL Laborers' Legislative Committee		2010-08-31 00:00:00	500	500	0			1 North Old State Capitol Plaza	Suite 525	Springfield	IL	62701     	2A							  	          	True		False
+3106878	3170852	22260	422806		Illinois Federation of Teachers COPE		2010-10-23 00:00:00	1000	1000	0			500 Oakmont Lane		Westmont	IL	60559     	2A							  	          	True		False
+3106879	3170853	22260	422806		Illinois Financial Services (IFSA) PAC		2010-10-01 00:00:00	200	200	0			601 West Monroe St.		Springfield	IL	62704     	2A							  	          	True		False
+3106880	3170854	22260	422806		Illinois Hospital Association		2010-08-24 00:00:00	1000	1000	0			700 South Second Street		Springfield	IL	62704     	2A							  	          	True		False
+3106881	3170855	22260	422806		Illinois Lawyers PAC		2010-09-20 00:00:00	500	500	0			424 South Second Street		Springfield	IL	62701     	2A							  	          	True		False
+3106882	3170856	22260	422806		Illinois Merchants Political Action Committee Team		2010-09-22 00:00:00	500	500	0			19 S. LaSalle Suite 300		Chicago	IL	60603     	2A							  	          	True		False
+3106883	3170857	22260	422806		Illinois Optometric Assocation P.A.C.		2010-10-25 00:00:00	200	200	0			304 W. Washington St.		Springfield	IL	62701     	2A							  	          	True		False
+3106884	3170858	22260	422806		Illinois Political Action Committee for Education		2010-09-22 00:00:00	5000	10000	0			100 E. Edwards St.		Springfield	IL	62704     	2A							  	          	True		False
+3106885	3170859	22260	422806		Illinois Political Action Committee for Education		2010-10-14 00:00:00	5000	10000	0			100 E. Edwards St.		Springfield	IL	62704     	2A							  	          	True		False
+3106886	3170860	22260	422806		Illinois Trial Lawyers Association PAC		2010-08-23 00:00:00	3000	3000	0			401 W Edwards St		Springfield	IL	62704-1917	2A							  	          	True		False
+3106887	3170861	22260	422806		Illinois Venture Capital Association (IVCA) PAC		2010-09-16 00:00:00	1000	1000	0			225 W. Wacker Dr. Suite 3000		Chicago	IL	60606     	2A							  	          	True		False
+3106888	3170862	22260	422806		Merck Sharp & Dohme		2010-10-27 00:00:00	1000	1000	0			One Merck Drive		Whitehouse Station	NJ	88889     	2A							  	          	True		False
+3106889	3170863	22260	422806		North Suburban Teachers Union COPE		2010-10-26 00:00:00	1500	1500	0			9933 N. Lawler Suite 222		Skokie	IL	60077     	2A							  	          	True		False
+3106890	3170864	22260	422806		PHRMA		2010-07-23 00:00:00	250	250	0			950 F Street		Washington	DC	20004     	2A							  	          	True		False
+3106891	3170865	22260	422806		Planned Parenthood Illinois Action PAC		2010-09-29 00:00:00	200	200	0			107 W. Cook Suite F		Springfield	IL	62704     	2A							  	          	True		False
+3106892	3170866	22260	422806		REALTORS PAC		2010-10-25 00:00:00	500	500	0			P.O. Box 19451		Springfield	IL	62794     	2A							  	          	True		False
+3106893	3170867	22260	422806		SEIU HealthCare IL In PAC		2010-08-03 00:00:00	500	500	0			209 W. Jackson Blvd	Suite 200	Chicago	IL	60606     	2A							  	          	True		False
+3106894	3170868	22260	422806		SEIU Illinois Council PAC Fund		2010-07-26 00:00:00	750	750	0			111 E. Wacker Drive Suite 2500		Chicago	IL	60601     	2A							  	          	True		False
+3106895	3170869	22260	422806		SFAA PAC		2010-11-01 00:00:00	250	250	0			PO Box 7913		Gurnee	IL	60031     	2A							  	          	True		False
+3106896	3170870	22260	422806		SUAAction		2010-09-21 00:00:00	300	400	0			P.O. Box 1770		Springfield	IL	62705     	2A							  	          	True		False
+3106897	3170871	22260	422806		SUAAction		2010-10-18 00:00:00	100	400	0			P.O. Box 1770		Springfield	IL	62705     	2A							  	          	True		False
+3106898	3170872	22260	422806		University Public Issues Committee		2010-07-22 00:00:00	2000	2500	0			P.O. Box 62		Evanston	IL	60204     	2A							  	          	True		False
+3106899	3170873	22260	422806		University Public Issues Committee		2010-10-23 00:00:00	500	2500	0			P.O. Box 62		Evanston	IL	60204     	2A							  	          	True		False
+3106900	3170874	22260	422806		USW Illinois		2010-10-30 00:00:00	2000	2000	0			1301 Texas Street Room 200		Gary	IN	46402     	2A							  	          	True		False
+3106901	3170875	22260	422806		Walgreens		2010-10-25 00:00:00	200	200	0			200 Wilmont Rd.		Deerfield	IL	60015     	2A							  	          	True		False
+3106902	3170803	22260	422806		Addus HealthCare		2010-08-24 00:00:00	250	250	0			2401 South Plum Grove Rd		Palatine	IL	60067     	1A							  	          	True		False
+3106903	3170804	22260	422806		Astellas Pharma US Inc.		2010-09-14 00:00:00	500	500	0			1481 Sandy Hook		Wheaton	IL	60187     	1A							  	          	True		False
+3106904	3170805	22260	422806		Bauer	Michael	2010-10-01 00:00:00	250	250	0			2500 N. Lakeview Ave No. 2005		Chicago	IL	60614     	1A							  	          	True		False
+3106905	3170806	22260	422806		Boehringer Ingelheim Pharmaceuticals Inc.		2010-09-13 00:00:00	250	250	0			P.O. Box 2874		Clinton	IA	52732     	1A							  	          	True		False
+3106906	3170807	22260	422806		Brunsvold	Elizabeth	2010-08-31 00:00:00	250	250	0			340 Old Town Ct.		Chicago	IL	60610     	1A							  	          	True		False
+3106907	3170808	22260	422806		Churchill Downs Inc. Arlington Park Race Course		2010-08-24 00:00:00	500	500	0			P.O. Box 7		Arlington Heights	IL	60006     	1A							  	          	True		False
+3106908	3170809	22260	422806		ComED PAC		2010-10-01 00:00:00	500	500	0			1 Financial Place		Chicago	IL	60605     	1A							  	          	True		False
+3106909	3170810	22260	422806		Conlon Public Strategies Inc.		2010-08-30 00:00:00	500	500	0			350 N. LaSalle St. Ste. 1420		Chicago	IL	60654     	1A							  	          	True		False
+3106910	3170811	22260	422806		Crosley	Lori A.	2010-08-31 00:00:00	250	250	0			728 W. Jackson		Chicago	IL	60661     	1A							  	          	True		False
+3106911	3170812	22260	422806		Curry & Associates LLC		2010-09-19 00:00:00	250	250	0			4804 Fletcher Lane		Mt Zion	IL	62549     	1A							  	          	True		False
+3106912	3170813	22260	422806		Douglas	Eric	2010-10-27 00:00:00	250	250	0			One Baxter Parkway		Deerfield	IL	60015     	1A							  	          	True		False
+3106913	3170814	22260	422806		Flanagan, Jr.	Joseph	2010-10-18 00:00:00	500	500	0			1200 Forest Ave.		Evanston	IL	60202     	1A							  	          	True		False
+3106914	3170815	22260	422806		Freeborn & Peters LLP		2010-09-14 00:00:00	250	250	0			P.O. Box 6453		Evanston	IL	60204-6453	1A							  	          	True		False
+3106915	3170816	22260	422806		Gartzman	Martin	2010-07-19 00:00:00	100	250	0			1225 Leonard Pl.		Evanston	IL	60201     	1A							  	          	True		False
+3106916	3170817	22260	422806		Gartzman	Martin	2010-10-19 00:00:00	150	250	0			1225 Leonard Pl.		Evanston	IL	60201     	1A							  	          	True		False
+3106917	3170818	22260	422806		Heibeisen	Keith	2010-10-10 00:00:00	500	500	0			2828 Woodmere Court		Northbrook	IL	60062     	1A							  	          	True		False
+3106918	3170819	22260	422806		Hilton	Marc	2010-10-19 00:00:00	500	500	0			1575 Florence		Evanston	IL	60201     	1A							  	          	True		False
+3106919	3170820	22260	422806		Holland & Knight Illinois Committee for Effective Government		2010-08-26 00:00:00	250	750	0			131 S. Dearborn Street 30th Floor		Chicago	IL	60603     	1A							  	          	True		False
+3106920	3170821	22260	422806		Holland & Knight Illinois Committee for Effective Government		2010-09-30 00:00:00	500	750	0			131 S. Dearborn Street 30th Floor		Chicago	IL	60603     	1A							  	          	True		False
+3106921	3170822	22260	422806		Infrastructure Engineering Incorporated		2010-08-31 00:00:00	250	250	0			33 West Monroe Street Suite 1540		Chicago	IL	60603     	1A							  	          	True		False
+3106922	3170823	22260	422806		Johnson	Loxley	2010-10-19 00:00:00	500	500	0			1704 Monroe		Evanston	IL	60202     	1A							  	          	True		False
+3106923	3170824	22260	422806		JPMorgan Chase & Co. PAC		2010-09-03 00:00:00	500	500	0			10 S. Dearborn Street		Chicago	IL	60603     	1A							  	          	True		False
+3106924	3170825	22260	422806		Keenan-Devlin	Patrick	2010-10-07 00:00:00	250	250	0			711 Washington St.	#1	Evanston	IL	60602     	1A							  	          	True		False
+3106925	3170826	22260	422806		Knight	Millicent	2010-10-27 00:00:00	500	500	0			2757 Ridge Ave.		Evanston	IL	60201     	1A							  	          	True		False
+3106926	3170827	22260	422806		Lehman	Lucy	2010-09-20 00:00:00	500	500	0			2715 Sheridan Road		Evanston	IL	60201     	1A							  	          	True		False
+3106927	3170828	22260	422806		McClain	Michael & Lucinda	2010-08-25 00:00:00	200	200	0			1100 Peach Tree Lane		Quincy	IL	62305     	1A							  	          	True		False
+3106928	3170829	22260	422806		Merck and Co Inc.		2010-10-26 00:00:00	1000	1000	0			436 58th Street		Westmont	IL	60559     	1A							  	          	True		False
+3106929	3170830	22260	422806		Motorola		2010-09-08 00:00:00	250	250	0			P.O. Box 68429		Schaumburg	IL	60168     	1A							  	          	True		False
+3106930	3170831	22260	422806		Nelson	James	2010-07-19 00:00:00	250	250	0			21 Fairview Lane		Springfield	IL	62711     	1A							  	          	True		False
+3106931	3170832	22260	422806		Norris	Coral	2010-10-12 00:00:00	500	500	0			932 Wesley		Evanston	IL	60202     	1A							  	          	True		False
+3106932	3170833	22260	422806		Pearce	George M.	2010-09-30 00:00:00	250	250	0			132 S. Dearborn Street 30th Floor		Chicago	IL	60603     	1A							  	          	True		False
