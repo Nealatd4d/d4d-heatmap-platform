@@ -91,14 +91,91 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Sego
 .spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading-indicator span{font-size:11px;color:var(--text-muted)}
-@media(max-width:768px){
-  .header{flex-direction:column;align-items:flex-start;gap:4px;padding:8px 12px}
-  .toolbar{padding:6px 10px;gap:5px}
-  .toolbar select{min-width:80px;font-size:10px}
-  .mode-btn{font-size:10px;padding:4px 6px}
-  .info-panel{min-width:200px;max-width:260px;bottom:10px;right:10px}
-  .legend{bottom:10px;left:10px}
+/* ── Filter toggle button (mobile only) ── */
+.filter-toggle{display:none;background:var(--surface-alt);border:1px solid var(--border);color:var(--text-muted);border-radius:6px;padding:6px 8px;cursor:pointer;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s,color .15s;-webkit-tap-highlight-color:transparent}
+.filter-toggle:hover,.filter-toggle.active{background:var(--surface-hover);color:var(--blue)}
+
+/* ── Header right area (wraps stats + toggle) ── */
+.header-right{display:flex;align-items:center;gap:8px}
+
+/* Mobile/desktop title switching */
+.mobile-title{display:none}
+
+/* ── Bottom Sheet ── */
+.bottom-sheet{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);border-radius:12px 12px 0 0;transform:translateY(100%);transition:transform 0.3s ease;z-index:1100;max-height:70vh;overflow-y:auto;display:none}
+.bottom-sheet.open{transform:translateY(0)}
+.bottom-sheet-handle{width:32px;height:4px;background:var(--text-dim);border-radius:2px;margin:10px auto 4px;flex-shrink:0}
+.bottom-sheet-content{padding:4px 14px 20px}
+.bottom-sheet-content h3{font-size:14px;font-weight:600;margin-bottom:8px;padding-top:2px}
+
+/* ── Tablet layout (768–1024px) ── */
+@media(min-width:769px) and (max-width:1024px){
+  .toolbar select{font-size:10px;min-width:90px}
+  .mode-btn{font-size:10px;padding:4px 7px}
+  .info-panel{max-width:280px}
+  .header-stats .stat-val{font-size:12px}
+  .header-stats{gap:12px}
 }
+
+/* ── Mobile layout (≤768px) ── */
+@media(max-width:768px){
+  /* Header: two-row layout on mobile */
+  .header{padding:6px 12px;flex-wrap:wrap;align-items:center;gap:0}
+  .header-left{flex:0 0 auto;min-width:0;display:flex;align-items:center;gap:8px;order:1}
+  .header-subtitle.desktop-subtitle{display:none}
+  .desktop-title{display:none}
+  .mobile-title{display:block;font-size:14px;font-weight:700}
+  .header-logo{width:24px;height:24px}
+  .filter-toggle{display:flex;margin-left:auto;order:2}
+
+  /* Header right: just the toggle button on the title row */
+  .header-right{display:contents}
+
+  /* Stats: full-width second row below title */
+  .header-stats{display:flex;flex-direction:row;gap:10px;font-size:10px;flex-wrap:nowrap;width:100%;order:3;overflow-x:auto;padding-top:4px;border-top:1px solid var(--border);margin-top:4px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .header-stats::-webkit-scrollbar{display:none}
+  .header-stats:empty{display:none;padding:0;border:none;margin:0}
+  .header-stats .stat{flex-direction:column;align-items:flex-start;gap:0;flex-shrink:0}
+  .header-stats .stat-val{font-size:12px;max-width:120px}
+  .header-stats .stat-label{font-size:8px}
+
+  /* Toolbar: collapsible on mobile */
+  .toolbar{padding:0;overflow:hidden;transition:max-height 0.3s ease,padding 0.3s ease;max-height:0;border-bottom:none}
+  .toolbar.expanded{max-height:500px;padding:8px 12px;border-bottom:1px solid var(--border)}
+  .toolbar-controls{display:flex;flex-direction:column;gap:8px;width:100%}
+
+  /* Full-width stacked dropdowns */
+  .toolbar-controls select{width:100%;min-width:unset;font-size:13px;padding:8px 28px 8px 10px}
+  .toolbar-sep{display:none}
+  .toolbar-label{font-size:10px;margin-top:4px}
+
+  /* Mode buttons: wrap in 4-column grid */
+  .mode-group{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;width:100%}
+  .mode-btn{font-size:11px;padding:8px 4px;text-align:center;white-space:normal;line-height:1.2}
+
+  /* View opts: full width */
+  .view-opts{width:100%;gap:6px}
+  .view-opts select{flex:1;min-width:0;font-size:12px;padding:7px 24px 7px 8px}
+
+  /* Info panel: hidden on mobile (replaced by bottom sheet) */
+  .info-panel{display:none!important}
+
+  /* Bottom sheet: show on mobile */
+  .bottom-sheet{display:block}
+
+  /* Legend: collapsible, bottom-left, smaller */
+  .legend{bottom:10px;left:10px;padding:8px 10px;pointer-events:auto;cursor:pointer}
+  .legend-title{display:flex;align-items:center;gap:4px;margin-bottom:0}
+  .legend-body{overflow:hidden;transition:max-height 0.25s ease;max-height:0}
+  .legend-body.expanded{max-height:300px}
+  .legend.legend-expanded .legend-body{max-height:300px}
+  .legend.legend-expanded .legend-title::after{content:' ▴'}
+  .legend-title::after{content:' ▾';font-size:10px}
+
+  /* Footer: hidden on mobile */
+  .footer{display:none}
+}
+
 </style>
 </head>
 <body>
@@ -111,33 +188,43 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Sego
         <circle cx="20" cy="10" r="2" fill="#fdd835"/>
       </svg>
       <div>
-        <div class="header-title">D4D Election Heatmap Platform</div>
-        <div class="header-subtitle">Precinct-Level Election Data · Cook County &amp; Chicago</div>
+        <div class="header-title desktop-title">D4D Election Heatmap Platform</div>
+        <div class="header-title mobile-title">D4D Heatmap</div>
+        <div class="header-subtitle desktop-subtitle">Precinct-Level Election Data · Cook County &amp; Chicago</div>
       </div>
     </div>
-    <div class="header-stats" id="headerStats"></div>
+    <div class="header-right">
+      <div class="header-stats" id="headerStats"></div>
+      <button class="filter-toggle" id="filterToggle" aria-label="Toggle filters" onclick="toggleToolbar()">
+        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18">
+          <path d="M3 5h14M6 10h8M9 15h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
   </div>
 
-  <div class="toolbar">
-    <span class="toolbar-label">Election</span>
-    <select id="selElection"><option value="">Loading…</option></select>
-    <div class="toolbar-sep"></div>
-    <span class="toolbar-label">District</span>
-    <select id="selType"><option value="">Select Type…</option></select>
-    <select id="selRace" disabled><option value="">Select Race…</option></select>
-    <div class="toolbar-sep"></div>
-    <span class="toolbar-label">View</span>
-    <div class="mode-group">
-      <button class="mode-btn active" data-mode="turnout">Turnout</button>
-      <button class="mode-btn" data-mode="winner">Winner</button>
-      <button class="mode-btn" data-mode="margin">Margin</button>
-      <button class="mode-btn" data-mode="candidate">Candidate</button>
-      <button class="mode-btn" data-mode="vs">Vs</button>
-      <button class="mode-btn" data-mode="turnout_delta">Turnout &Delta;</button>
-      <button class="mode-btn" data-mode="swing">Swing</button>
-      <button class="mode-btn" data-mode="votes">Votes</button>
+  <div class="toolbar" id="toolbar">
+    <div class="toolbar-controls" id="toolbarControls">
+      <span class="toolbar-label">Election</span>
+      <select id="selElection"><option value="">Loading…</option></select>
+      <div class="toolbar-sep"></div>
+      <span class="toolbar-label">District</span>
+      <select id="selType"><option value="">Select Type…</option></select>
+      <select id="selRace" disabled><option value="">Select Race…</option></select>
+      <div class="toolbar-sep"></div>
+      <span class="toolbar-label">View</span>
+      <div class="mode-group">
+        <button class="mode-btn active" data-mode="turnout">Turnout</button>
+        <button class="mode-btn" data-mode="winner">Winner</button>
+        <button class="mode-btn" data-mode="margin">Margin</button>
+        <button class="mode-btn" data-mode="candidate">Candidate</button>
+        <button class="mode-btn" data-mode="vs">Vs</button>
+        <button class="mode-btn" data-mode="turnout_delta">Turnout &Delta;</button>
+        <button class="mode-btn" data-mode="swing">Swing</button>
+        <button class="mode-btn" data-mode="votes">Votes</button>
+      </div>
+      <div class="view-opts" id="viewOpts"></div>
     </div>
-    <div class="view-opts" id="viewOpts"></div>
   </div>
 
   <div class="map-wrap">
@@ -151,6 +238,11 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Sego
     <div class="legend" id="legend"></div>
   </div>
 
+  <div class="bottom-sheet" id="bottomSheet">
+    <div class="bottom-sheet-handle"></div>
+    <div class="bottom-sheet-content" id="bottomSheetContent"></div>
+  </div>
+
   <div class="footer">
     <span>Data: IL State Board of Elections · Chicago Board of Elections · Cook County Clerk</span>
     <a href="https://www.perplexity.ai/computer" target="_blank" rel="noopener noreferrer">Created with Perplexity Computer</a>
@@ -160,6 +252,23 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Sego
 <script>
 (function(){
 'use strict';
+
+/* ═══════════════════ MOBILE DETECTION ═══════════════════ */
+let isMobile = window.matchMedia('(max-width: 768px)').matches;
+window.addEventListener('resize', () => {
+  const wasMobile = isMobile;
+  isMobile = window.matchMedia('(max-width: 768px)').matches;
+  if (wasMobile !== isMobile) {
+    if (!isMobile) closeBottomSheet();
+    if (isMobile) {
+      const tb = $('toolbar');
+      if (tb) tb.classList.remove('expanded');
+      const ft = $('filterToggle');
+      if (ft) ft.classList.remove('active');
+    }
+  }
+});
+
 
 /* ═══════════════════ SUPABASE CONFIG ═══════════════════ */
 const SUPA_URL = 'https://nfjfqdffulhqhszhlymo.supabase.co';
@@ -629,7 +738,7 @@ async function updateViewOpts() {
 function getStyle(pid, turnout, raceData, turnout2, raceData2) {
   const t = turnout ? turnout[pid] : null;
   const rd = raceData ? raceData[pid] : null;
-  let fill = NO_DATA, dash = null;
+  let fill = NO_DATA, dash = null, fillOpacity = 0.85;
 
   if (currentMode === 'turnout') {
     fill = t ? scaleColor(t.turnout, TURNOUT_SC) : NO_DATA;
@@ -639,6 +748,14 @@ function getStyle(pid, turnout, raceData, turnout2, raceData2) {
     if (rd && rd.candidates && rd.candidates.length) {
       const winner = rd.candidates[0].n;
       fill = candidateColorMap[winner] || CANDIDATE_PALETTE[0];
+      if (rd.candidates.length >= 2) {
+        const margin = rd.candidates[0].p - rd.candidates[1].p;
+        if (margin >= 20) fillOpacity = 0.9;
+        else if (margin >= 10) fillOpacity = 0.8;
+        else fillOpacity = 0.65;
+      } else {
+        fillOpacity = 0.9;
+      }
     } else { fill = NO_DATA; if (!t) dash = '4 4'; }
 
   } else if (currentMode === 'margin') {
@@ -692,7 +809,7 @@ function getStyle(pid, turnout, raceData, turnout2, raceData2) {
     else { fill = NO_DATA; dash = '4 4'; }
   }
 
-  return { fillColor: fill, color: '#1a1d27', weight: 1, fillOpacity: 0.85, dashArray: dash };
+  return { fillColor: fill, color: '#1a1d27', weight: 1, fillOpacity: fillOpacity, dashArray: dash };
 }
 
 /* ═══════════════════ RENDER ═══════════════════ */
@@ -779,21 +896,34 @@ async function render() {
     precinctLayer = L.geoJSON({ type: 'FeatureCollection', features: activeFeats }, {
       style: f => getStyle(f._pid, turnout, raceData, turnout2, raceData2),
       onEachFeature: (f, l) => {
-        l.on('mouseover', () => {
-          // Reset only previously hovered layer (efficient)
-          if (hoveredLayer && hoveredLayer !== l) {
-            hoveredLayer.setStyle({ color: '#1a1d27', weight: 1 });
-          }
-          hoveredLayer = l;
-          l.setStyle({ color: '#fff', weight: 2.5 });
-          l.bringToFront();
-          showInfo(f, turnout, raceData, turnout2, raceData2);
-        });
-        l.on('mouseout', () => {
-          l.setStyle({ color: '#1a1d27', weight: 1 });
-          hoveredLayer = null;
-          infoPanel.classList.remove('visible');
-        });
+        if (isMobile) {
+          l.on('click', (e) => {
+            L.DomEvent.stopPropagation(e);
+            if (hoveredLayer && hoveredLayer !== l) {
+              hoveredLayer.setStyle({ color: '#1a1d27', weight: 1 });
+            }
+            hoveredLayer = l;
+            l.setStyle({ color: '#fff', weight: 2.5 });
+            l.bringToFront();
+            openBottomSheet(f, turnout, raceData, turnout2, raceData2);
+          });
+        } else {
+          l.on('mouseover', () => {
+            // Reset only previously hovered layer (efficient)
+            if (hoveredLayer && hoveredLayer !== l) {
+              hoveredLayer.setStyle({ color: '#1a1d27', weight: 1 });
+            }
+            hoveredLayer = l;
+            l.setStyle({ color: '#fff', weight: 2.5 });
+            l.bringToFront();
+            showInfo(f, turnout, raceData, turnout2, raceData2);
+          });
+          l.on('mouseout', () => {
+            l.setStyle({ color: '#1a1d27', weight: 1 });
+            hoveredLayer = null;
+            infoPanel.classList.remove('visible');
+          });
+        }
       }
     }).addTo(map);
 
@@ -987,7 +1117,111 @@ function updateLegend(raceData) {
       h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`;
     });
   }
-  legendEl.innerHTML = h;
+  if (isMobile) {
+    // On mobile: wrap rows in .legend-body for collapsible behavior
+    // Extract title vs rows
+    const titleMatch = h.match(/^(<div class="legend-title">[^<]*(?:<[^>]*>[^<]*<\/[^>]*>)*<\/div>)/);
+    if (titleMatch) {
+      const titlePart = titleMatch[0];
+      const bodyPart = h.slice(titlePart.length);
+      legendEl.innerHTML = titlePart + `<div class="legend-body" id="legendBody">${bodyPart}</div>`;
+    } else {
+      legendEl.innerHTML = h;
+    }
+  } else {
+    legendEl.innerHTML = h;
+  }
+}
+
+
+/* ═══════════════════ MOBILE FUNCTIONS ═══════════════════ */
+function toggleToolbar() {
+  const tb = $('toolbar');
+  const ft = $('filterToggle');
+  if (!tb || !ft) return;
+  const isExpanded = tb.classList.toggle('expanded');
+  ft.classList.toggle('active', isExpanded);
+}
+
+function buildInfoHTML(feature, turnout, raceData, turnout2, raceData2) {
+  const pid = feature._pid;
+  const label = feature._label;
+  const t = turnout ? turnout[pid] : null;
+  const rd = raceData ? raceData[pid] : null;
+
+  let h = `<h3>${label || 'Precinct'}</h3>`;
+
+  if (t) {
+    h += `<div class="info-row"><span>Registered</span><span class="val">${(t.registered || 0).toLocaleString()}</span></div>`;
+    h += `<div class="info-row"><span>Ballots</span><span class="val">${(t.ballots || 0).toLocaleString()}</span></div>`;
+    h += `<div class="info-row"><span>Turnout</span><span class="val">${t.turnout != null ? t.turnout.toFixed(1) + '%' : '—'}</span></div>`;
+  } else {
+    h += '<div class="info-row"><span>No turnout data</span></div>';
+  }
+
+  if (currentMode === 'turnout_delta') {
+    const t2 = turnout2 ? turnout2[pid] : null;
+    if (t && t2 && t.turnout != null && t2.turnout != null) {
+      const d = t.turnout - t2.turnout;
+      const s = d >= 0 ? '+' : '';
+      h += `<div class="info-row"><span>&Delta; Turnout</span><span class="val" style="color:${d >= 0 ? '#43a047' : '#e57373'}">${s}${d.toFixed(1)}pp</span></div>`;
+    }
+  }
+
+  if (rd && rd.candidates && rd.candidates.length) {
+    h += '<div class="info-divider"></div>';
+    if (rd.candidates.length >= 2) {
+      const mg = rd.candidates[0].p - rd.candidates[1].p;
+      h += `<div class="info-row"><span>Margin (#1 - #2)</span><span class="val">${mg.toFixed(1)}pp</span></div>`;
+    }
+    rd.candidates.forEach((c, i) => {
+      const col = candidateColorMap[c.n] || CANDIDATE_PALETTE[i % CANDIDATE_PALETTE.length];
+      const hl = (currentMode === 'candidate' && c.n === selectedCandidate) ||
+                 (currentMode === 'swing' && c.n === selectedCandidate) ||
+                 (currentMode === 'vs' && (c.n === vsCandidate1 || c.n === vsCandidate2));
+      h += `<div class="cand-row${hl ? ' hl' : ''}">
+        <span class="cand-swatch" style="background:${col}"></span>
+        <span class="cand-name" title="${c.n}">${c.n}</span>
+        <div class="cand-bar-wrap"><div class="cand-bar" style="width:${c.p}%;background:${col}"></div></div>
+        <span class="cand-pct">${c.p.toFixed(1)}%</span>
+        <span class="cand-votes">${c.v.toLocaleString()}</span>
+      </div>`;
+    });
+
+    if (currentMode === 'swing' && selectedCandidate && raceData2) {
+      const rd2 = raceData2[pid];
+      if (rd2 && rd2.candidates) {
+        const c1 = rd.candidates.find(x => x.n === selectedCandidate);
+        const c2 = rd2.candidates.find(x => x.n === selectedCandidate);
+        if (c1 && c2) {
+          const sw = c1.p - c2.p;
+          const s = sw >= 0 ? '+' : '';
+          h += `<div class="info-divider"></div><div class="info-row"><span>Swing</span><span class="val" style="color:${sw >= 0 ? '#43a047' : '#e57373'}">${s}${sw.toFixed(1)}pp</span></div>`;
+        }
+      }
+    }
+  } else if (currentRaceId) {
+    h += '<div class="info-divider"></div><div class="info-row"><span>No race data</span></div>';
+  }
+  return h;
+}
+
+function openBottomSheet(feature, turnout, raceData, turnout2, raceData2) {
+  const sheet = $('bottomSheet');
+  const content = $('bottomSheetContent');
+  if (!sheet || !content) return;
+  content.innerHTML = buildInfoHTML(feature, turnout, raceData, turnout2, raceData2);
+  sheet.classList.add('open');
+}
+
+function closeBottomSheet() {
+  const sheet = $('bottomSheet');
+  if (!sheet) return;
+  sheet.classList.remove('open');
+  if (hoveredLayer) {
+    hoveredLayer.setStyle({ color: '#1a1d27', weight: 1 });
+    hoveredLayer = null;
+  }
 }
 
 /* ═══════════════════ EVENTS ═══════════════════ */
@@ -1021,6 +1255,13 @@ selRace.addEventListener('change', () => {
   const v = selRace.value;
   if (v) {
     currentRaceId = v;
+    // Collapse toolbar on mobile after selecting a race
+    if (isMobile) {
+      const tb = $('toolbar');
+      const ft = $('filterToggle');
+      if (tb) tb.classList.remove('expanded');
+      if (ft) ft.classList.remove('active');
+    }
     onRaceSelected();
   } else {
     currentRaceId = '';
@@ -1055,11 +1296,22 @@ function initMap() {
   map = L.map('map', { center: [41.8337, -87.732], zoom: 10, zoomControl: true, attributionControl: false });
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', { subdomains: 'abcd', maxZoom: 19 }).addTo(map);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png', { subdomains: 'abcd', maxZoom: 19, pane: 'overlayPane' }).addTo(map);
-  map.on('click', () => { infoPanel.classList.remove('visible'); });
+  map.on('click', () => { infoPanel.classList.remove('visible'); if (isMobile) closeBottomSheet(); });
+}
+
+/* ═══════════════════ LEGEND TOGGLE (MOBILE) ═══════════════════ */
+function initLegendToggle() {
+  legendEl.addEventListener('click', () => {
+    if (!isMobile) return;
+    legendEl.classList.toggle('legend-expanded');
+    const body = $('legendBody');
+    if (body) body.classList.toggle('expanded');
+  });
 }
 
 async function init() {
   initMap();
+  initLegendToggle();
   pushLoading();
   try {
     // Load GeoJSON and elections in parallel, but don't let GeoJSON failure
@@ -1078,6 +1330,9 @@ async function init() {
 }
 
 init();
+
+// Expose toggleToolbar globally for inline onclick handler
+window.toggleToolbar = toggleToolbar;
 
 })();
 </script>
