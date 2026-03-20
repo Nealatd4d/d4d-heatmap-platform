@@ -55,6 +55,14 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Sego
 .view-opts{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .view-opts select{min-width:100px}
 .view-opts .vs-lbl{font-size:11px;color:var(--text-dim);padding:0 2px}
+.vs-checklist{display:flex;flex-wrap:wrap;gap:4px;max-width:600px}
+.vs-checklist label{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text-muted);cursor:pointer;padding:3px 8px 3px 4px;border:1px solid var(--border);border-radius:4px;background:var(--surface-alt);transition:all .15s;white-space:nowrap}
+.vs-checklist label:hover{border-color:var(--blue-dim);color:var(--text)}
+.vs-checklist label.checked{border-color:var(--blue);color:var(--blue);font-weight:600;background:rgba(79,195,247,.08)}
+.vs-checklist input[type=checkbox]{appearance:none;-webkit-appearance:none;width:12px;height:12px;border:1.5px solid var(--text-dim);border-radius:2px;cursor:pointer;position:relative;flex-shrink:0;transition:all .15s}
+.vs-checklist input[type=checkbox]:checked{background:var(--blue);border-color:var(--blue)}
+.vs-checklist input[type=checkbox]:checked::after{content:'';position:absolute;left:3px;top:0.5px;width:4px;height:7px;border:solid var(--bg);border-width:0 1.5px 1.5px 0;transform:rotate(45deg)}
+.vs-checklist .vs-swatch{width:8px;height:8px;border-radius:2px;flex-shrink:0}
 .map-wrap{flex:1;position:relative;min-height:0;overflow:hidden;touch-action:none}
 #map{width:100%;height:100%;background:var(--bg);touch-action:manipulation}
 .leaflet-container{background:var(--bg)!important;touch-action:manipulation}
@@ -156,6 +164,8 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Sego
   /* View opts: full width */
   .view-opts{width:100%;gap:6px}
   .view-opts select{flex:1;min-width:0;font-size:12px;padding:7px 24px 7px 8px}
+  .vs-checklist{max-width:100%;max-height:120px;overflow-y:auto;gap:3px}
+  .vs-checklist label{font-size:10px;padding:4px 6px 4px 3px}
 
   /* Info panel: hidden on mobile (replaced by bottom sheet) */
   .info-panel{display:none!important}
@@ -333,6 +343,7 @@ let compareElectionId = '';
 let selectedCandidate = '';
 let vsCandidate1 = '';
 let vsCandidate2 = '';
+let vsCandidates = []; // multi-candidate vs mode
 let candidateColorMap = {};
 
 // Render generation token to prevent stale async overwrites
@@ -448,6 +459,50 @@ function vsColor(d) {
   if (d >= -5) return '#ffcdd2'; if (d >= -10) return '#ef9a9a';
   if (d >= -20) return '#e57373';
   return '#c62828';
+}
+
+/* Multi-candidate Vs: winner-tinted blend.
+   Returns the leading candidate's color, lightened when the race is close. */
+function vsMultiColor(candidates, selectedNames, colorMap) {
+  // Get vote shares for selected candidates only
+  const entries = [];
+  for (const name of selectedNames) {
+    const c = candidates.find(x => x.n === name);
+    if (c && c.p > 0) entries.push({ name, pct: c.p, color: colorMap[name] || NO_DATA });
+  }
+  if (entries.length < 2) return NO_DATA;
+
+  // Sort by vote share descending
+  entries.sort((a, b) => b.pct - a.pct);
+  const leader = entries[0];
+
+  // Use leader's candidate color, desaturate toward white based on margin
+  const margin = leader.pct - entries[1].pct;
+  // tint: 0 = very washed out (close race), 1 = full candidate color (blowout)
+  const tint = Math.min(margin / 40, 1); // reaches full color at 40pp margin
+  return blendHex(leader.color, '#ffffff', 1 - tint * 0.85); // never fully white
+}
+
+/* Blend two hex colors. ratio=0 → color a, ratio=1 → color b */
+function blendHex(a, b, ratio) {
+  const pa = parseHex(a), pb = parseHex(b);
+  if (!pa || !pb) return a;
+  const r = Math.round(pa[0] + (pb[0] - pa[0]) * ratio);
+  const g = Math.round(pa[1] + (pb[1] - pa[1]) * ratio);
+  const bl = Math.round(pa[2] + (pb[2] - pa[2]) * ratio);
+  return `rgb(${r},${g},${bl})`;
+}
+
+function parseHex(hex) {
+  if (!hex || hex === NO_DATA) return null;
+  // Handle rgb() format too
+  if (hex.startsWith('rgb')) {
+    const m = hex.match(/(\d+)/g);
+    return m ? m.map(Number) : null;
+  }
+  hex = hex.replace('#', '');
+  if (hex.length === 3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+  return [parseInt(hex.slice(0,2),16), parseInt(hex.slice(2,4),16), parseInt(hex.slice(4,6),16)];
 }
 
 /* ═══════════════════ LOADING ═══════════════════ */
@@ -712,24 +767,51 @@ async function updateViewOpts() {
   }
 
   if (currentMode === 'vs') {
-    const s1 = document.createElement('select');
-    const s2 = document.createElement('select');
-    names.forEach(n => {
-      const o1 = document.createElement('option');
-      o1.value = n; o1.textContent = shortName(n, 24);
-      s1.appendChild(o1);
-      const o2 = document.createElement('option');
-      o2.value = n; o2.textContent = shortName(n, 24);
-      s2.appendChild(o2);
+    // Multi-candidate checkbox UI
+    // Prune stale selections, default to top 2 if nothing selected
+    vsCandidates = vsCandidates.filter(n => names.includes(n));
+    if (vsCandidates.length < 2) {
+      vsCandidates = names.slice(0, Math.min(2, names.length));
+    }
+    // Also keep legacy vars in sync for bottom sheet highlighting
+    vsCandidate1 = vsCandidates[0] || '';
+    vsCandidate2 = vsCandidates[1] || '';
+
+    const wrap = document.createElement('div');
+    wrap.className = 'vs-checklist';
+    names.forEach((n, i) => {
+      const lbl = document.createElement('label');
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.value = n;
+      cb.checked = vsCandidates.includes(n);
+      if (cb.checked) lbl.classList.add('checked');
+      const sw = document.createElement('span');
+      sw.className = 'vs-swatch';
+      sw.style.background = candidateColorMap[n] || CANDIDATE_PALETTE[i % CANDIDATE_PALETTE.length];
+      const txt = document.createElement('span');
+      txt.textContent = shortName(n, 20);
+      lbl.appendChild(cb);
+      lbl.appendChild(sw);
+      lbl.appendChild(txt);
+      cb.addEventListener('change', () => {
+        if (cb.checked) {
+          if (!vsCandidates.includes(n)) vsCandidates.push(n);
+          lbl.classList.add('checked');
+        } else {
+          vsCandidates = vsCandidates.filter(x => x !== n);
+          lbl.classList.remove('checked');
+        }
+        // Need at least 2 for comparison
+        if (vsCandidates.length >= 2) {
+          vsCandidate1 = vsCandidates[0];
+          vsCandidate2 = vsCandidates[1];
+          render();
+        }
+      });
+      wrap.appendChild(lbl);
     });
-    vsCandidate1 = vsCandidate1 && names.includes(vsCandidate1) ? vsCandidate1 : names[0];
-    vsCandidate2 = vsCandidate2 && names.includes(vsCandidate2) ? vsCandidate2 : (names[1] || names[0]);
-    s1.value = vsCandidate1; s2.value = vsCandidate2;
-    const lbl = document.createElement('span');
-    lbl.className = 'vs-lbl'; lbl.textContent = 'vs';
-    s1.addEventListener('change', () => { vsCandidate1 = s1.value; render(); });
-    s2.addEventListener('change', () => { vsCandidate2 = s2.value; render(); });
-    viewOpts.appendChild(s1); viewOpts.appendChild(lbl); viewOpts.appendChild(s2);
+    viewOpts.appendChild(wrap);
   }
 }
 
@@ -772,11 +854,24 @@ function getStyle(pid, turnout, raceData, turnout2, raceData2) {
     } else { fill = NO_DATA; if (!t) dash = '4 4'; }
 
   } else if (currentMode === 'vs') {
-    if (!vsCandidate1 || !vsCandidate2) { fill = NO_DATA; }
+    if (vsCandidates.length < 2) { fill = NO_DATA; }
     else if (rd && rd.candidates) {
-      const a = rd.candidates.find(x => x.n === vsCandidate1);
-      const b = rd.candidates.find(x => x.n === vsCandidate2);
-      fill = (a && b) ? vsColor(a.p - b.p) : NO_DATA;
+      fill = vsMultiColor(rd.candidates, vsCandidates, candidateColorMap);
+      if (fill === NO_DATA) { if (!t) dash = '4 4'; }
+      else {
+        // Modulate opacity by dominance
+        const scores = vsCandidates.map(n => {
+          const c = rd.candidates.find(x => x.n === n);
+          return c ? c.p : 0;
+        }).filter(v => v > 0);
+        if (scores.length >= 2) {
+          scores.sort((a, b) => b - a);
+          const dominance = scores[0] - scores[1]; // margin of leader
+          fillOpacity = dominance >= 25 ? 0.92 : dominance >= 15 ? 0.82 : dominance >= 5 ? 0.7 : 0.55;
+        } else {
+          fillOpacity = 0.85;
+        }
+      }
     } else { fill = NO_DATA; if (!t) dash = '4 4'; }
 
   } else if (currentMode === 'turnout_delta') {
@@ -945,6 +1040,7 @@ async function onRaceSelected() {
   selectedCandidate = '';
   vsCandidate1 = '';
   vsCandidate2 = '';
+  vsCandidates = [];
 
   if (currentRaceId) {
     await fetchRaceMap(currentRaceId);
@@ -989,7 +1085,7 @@ function showInfo(feature, turnout, raceData, turnout2, raceData2) {
       const col = candidateColorMap[c.n] || CANDIDATE_PALETTE[i % CANDIDATE_PALETTE.length];
       const hl = (currentMode === 'candidate' && c.n === selectedCandidate) ||
                  (currentMode === 'swing' && c.n === selectedCandidate) ||
-                 (currentMode === 'vs' && (c.n === vsCandidate1 || c.n === vsCandidate2));
+                 (currentMode === 'vs' && vsCandidates.includes(c.n));
       h += `<div class="cand-row${hl ? ' hl' : ''}">
         <span class="cand-swatch" style="background:${col}"></span>
         <span class="cand-name" title="${c.n}">${c.n}</span>
@@ -1089,13 +1185,20 @@ function updateLegend(raceData) {
     });
 
   } else if (currentMode === 'vs') {
-    const n1 = vsCandidate1 ? shortName(vsCandidate1, 12) : 'Cand 1';
-    const n2 = vsCandidate2 ? shortName(vsCandidate2, 12) : 'Cand 2';
-    h = `<div class="legend-title">${n1} vs ${n2}</div>`;
-    [[`${n1} +30+`,'#0d47a1'],['+20','#1565c0'],['+10','#42a5f5'],['+5','#90caf9'],['Even','#e3f2fd'],
-     [`${n2} +5`,'#ffcdd2'],['+10','#ef9a9a'],['+20','#e57373'],['+30+','#c62828'],['No data','#333']].forEach(([l,c]) => {
-      h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`;
-    });
+    if (vsCandidates.length >= 2) {
+      h = `<div class="legend-title">Candidate Comparison (${vsCandidates.length})</div>`;
+      // Show each selected candidate's color
+      vsCandidates.forEach(n => {
+        const col = candidateColorMap[n] || CANDIDATE_PALETTE[0];
+        h += `<div class="legend-row"><span class="legend-swatch" style="background:${col}"></span>${shortName(n, 16)}</div>`;
+      });
+      h += '<div style="height:4px"></div>';
+      h += '<div class="legend-row" style="color:var(--text-dim);font-style:italic">Strong color = dominant</div>';
+      h += '<div class="legend-row" style="color:var(--text-dim);font-style:italic">Pale = close race</div>';
+      h += `<div class="legend-row"><span class="legend-swatch" style="background:#333"></span>No data</div>`;
+    } else {
+      h = '<div class="legend-title">Select 2+ candidates</div>';
+    }
 
   } else if (currentMode === 'turnout_delta') {
     h = '<div class="legend-title">Turnout &Delta; (pp)</div>';
@@ -1177,7 +1280,7 @@ function buildInfoHTML(feature, turnout, raceData, turnout2, raceData2) {
       const col = candidateColorMap[c.n] || CANDIDATE_PALETTE[i % CANDIDATE_PALETTE.length];
       const hl = (currentMode === 'candidate' && c.n === selectedCandidate) ||
                  (currentMode === 'swing' && c.n === selectedCandidate) ||
-                 (currentMode === 'vs' && (c.n === vsCandidate1 || c.n === vsCandidate2));
+                 (currentMode === 'vs' && vsCandidates.includes(c.n));
       h += `<div class="cand-row${hl ? ' hl' : ''}">
         <span class="cand-swatch" style="background:${col}"></span>
         <span class="cand-name" title="${c.n}">${c.n}</span>
@@ -1228,7 +1331,7 @@ selElection.addEventListener('change', async () => {
   currentElectionId = selElection.value;
   currentRaceType = '';
   currentRaceId = '';
-  selectedCandidate = ''; vsCandidate1 = ''; vsCandidate2 = '';
+  selectedCandidate = ''; vsCandidate1 = ''; vsCandidate2 = ''; vsCandidates = [];
   viewOpts.innerHTML = '';
   await populateTypeDropdown();
   selRace.innerHTML = '<option value="">Select Race…</option>';
@@ -1239,7 +1342,7 @@ selElection.addEventListener('change', async () => {
 selType.addEventListener('change', async () => {
   currentRaceType = selType.value;
   currentRaceId = '';
-  selectedCandidate = ''; vsCandidate1 = ''; vsCandidate2 = '';
+  selectedCandidate = ''; vsCandidate1 = ''; vsCandidate2 = ''; vsCandidates = [];
   viewOpts.innerHTML = '';
   if (currentRaceType) {
     await populateRaceDropdown();
@@ -1284,6 +1387,7 @@ function clearMap() {
   if (bgLayer) { map.removeLayer(bgLayer); bgLayer = null; }
   infoPanel.classList.remove('visible');
   headerStats.innerHTML = '';
+  vsCandidates = [];
   viewOpts.innerHTML = '';
   legendEl.innerHTML = '';
   landing.style.display = '';

@@ -1,0 +1,2701 @@
+{
+  "timestamp": "2026-03-20T05:29:39.955479+00:00",
+  "overall": "FAIL",
+  "total_races": 2270,
+  "passes": 1927,
+  "warnings": 191,
+  "failures": 152,
+  "failed_races": [
+    {
+      "election": "2024_general",
+      "race": "Board of Education - District 1",
+      "type": "school_board",
+      "detail": "151 precincts, 64.9% match (53 unmatched)",
+      "precincts": 151
+    },
+    {
+      "election": "2024_general",
+      "race": "Board of Education - District 2",
+      "type": "school_board",
+      "detail": "125 precincts, 65.6% match (43 unmatched)",
+      "precincts": 125
+    },
+    {
+      "election": "2024_general",
+      "race": "Board of Education - District 3",
+      "type": "school_board",
+      "detail": "130 precincts, 59.2% match (53 unmatched)",
+      "precincts": 130
+    },
+    {
+      "election": "2024_general",
+      "race": "Board of Education - District 4",
+      "type": "school_board",
+      "detail": "135 precincts, 65.2% match (47 unmatched)",
+      "precincts": 135
+    },
+    {
+      "election": "2024_general",
+      "race": "Board of Education - District 5",
+      "type": "school_board",
+      "detail": "141 precincts, 56.7% match (61 unmatched)",
+      "precincts": 141
+    },
+    {
+      "election": "2024_general",
+      "race": "Board of Education - District 6",
+      "type": "school_board",
+      "detail": "145 precincts, 31.7% match (99 unmatched)",
+      "precincts": 145
+    },
+    {
+      "election": "2024_general",
+      "race": "Board of Education - District 7",
+      "type": "school_board",
+      "detail": "104 precincts, 59.6% match (42 unmatched)",
+      "precincts": 104
+    },
+    {
+      "election": "2024_general",
+      "race": "Board of Education - District 8",
+      "type": "school_board",
+      "detail": "153 precincts, 62.7% match (57 unmatched)",
+      "precincts": 153
+    },
+    {
+      "election": "2024_general",
+      "race": "Board of Education - District 9",
+      "type": "school_board",
+      "detail": "172 precincts, 50.6% match (85 unmatched)",
+      "precincts": 172
+    },
+    {
+      "election": "2022_general",
+      "race": "6TH CONGRESS",
+      "type": "congress",
+      "detail": "284 precincts, 87.7% match (35 unmatched)",
+      "precincts": 284
+    },
+    {
+      "election": "2022_general",
+      "race": "28TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "77 precincts, 89.6% match (8 unmatched)",
+      "precincts": 77
+    },
+    {
+      "election": "2022_general",
+      "race": "30TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "86 precincts, 86.0% match (12 unmatched)",
+      "precincts": 86
+    },
+    {
+      "election": "2022_general",
+      "race": "36TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "71 precincts, 88.7% match (8 unmatched)",
+      "precincts": 71
+    },
+    {
+      "election": "2022_general",
+      "race": "37TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "20 precincts, 75.0% match (5 unmatched)",
+      "precincts": 20
+    },
+    {
+      "election": "2022_general",
+      "race": "38TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "52 precincts, 80.8% match (10 unmatched)",
+      "precincts": 52
+    },
+    {
+      "election": "2022_general",
+      "race": "48TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "18 precincts, 77.8% match (4 unmatched)",
+      "precincts": 18
+    },
+    {
+      "election": "2022_general",
+      "race": "54TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "63 precincts, 88.9% match (7 unmatched)",
+      "precincts": 63
+    },
+    {
+      "election": "2022_general",
+      "race": "59TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "4 precincts, 75.0% match (1 unmatched)",
+      "precincts": 4
+    },
+    {
+      "election": "2022_general",
+      "race": "7TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "70 precincts, 87.1% match (9 unmatched)",
+      "precincts": 70
+    },
+    {
+      "election": "2022_general",
+      "race": "80TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "37 precincts, 83.8% match (6 unmatched)",
+      "precincts": 37
+    },
+    {
+      "election": "2022_general",
+      "race": "8TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "69 precincts, 88.4% match (8 unmatched)",
+      "precincts": 69
+    },
+    {
+      "election": "2022_general",
+      "race": "15TH SENATE",
+      "type": "state_senate",
+      "detail": "139 precincts, 87.8% match (17 unmatched)",
+      "precincts": 139
+    },
+    {
+      "election": "2022_general",
+      "race": "19TH SENATE",
+      "type": "state_senate",
+      "detail": "72 precincts, 79.2% match (15 unmatched)",
+      "precincts": 72
+    },
+    {
+      "election": "2022_general",
+      "race": "24TH SENATE",
+      "type": "state_senate",
+      "detail": "18 precincts, 77.8% match (4 unmatched)",
+      "precincts": 18
+    },
+    {
+      "election": "2022_general",
+      "race": "30TH SENATE",
+      "type": "state_senate",
+      "detail": "4 precincts, 75.0% match (1 unmatched)",
+      "precincts": 4
+    },
+    {
+      "election": "2022_general",
+      "race": "40TH SENATE",
+      "type": "state_senate",
+      "detail": "39 precincts, 84.6% match (6 unmatched)",
+      "precincts": 39
+    },
+    {
+      "election": "2022_general",
+      "race": "4TH SENATE",
+      "type": "state_senate",
+      "detail": "135 precincts, 87.4% match (17 unmatched)",
+      "precincts": 135
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK - 15TH SUBCIRCUIT - LAWLER VACANCY",
+      "type": "subcircuit",
+      "detail": "248 precincts, 87.1% match (32 unmatched)",
+      "precincts": 248
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK - 4TH SUBCIRCUIT - GAVIN VACANCY",
+      "type": "subcircuit",
+      "detail": "221 precincts, 89.1% match (24 unmatched)",
+      "precincts": 221
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK - 4TH SUBCIRCUIT - ROGERS VACANCY",
+      "type": "subcircuit",
+      "detail": "221 precincts, 89.1% match (24 unmatched)",
+      "precincts": 221
+    },
+    {
+      "election": "2022_primary",
+      "race": "1ST APPELLATE - HALL VACANCY",
+      "type": "appellate_court",
+      "detail": "3498 precincts, 74.0% match (910 unmatched)",
+      "precincts": 3498
+    },
+    {
+      "election": "2022_primary",
+      "race": "1ST APPELLATE - HARRIS VACANCY",
+      "type": "appellate_court",
+      "detail": "3498 precincts, 74.0% match (910 unmatched)",
+      "precincts": 3498
+    },
+    {
+      "election": "2022_primary",
+      "race": "ATTORNEY GENERAL",
+      "type": "attorney_general",
+      "detail": "3498 precincts, 74.0% match (910 unmatched)",
+      "precincts": 3498
+    },
+    {
+      "election": "2022_primary",
+      "race": "COOK CIRCUIT - BRENNAN VACANCY",
+      "type": "circuit_court",
+      "detail": "3498 precincts, 74.0% match (910 unmatched)",
+      "precincts": 3498
+    },
+    {
+      "election": "2022_primary",
+      "race": "COOK CIRCUIT - CALLAHAN, JR. VACANCY",
+      "type": "circuit_court",
+      "detail": "3498 precincts, 74.0% match (910 unmatched)",
+      "precincts": 3498
+    },
+    {
+      "election": "2022_primary",
+      "race": "COOK CIRCUIT - CANNON VACANCY",
+      "type": "circuit_court",
+      "detail": "3498 precincts, 74.0% match (910 unmatched)",
+      "precincts": 3498
+    },
+    {
+      "election": "2022_primary",
+      "race": "COOK CIRCUIT - HYMAN VACANCY",
+      "type": "circuit_court",
+      "detail": "3499 precincts, 74.0% match (911 unmatched)",
+      "precincts": 3499
+    },
+    {
+      "election": "2022_primary",
+      "race": "COOK CIRCUIT - INGRAM VACANCY",
+      "type": "circuit_court",
+      "detail": "3498 precincts, 74.0% match (910 unmatched)",
+      "precincts": 3498
+    },
+    {
+      "election": "2022_primary",
+      "race": "COOK CIRCUIT - LEEMING VACANCY",
+      "type": "circuit_court",
+      "detail": "3498 precincts, 74.0% match (910 unmatched)",
+      "precincts": 3498
+    },
+    {
+      "election": "2022_primary",
+      "race": "COOK CIRCUIT - LYNCH VACANCY",
+      "type": "circuit_court",
+      "detail": "3498 precincts, 74.0% match (910 unmatched)",
+      "precincts": 3498
+    },
+    {
+      "election": "2022_primary",
+      "race": "COOK CIRCUIT - McGURY VACANCY",
+      "type": "circuit_court",
+      "detail": "3498 precincts, 74.0% match (910 unmatched)",
+      "precincts": 3498
+    },
+    {
+      "election": "2022_primary",
+      "race": "COOK CIRCUIT - O'BRIEN VACANCY",
+      "type": "circuit_court",
+      "detail": "3498 precincts, 74.0% match (910 unmatched)",
+      "precincts": 3498
+    },
+    {
+      "election": "2022_primary",
+      "race": "COOK CIRCUIT - SULLIVAN VACANCY",
+      "type": "circuit_court",
+      "detail": "3498 precincts, 74.0% match (910 unmatched)",
+      "precincts": 3498
+    },
+    {
+      "election": "2022_primary",
+      "race": "COMPTROLLER",
+      "type": "comptroller",
+      "detail": "3499 precincts, 74.0% match (911 unmatched)",
+      "precincts": 3499
+    },
+    {
+      "election": "2022_primary",
+      "race": "1ST CONGRESS",
+      "type": "congress",
+      "detail": "490 precincts, 60.8% match (192 unmatched)",
+      "precincts": 490
+    },
+    {
+      "election": "2022_primary",
+      "race": "2ND CONGRESS",
+      "type": "congress",
+      "detail": "344 precincts, 79.9% match (69 unmatched)",
+      "precincts": 344
+    },
+    {
+      "election": "2022_primary",
+      "race": "3RD CONGRESS",
+      "type": "congress",
+      "detail": "371 precincts, 73.3% match (99 unmatched)",
+      "precincts": 371
+    },
+    {
+      "election": "2022_primary",
+      "race": "4TH CONGRESS",
+      "type": "congress",
+      "detail": "378 precincts, 84.1% match (60 unmatched)",
+      "precincts": 378
+    },
+    {
+      "election": "2022_primary",
+      "race": "5TH CONGRESS",
+      "type": "congress",
+      "detail": "538 precincts, 68.6% match (169 unmatched)",
+      "precincts": 538
+    },
+    {
+      "election": "2022_primary",
+      "race": "6TH CONGRESS",
+      "type": "congress",
+      "detail": "304 precincts, 82.6% match (53 unmatched)",
+      "precincts": 304
+    },
+    {
+      "election": "2022_primary",
+      "race": "7TH CONGRESS",
+      "type": "congress",
+      "detail": "570 precincts, 63.7% match (207 unmatched)",
+      "precincts": 570
+    },
+    {
+      "election": "2022_primary",
+      "race": "9TH CONGRESS",
+      "type": "congress",
+      "detail": "405 precincts, 79.5% match (83 unmatched)",
+      "precincts": 405
+    },
+    {
+      "election": "2022_primary",
+      "race": "GOVERNOR AND LIEUTENANT GOVERNOR",
+      "type": "governor",
+      "detail": "3499 precincts, 74.0% match (911 unmatched)",
+      "precincts": 3499
+    },
+    {
+      "election": "2022_primary",
+      "race": "SECRETARY OF STATE",
+      "type": "secretary_of_state",
+      "detail": "3499 precincts, 74.0% match (911 unmatched)",
+      "precincts": 3499
+    },
+    {
+      "election": "2022_primary",
+      "race": "1ST STATE CENTRAL COMMITTEEMAN",
+      "type": "state_central_comm",
+      "detail": "489 precincts, 60.9% match (191 unmatched)",
+      "precincts": 489
+    },
+    {
+      "election": "2022_primary",
+      "race": "1ST STATE CENTRAL COMMITTEEWOMAN",
+      "type": "state_central_comm",
+      "detail": "489 precincts, 60.9% match (191 unmatched)",
+      "precincts": 489
+    },
+    {
+      "election": "2022_primary",
+      "race": "2ND STATE CENTRAL COMMITTEEMAN",
+      "type": "state_central_comm",
+      "detail": "343 precincts, 80.2% match (68 unmatched)",
+      "precincts": 343
+    },
+    {
+      "election": "2022_primary",
+      "race": "2ND STATE CENTRAL COMMITTEEWOMAN",
+      "type": "state_central_comm",
+      "detail": "343 precincts, 80.2% match (68 unmatched)",
+      "precincts": 343
+    },
+    {
+      "election": "2022_primary",
+      "race": "3RD STATE CENTRAL COMMITTEEMAN",
+      "type": "state_central_comm",
+      "detail": "371 precincts, 73.3% match (99 unmatched)",
+      "precincts": 371
+    },
+    {
+      "election": "2022_primary",
+      "race": "3RD STATE CENTRAL COMMITTEEWOMAN",
+      "type": "state_central_comm",
+      "detail": "371 precincts, 73.3% match (99 unmatched)",
+      "precincts": 371
+    },
+    {
+      "election": "2022_primary",
+      "race": "4TH STATE CENTRAL COMMITTEEMAN",
+      "type": "state_central_comm",
+      "detail": "377 precincts, 84.4% match (59 unmatched)",
+      "precincts": 377
+    },
+    {
+      "election": "2022_primary",
+      "race": "4TH STATE CENTRAL COMMITTEEWOMAN",
+      "type": "state_central_comm",
+      "detail": "377 precincts, 84.4% match (59 unmatched)",
+      "precincts": 377
+    },
+    {
+      "election": "2022_primary",
+      "race": "5TH STATE CENTRAL COMMITTEEMAN",
+      "type": "state_central_comm",
+      "detail": "536 precincts, 68.7% match (168 unmatched)",
+      "precincts": 536
+    },
+    {
+      "election": "2022_primary",
+      "race": "5TH STATE CENTRAL COMMITTEEWOMAN",
+      "type": "state_central_comm",
+      "detail": "536 precincts, 68.7% match (168 unmatched)",
+      "precincts": 536
+    },
+    {
+      "election": "2022_primary",
+      "race": "6TH STATE CENTRAL COMMITTEEMAN",
+      "type": "state_central_comm",
+      "detail": "304 precincts, 82.6% match (53 unmatched)",
+      "precincts": 304
+    },
+    {
+      "election": "2022_primary",
+      "race": "6TH STATE CENTRAL COMMITTEEWOMAN",
+      "type": "state_central_comm",
+      "detail": "304 precincts, 82.6% match (53 unmatched)",
+      "precincts": 304
+    },
+    {
+      "election": "2022_primary",
+      "race": "7TH STATE CENTRAL COMMITTEEMAN",
+      "type": "state_central_comm",
+      "detail": "570 precincts, 63.7% match (207 unmatched)",
+      "precincts": 570
+    },
+    {
+      "election": "2022_primary",
+      "race": "7TH STATE CENTRAL COMMITTEEWOMAN",
+      "type": "state_central_comm",
+      "detail": "570 precincts, 63.7% match (207 unmatched)",
+      "precincts": 570
+    },
+    {
+      "election": "2022_primary",
+      "race": "9TH STATE CENTRAL COMMITTEEMAN",
+      "type": "state_central_comm",
+      "detail": "404 precincts, 79.7% match (82 unmatched)",
+      "precincts": 404
+    },
+    {
+      "election": "2022_primary",
+      "race": "9TH STATE CENTRAL COMMITTEEWOMAN",
+      "type": "state_central_comm",
+      "detail": "404 precincts, 79.7% match (82 unmatched)",
+      "precincts": 404
+    },
+    {
+      "election": "2022_primary",
+      "race": "10TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "107 precincts, 63.6% match (39 unmatched)",
+      "precincts": 107
+    },
+    {
+      "election": "2022_primary",
+      "race": "11TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "95 precincts, 56.8% match (41 unmatched)",
+      "precincts": 95
+    },
+    {
+      "election": "2022_primary",
+      "race": "12TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "90 precincts, 41.1% match (53 unmatched)",
+      "precincts": 90
+    },
+    {
+      "election": "2022_primary",
+      "race": "13TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "87 precincts, 60.9% match (34 unmatched)",
+      "precincts": 87
+    },
+    {
+      "election": "2022_primary",
+      "race": "14TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "78 precincts, 62.8% match (29 unmatched)",
+      "precincts": 78
+    },
+    {
+      "election": "2022_primary",
+      "race": "15TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "94 precincts, 79.8% match (19 unmatched)",
+      "precincts": 94
+    },
+    {
+      "election": "2022_primary",
+      "race": "16TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "79 precincts, 73.4% match (21 unmatched)",
+      "precincts": 79
+    },
+    {
+      "election": "2022_primary",
+      "race": "19TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "104 precincts, 63.5% match (38 unmatched)",
+      "precincts": 104
+    },
+    {
+      "election": "2022_primary",
+      "race": "1ST REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "72 precincts, 72.2% match (20 unmatched)",
+      "precincts": 72
+    },
+    {
+      "election": "2022_primary",
+      "race": "20TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "83 precincts, 75.9% match (20 unmatched)",
+      "precincts": 83
+    },
+    {
+      "election": "2022_primary",
+      "race": "22ND REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "92 precincts, 83.7% match (15 unmatched)",
+      "precincts": 92
+    },
+    {
+      "election": "2022_primary",
+      "race": "23RD REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "50 precincts, 82.0% match (9 unmatched)",
+      "precincts": 50
+    },
+    {
+      "election": "2022_primary",
+      "race": "24TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "71 precincts, 71.8% match (20 unmatched)",
+      "precincts": 71
+    },
+    {
+      "election": "2022_primary",
+      "race": "25TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "91 precincts, 65.9% match (31 unmatched)",
+      "precincts": 91
+    },
+    {
+      "election": "2022_primary",
+      "race": "26TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "91 precincts, 67.0% match (30 unmatched)",
+      "precincts": 91
+    },
+    {
+      "election": "2022_primary",
+      "race": "27TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "122 precincts, 62.3% match (46 unmatched)",
+      "precincts": 122
+    },
+    {
+      "election": "2022_primary",
+      "race": "28TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "95 precincts, 73.7% match (25 unmatched)",
+      "precincts": 95
+    },
+    {
+      "election": "2022_primary",
+      "race": "29TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "66 precincts, 86.4% match (9 unmatched)",
+      "precincts": 66
+    },
+    {
+      "election": "2022_primary",
+      "race": "30TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "85 precincts, 85.9% match (12 unmatched)",
+      "precincts": 85
+    },
+    {
+      "election": "2022_primary",
+      "race": "31ST REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "102 precincts, 72.5% match (28 unmatched)",
+      "precincts": 102
+    },
+    {
+      "election": "2022_primary",
+      "race": "32ND REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "102 precincts, 60.8% match (40 unmatched)",
+      "precincts": 102
+    },
+    {
+      "election": "2022_primary",
+      "race": "33RD REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "100 precincts, 70.0% match (30 unmatched)",
+      "precincts": 100
+    },
+    {
+      "election": "2022_primary",
+      "race": "34TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "96 precincts, 52.1% match (46 unmatched)",
+      "precincts": 96
+    },
+    {
+      "election": "2022_primary",
+      "race": "35TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "103 precincts, 68.9% match (32 unmatched)",
+      "precincts": 103
+    },
+    {
+      "election": "2022_primary",
+      "race": "36TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "79 precincts, 86.1% match (11 unmatched)",
+      "precincts": 79
+    },
+    {
+      "election": "2022_primary",
+      "race": "37TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "20 precincts, 75.0% match (5 unmatched)",
+      "precincts": 20
+    },
+    {
+      "election": "2022_primary",
+      "race": "38TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "52 precincts, 80.8% match (10 unmatched)",
+      "precincts": 52
+    },
+    {
+      "election": "2022_primary",
+      "race": "39TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "98 precincts, 64.3% match (35 unmatched)",
+      "precincts": 98
+    },
+    {
+      "election": "2022_primary",
+      "race": "3RD REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "93 precincts, 78.5% match (20 unmatched)",
+      "precincts": 93
+    },
+    {
+      "election": "2022_primary",
+      "race": "40TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "72 precincts, 63.9% match (26 unmatched)",
+      "precincts": 72
+    },
+    {
+      "election": "2022_primary",
+      "race": "48TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "18 precincts, 77.8% match (4 unmatched)",
+      "precincts": 18
+    },
+    {
+      "election": "2022_primary",
+      "race": "4TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "93 precincts, 76.3% match (22 unmatched)",
+      "precincts": 93
+    },
+    {
+      "election": "2022_primary",
+      "race": "54TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "63 precincts, 88.9% match (7 unmatched)",
+      "precincts": 63
+    },
+    {
+      "election": "2022_primary",
+      "race": "59TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "4 precincts, 75.0% match (1 unmatched)",
+      "precincts": 4
+    },
+    {
+      "election": "2022_primary",
+      "race": "5TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "83 precincts, 62.7% match (31 unmatched)",
+      "precincts": 83
+    },
+    {
+      "election": "2022_primary",
+      "race": "6TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "100 precincts, 66.0% match (34 unmatched)",
+      "precincts": 100
+    },
+    {
+      "election": "2022_primary",
+      "race": "78TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "84 precincts, 72.6% match (23 unmatched)",
+      "precincts": 84
+    },
+    {
+      "election": "2022_primary",
+      "race": "7TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "70 precincts, 87.1% match (9 unmatched)",
+      "precincts": 70
+    },
+    {
+      "election": "2022_primary",
+      "race": "80TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "37 precincts, 83.8% match (6 unmatched)",
+      "precincts": 37
+    },
+    {
+      "election": "2022_primary",
+      "race": "8TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "98 precincts, 64.3% match (35 unmatched)",
+      "precincts": 98
+    },
+    {
+      "election": "2022_primary",
+      "race": "9TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "94 precincts, 54.3% match (43 unmatched)",
+      "precincts": 94
+    },
+    {
+      "election": "2022_primary",
+      "race": "10TH SENATE",
+      "type": "state_senate",
+      "detail": "180 precincts, 68.9% match (56 unmatched)",
+      "precincts": 180
+    },
+    {
+      "election": "2022_primary",
+      "race": "11TH SENATE",
+      "type": "state_senate",
+      "detail": "156 precincts, 88.5% match (18 unmatched)",
+      "precincts": 156
+    },
+    {
+      "election": "2022_primary",
+      "race": "12TH SENATE",
+      "type": "state_senate",
+      "detail": "113 precincts, 74.3% match (29 unmatched)",
+      "precincts": 113
+    },
+    {
+      "election": "2022_primary",
+      "race": "13TH SENATE",
+      "type": "state_senate",
+      "detail": "167 precincts, 65.3% match (58 unmatched)",
+      "precincts": 167
+    },
+    {
+      "election": "2022_primary",
+      "race": "14TH SENATE",
+      "type": "state_senate",
+      "detail": "199 precincts, 66.8% match (66 unmatched)",
+      "precincts": 199
+    },
+    {
+      "election": "2022_primary",
+      "race": "15TH SENATE",
+      "type": "state_senate",
+      "detail": "142 precincts, 85.2% match (21 unmatched)",
+      "precincts": 142
+    },
+    {
+      "election": "2022_primary",
+      "race": "16TH SENATE",
+      "type": "state_senate",
+      "detail": "193 precincts, 65.8% match (66 unmatched)",
+      "precincts": 193
+    },
+    {
+      "election": "2022_primary",
+      "race": "17TH SENATE",
+      "type": "state_senate",
+      "detail": "184 precincts, 59.8% match (74 unmatched)",
+      "precincts": 184
+    },
+    {
+      "election": "2022_primary",
+      "race": "18TH SENATE",
+      "type": "state_senate",
+      "detail": "172 precincts, 76.7% match (40 unmatched)",
+      "precincts": 172
+    },
+    {
+      "election": "2022_primary",
+      "race": "19TH SENATE",
+      "type": "state_senate",
+      "detail": "72 precincts, 79.2% match (15 unmatched)",
+      "precincts": 72
+    },
+    {
+      "election": "2022_primary",
+      "race": "1ST SENATE",
+      "type": "state_senate",
+      "detail": "134 precincts, 82.8% match (23 unmatched)",
+      "precincts": 134
+    },
+    {
+      "election": "2022_primary",
+      "race": "20TH SENATE",
+      "type": "state_senate",
+      "detail": "162 precincts, 64.8% match (57 unmatched)",
+      "precincts": 162
+    },
+    {
+      "election": "2022_primary",
+      "race": "24TH SENATE",
+      "type": "state_senate",
+      "detail": "18 precincts, 77.8% match (4 unmatched)",
+      "precincts": 18
+    },
+    {
+      "election": "2022_primary",
+      "race": "2ND SENATE",
+      "type": "state_senate",
+      "detail": "171 precincts, 76.0% match (41 unmatched)",
+      "precincts": 171
+    },
+    {
+      "election": "2022_primary",
+      "race": "30TH SENATE",
+      "type": "state_senate",
+      "detail": "4 precincts, 75.0% match (1 unmatched)",
+      "precincts": 4
+    },
+    {
+      "election": "2022_primary",
+      "race": "39TH SENATE",
+      "type": "state_senate",
+      "detail": "123 precincts, 81.3% match (23 unmatched)",
+      "precincts": 123
+    },
+    {
+      "election": "2022_primary",
+      "race": "3RD SENATE",
+      "type": "state_senate",
+      "detail": "171 precincts, 64.9% match (60 unmatched)",
+      "precincts": 171
+    },
+    {
+      "election": "2022_primary",
+      "race": "40TH SENATE",
+      "type": "state_senate",
+      "detail": "39 precincts, 84.6% match (6 unmatched)",
+      "precincts": 39
+    },
+    {
+      "election": "2022_primary",
+      "race": "4TH SENATE",
+      "type": "state_senate",
+      "detail": "164 precincts, 73.2% match (44 unmatched)",
+      "precincts": 164
+    },
+    {
+      "election": "2022_primary",
+      "race": "5TH SENATE",
+      "type": "state_senate",
+      "detail": "189 precincts, 57.7% match (80 unmatched)",
+      "precincts": 189
+    },
+    {
+      "election": "2022_primary",
+      "race": "6TH SENATE",
+      "type": "state_senate",
+      "detail": "178 precincts, 49.4% match (90 unmatched)",
+      "precincts": 178
+    },
+    {
+      "election": "2022_primary",
+      "race": "7TH SENATE",
+      "type": "state_senate",
+      "detail": "163 precincts, 62.0% match (62 unmatched)",
+      "precincts": 163
+    },
+    {
+      "election": "2022_primary",
+      "race": "8TH SENATE",
+      "type": "state_senate",
+      "detail": "166 precincts, 77.1% match (38 unmatched)",
+      "precincts": 166
+    },
+    {
+      "election": "2022_primary",
+      "race": "COOK - 11TH SUBCIRCUIT- McGUIRE VACANCY",
+      "type": "subcircuit",
+      "detail": "237 precincts, 81.9% match (43 unmatched)",
+      "precincts": 237
+    },
+    {
+      "election": "2022_primary",
+      "race": "COOK - 14TH SUBCIRCUIT- BROWN VACANCY",
+      "type": "subcircuit",
+      "detail": "181 precincts, 79.6% match (37 unmatched)",
+      "precincts": 181
+    },
+    {
+      "election": "2022_primary",
+      "race": "COOK - 14TH SUBCIRCUIT- JAGIELSKI VACANCY",
+      "type": "subcircuit",
+      "detail": "181 precincts, 79.6% match (37 unmatched)",
+      "precincts": 181
+    },
+    {
+      "election": "2022_primary",
+      "race": "COOK - 15TH SUBCIRCUIT - LAWLER VACANCY",
+      "type": "subcircuit",
+      "detail": "248 precincts, 87.1% match (32 unmatched)",
+      "precincts": 248
+    },
+    {
+      "election": "2022_primary",
+      "race": "COOK - 1ST SUBCIRCUIT - JOHNSON VACANCY",
+      "type": "subcircuit",
+      "detail": "265 precincts, 63.0% match (98 unmatched)",
+      "precincts": 265
+    },
+    {
+      "election": "2022_primary",
+      "race": "COOK - 4TH SUBCIRCUIT - GAVIN VACANCY",
+      "type": "subcircuit",
+      "detail": "221 precincts, 89.1% match (24 unmatched)",
+      "precincts": 221
+    },
+    {
+      "election": "2022_primary",
+      "race": "COOK - 4TH SUBCIRCUIT - ROGERS VACANCY",
+      "type": "subcircuit",
+      "detail": "221 precincts, 89.1% match (24 unmatched)",
+      "precincts": 221
+    },
+    {
+      "election": "2022_primary",
+      "race": "COOK - 5TH SUBCIRCUIT - PORTMAN-BROWN VACANCY",
+      "type": "subcircuit",
+      "detail": "213 precincts, 64.3% match (76 unmatched)",
+      "precincts": 213
+    },
+    {
+      "election": "2022_primary",
+      "race": "COOK - 5TH SUBCIRCUIT - SHELLEY VACANCY",
+      "type": "subcircuit",
+      "detail": "213 precincts, 64.3% match (76 unmatched)",
+      "precincts": 213
+    },
+    {
+      "election": "2022_primary",
+      "race": "COOK - 6TH SUBCIRCUIT - ARAUJO VACANCY",
+      "type": "subcircuit",
+      "detail": "258 precincts, 67.1% match (85 unmatched)",
+      "precincts": 258
+    },
+    {
+      "election": "2022_primary",
+      "race": "COOK - 6TH SUBCIRCUIT - VEGA VACANCY",
+      "type": "subcircuit",
+      "detail": "258 precincts, 67.1% match (85 unmatched)",
+      "precincts": 258
+    },
+    {
+      "election": "2022_primary",
+      "race": "COOK - 7TH SUBCIRCUIT - MARTIN VACANCY",
+      "type": "subcircuit",
+      "detail": "251 precincts, 62.9% match (93 unmatched)",
+      "precincts": 251
+    },
+    {
+      "election": "2022_primary",
+      "race": "COOK - 8TH SUBCIRCUIT - GORDON VACANCY",
+      "type": "subcircuit",
+      "detail": "315 precincts, 56.8% match (136 unmatched)",
+      "precincts": 315
+    },
+    {
+      "election": "2022_primary",
+      "race": "COOK - 8TH SUBCIRCUIT - LIPSCOMB VACANCY",
+      "type": "subcircuit",
+      "detail": "315 precincts, 56.8% match (136 unmatched)",
+      "precincts": 315
+    },
+    {
+      "election": "2022_primary",
+      "race": "COOK - 9TH SUBCIRCUIT - CLEVELAND VACANCY",
+      "type": "subcircuit",
+      "detail": "235 precincts, 82.6% match (41 unmatched)",
+      "precincts": 235
+    },
+    {
+      "election": "2022_primary",
+      "race": "COOK - 9TH SUBCIRCUIT - JACOBIUS VACANCY",
+      "type": "subcircuit",
+      "detail": "235 precincts, 82.6% match (41 unmatched)",
+      "precincts": 235
+    },
+    {
+      "election": "2022_primary",
+      "race": "TREASURER",
+      "type": "treasurer_state",
+      "detail": "3499 precincts, 74.0% match (911 unmatched)",
+      "precincts": 3499
+    },
+    {
+      "election": "2022_primary",
+      "race": "UNITED STATES SENATOR",
+      "type": "us_senate",
+      "detail": "3499 precincts, 74.0% match (911 unmatched)",
+      "precincts": 3499
+    }
+  ],
+  "warned_races": [
+    {
+      "election": "2024_general",
+      "race": "1ST CONGRESS",
+      "type": "congress",
+      "detail": "304 precincts, 99.7% match (1 unmatched)",
+      "precincts": 304
+    },
+    {
+      "election": "2024_general",
+      "race": "2ND CONGRESS",
+      "type": "congress",
+      "detail": "309 precincts, 99.7% match (1 unmatched)",
+      "precincts": 309
+    },
+    {
+      "election": "2024_general",
+      "race": "3RD CONGRESS",
+      "type": "congress",
+      "detail": "253 precincts, 99.6% match (1 unmatched)",
+      "precincts": 253
+    },
+    {
+      "election": "2024_general",
+      "race": "4TH CONGRESS",
+      "type": "congress",
+      "detail": "327 precincts, 99.7% match (1 unmatched)",
+      "precincts": 327
+    },
+    {
+      "election": "2024_general",
+      "race": "7TH CONGRESS",
+      "type": "congress",
+      "detail": "395 precincts, 99.7% match (1 unmatched)",
+      "precincts": 395
+    },
+    {
+      "election": "2024_general",
+      "race": "PRESIDENT AND VICE PRESIDENT",
+      "type": "president",
+      "detail": "2722 precincts, 100.0% match (1 unmatched)",
+      "precincts": 2722
+    },
+    {
+      "election": "2024_general",
+      "race": "29TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "62 precincts, 98.4% match (1 unmatched)",
+      "precincts": 62
+    },
+    {
+      "election": "2024_general",
+      "race": "39TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "53 precincts, 98.1% match (1 unmatched)",
+      "precincts": 53
+    },
+    {
+      "election": "2024_primary",
+      "race": "1ST APPELLATE - CUNNINGHAM VACANCY",
+      "type": "appellate_court",
+      "detail": "2722 precincts, 100.0% match (1 unmatched)",
+      "precincts": 2722
+    },
+    {
+      "election": "2024_primary",
+      "race": "1ST APPELLATE - DELORT VACANCY",
+      "type": "appellate_court",
+      "detail": "2722 precincts, 100.0% match (1 unmatched)",
+      "precincts": 2722
+    },
+    {
+      "election": "2024_primary",
+      "race": "COOK CIRCUIT - FLANNERY, JR. VACANCY",
+      "type": "circuit_court",
+      "detail": "2722 precincts, 100.0% match (1 unmatched)",
+      "precincts": 2722
+    },
+    {
+      "election": "2024_primary",
+      "race": "COOK CIRCUIT - SULLIVAN VACANCY",
+      "type": "circuit_court",
+      "detail": "2722 precincts, 100.0% match (1 unmatched)",
+      "precincts": 2722
+    },
+    {
+      "election": "2024_primary",
+      "race": "1ST CONGRESS",
+      "type": "congress",
+      "detail": "304 precincts, 99.7% match (1 unmatched)",
+      "precincts": 304
+    },
+    {
+      "election": "2024_primary",
+      "race": "5TH CONGRESS",
+      "type": "congress",
+      "detail": "409 precincts, 99.8% match (1 unmatched)",
+      "precincts": 409
+    },
+    {
+      "election": "2024_primary",
+      "race": "7TH CONGRESS",
+      "type": "congress",
+      "detail": "395 precincts, 99.7% match (1 unmatched)",
+      "precincts": 395
+    },
+    {
+      "election": "2024_primary",
+      "race": "9TH CONGRESS",
+      "type": "congress",
+      "detail": "341 precincts, 99.7% match (1 unmatched)",
+      "precincts": 341
+    },
+    {
+      "election": "2024_primary",
+      "race": "PRESIDENT",
+      "type": "president",
+      "detail": "2722 precincts, 100.0% match (1 unmatched)",
+      "precincts": 2722
+    },
+    {
+      "election": "2024_primary",
+      "race": "12TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "53 precincts, 98.1% match (1 unmatched)",
+      "precincts": 53
+    },
+    {
+      "election": "2024_primary",
+      "race": "21ST REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "70 precincts, 98.6% match (1 unmatched)",
+      "precincts": 70
+    },
+    {
+      "election": "2024_primary",
+      "race": "28TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "75 precincts, 98.7% match (1 unmatched)",
+      "precincts": 75
+    },
+    {
+      "election": "2022_general",
+      "race": "1ST APPELLATE - HALL VACANCY",
+      "type": "appellate_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "1ST APPELLATE - HARRIS VACANCY",
+      "type": "appellate_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "1ST APPELLATE - RETAIN CONNORS",
+      "type": "appellate_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "1ST APPELLATE - RETAIN DELORT",
+      "type": "appellate_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "1ST APPELLATE - RETAIN HOWSE, JR.",
+      "type": "appellate_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "1ST APPELLATE - RETAIN LAVIN",
+      "type": "appellate_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "1ST APPELLATE - RETAIN REYES",
+      "type": "appellate_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "1ST APPELLATE - RETAIN SMITH",
+      "type": "appellate_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "ATTORNEY GENERAL",
+      "type": "attorney_general",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - BRENNAN VACANCY",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - CALLAHAN, JR. VACANCY",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - CANNON VACANCY",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - HYMAN VACANCY",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - INGRAM VACANCY",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - LEEMING VACANCY",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - LYNCH VACANCY",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - McGURY VACANCY",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - O'BRIEN VACANCY",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN ALLEGRETTI",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN BALANOFF",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN BERNSTEIN",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN BURKE",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN BURNS",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN C. GALLAGHER",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN COLEMAN",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN COLLINS",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN CONLON",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN D. GALLAGHER",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN D. JONES",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN DE LA ROSA",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN DUFFY",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN ESRIG",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN EVANS",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN FERNANDEZ",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN GILLESPIE",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN HALL",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN HAMILTON",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN HANNON",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN HOOKS",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN JACKSON",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN KELLEY",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN KENNEDY SULLIVAN",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN KIRBY",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN KOZICKI",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN KULL",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN L. JONES",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN LINK",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN LOFTUS",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN LYKE, JR.",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN LYLE",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN LYONS",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN MacCARTHY",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN MALONE",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN MARTIN, JR.",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN McHUGH",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN McWILLIAMS",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN MIKVA",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN MURPHY",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN MURRAY",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN O'BRIEN",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN O'DONNELL",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN ORTIZ",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN OUTLAW",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN POWERS",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN QUINN",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN RAMOS",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN REILLY",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN RYAN",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN SCHNEIDER",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN SPRATT",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN SULLIVAN",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - RETAIN WILSON",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK CIRCUIT - SULLIVAN VACANCY",
+      "type": "circuit_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "COMPTROLLER",
+      "type": "comptroller",
+      "detail": "2721 precincts, 95.1% match (134 unmatched)",
+      "precincts": 2721
+    },
+    {
+      "election": "2022_general",
+      "race": "10TH CONGRESS",
+      "type": "congress",
+      "detail": "65 precincts, 93.8% match (4 unmatched)",
+      "precincts": 65
+    },
+    {
+      "election": "2022_general",
+      "race": "1ST CONGRESS",
+      "type": "congress",
+      "detail": "304 precincts, 97.7% match (7 unmatched)",
+      "precincts": 304
+    },
+    {
+      "election": "2022_general",
+      "race": "2ND CONGRESS",
+      "type": "congress",
+      "detail": "309 precincts, 91.3% match (27 unmatched)",
+      "precincts": 309
+    },
+    {
+      "election": "2022_general",
+      "race": "3RD CONGRESS",
+      "type": "congress",
+      "detail": "252 precincts, 99.6% match (1 unmatched)",
+      "precincts": 252
+    },
+    {
+      "election": "2022_general",
+      "race": "4TH CONGRESS",
+      "type": "congress",
+      "detail": "324 precincts, 96.6% match (11 unmatched)",
+      "precincts": 324
+    },
+    {
+      "election": "2022_general",
+      "race": "5TH CONGRESS",
+      "type": "congress",
+      "detail": "408 precincts, 96.8% match (13 unmatched)",
+      "precincts": 408
+    },
+    {
+      "election": "2022_general",
+      "race": "7TH CONGRESS",
+      "type": "congress",
+      "detail": "394 precincts, 96.7% match (13 unmatched)",
+      "precincts": 394
+    },
+    {
+      "election": "2022_general",
+      "race": "8TH CONGRESS",
+      "type": "congress",
+      "detail": "188 precincts, 92.6% match (14 unmatched)",
+      "precincts": 188
+    },
+    {
+      "election": "2022_general",
+      "race": "9TH CONGRESS",
+      "type": "congress",
+      "detail": "342 precincts, 95.0% match (17 unmatched)",
+      "precincts": 342
+    },
+    {
+      "election": "2022_general",
+      "race": "GOVERNOR AND LIEUTENANT GOVERNOR",
+      "type": "governor",
+      "detail": "2721 precincts, 95.1% match (134 unmatched)",
+      "precincts": 2721
+    },
+    {
+      "election": "2022_general",
+      "race": "For the proposed amendment to add Section 25 to Article I of the Illinois Constitution",
+      "type": "referendum",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "SECRETARY OF STATE",
+      "type": "secretary_of_state",
+      "detail": "2721 precincts, 95.1% match (134 unmatched)",
+      "precincts": 2721
+    },
+    {
+      "election": "2022_general",
+      "race": "10TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "63 precincts, 98.4% match (1 unmatched)",
+      "precincts": 63
+    },
+    {
+      "election": "2022_general",
+      "race": "11TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "52 precincts, 98.1% match (1 unmatched)",
+      "precincts": 52
+    },
+    {
+      "election": "2022_general",
+      "race": "15TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "77 precincts, 98.7% match (1 unmatched)",
+      "precincts": 77
+    },
+    {
+      "election": "2022_general",
+      "race": "16TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "60 precincts, 98.3% match (1 unmatched)",
+      "precincts": 60
+    },
+    {
+      "election": "2022_general",
+      "race": "17TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "79 precincts, 94.9% match (4 unmatched)",
+      "precincts": 79
+    },
+    {
+      "election": "2022_general",
+      "race": "18TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "73 precincts, 91.8% match (6 unmatched)",
+      "precincts": 73
+    },
+    {
+      "election": "2022_general",
+      "race": "19TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "67 precincts, 97.0% match (2 unmatched)",
+      "precincts": 67
+    },
+    {
+      "election": "2022_general",
+      "race": "20TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "67 precincts, 98.5% match (1 unmatched)",
+      "precincts": 67
+    },
+    {
+      "election": "2022_general",
+      "race": "21ST REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "70 precincts, 95.7% match (3 unmatched)",
+      "precincts": 70
+    },
+    {
+      "election": "2022_general",
+      "race": "27TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "84 precincts, 96.4% match (3 unmatched)",
+      "precincts": 84
+    },
+    {
+      "election": "2022_general",
+      "race": "29TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "62 precincts, 91.9% match (5 unmatched)",
+      "precincts": 62
+    },
+    {
+      "election": "2022_general",
+      "race": "2ND REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "63 precincts, 95.2% match (3 unmatched)",
+      "precincts": 63
+    },
+    {
+      "election": "2022_general",
+      "race": "31ST REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "66 precincts, 92.4% match (5 unmatched)",
+      "precincts": 66
+    },
+    {
+      "election": "2022_general",
+      "race": "33RD REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "70 precincts, 98.6% match (1 unmatched)",
+      "precincts": 70
+    },
+    {
+      "election": "2022_general",
+      "race": "34TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "59 precincts, 93.2% match (4 unmatched)",
+      "precincts": 59
+    },
+    {
+      "election": "2022_general",
+      "race": "35TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "77 precincts, 90.9% match (7 unmatched)",
+      "precincts": 77
+    },
+    {
+      "election": "2022_general",
+      "race": "44TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "55 precincts, 94.5% match (3 unmatched)",
+      "precincts": 55
+    },
+    {
+      "election": "2022_general",
+      "race": "49TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "13 precincts, 92.3% match (1 unmatched)",
+      "precincts": 13
+    },
+    {
+      "election": "2022_general",
+      "race": "51ST REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "45 precincts, 93.3% match (3 unmatched)",
+      "precincts": 45
+    },
+    {
+      "election": "2022_general",
+      "race": "53RD REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "60 precincts, 91.7% match (5 unmatched)",
+      "precincts": 60
+    },
+    {
+      "election": "2022_general",
+      "race": "55TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "67 precincts, 94.0% match (4 unmatched)",
+      "precincts": 67
+    },
+    {
+      "election": "2022_general",
+      "race": "56TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "62 precincts, 91.9% match (5 unmatched)",
+      "precincts": 62
+    },
+    {
+      "election": "2022_general",
+      "race": "57TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "63 precincts, 95.2% match (3 unmatched)",
+      "precincts": 63
+    },
+    {
+      "election": "2022_general",
+      "race": "5TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "54 precincts, 98.1% match (1 unmatched)",
+      "precincts": 54
+    },
+    {
+      "election": "2022_general",
+      "race": "77TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "42 precincts, 97.6% match (1 unmatched)",
+      "precincts": 42
+    },
+    {
+      "election": "2022_general",
+      "race": "78TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "70 precincts, 91.4% match (6 unmatched)",
+      "precincts": 70
+    },
+    {
+      "election": "2022_general",
+      "race": "82ND REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "42 precincts, 90.5% match (4 unmatched)",
+      "precincts": 42
+    },
+    {
+      "election": "2022_general",
+      "race": "10TH SENATE",
+      "type": "state_senate",
+      "detail": "132 precincts, 98.5% match (2 unmatched)",
+      "precincts": 132
+    },
+    {
+      "election": "2022_general",
+      "race": "11TH SENATE",
+      "type": "state_senate",
+      "detail": "143 precincts, 97.9% match (3 unmatched)",
+      "precincts": 143
+    },
+    {
+      "election": "2022_general",
+      "race": "14TH SENATE",
+      "type": "state_senate",
+      "detail": "147 precincts, 93.2% match (10 unmatched)",
+      "precincts": 147
+    },
+    {
+      "election": "2022_general",
+      "race": "16TH SENATE",
+      "type": "state_senate",
+      "detail": "124 precincts, 96.0% match (5 unmatched)",
+      "precincts": 124
+    },
+    {
+      "election": "2022_general",
+      "race": "17TH SENATE",
+      "type": "state_senate",
+      "detail": "117 precincts, 96.6% match (4 unmatched)",
+      "precincts": 117
+    },
+    {
+      "election": "2022_general",
+      "race": "18TH SENATE",
+      "type": "state_senate",
+      "detail": "141 precincts, 90.1% match (14 unmatched)",
+      "precincts": 141
+    },
+    {
+      "election": "2022_general",
+      "race": "1ST SENATE",
+      "type": "state_senate",
+      "detail": "116 precincts, 96.6% match (4 unmatched)",
+      "precincts": 116
+    },
+    {
+      "election": "2022_general",
+      "race": "22ND SENATE",
+      "type": "state_senate",
+      "detail": "68 precincts, 95.6% match (3 unmatched)",
+      "precincts": 68
+    },
+    {
+      "election": "2022_general",
+      "race": "25TH SENATE",
+      "type": "state_senate",
+      "detail": "13 precincts, 92.3% match (1 unmatched)",
+      "precincts": 13
+    },
+    {
+      "election": "2022_general",
+      "race": "26TH SENATE",
+      "type": "state_senate",
+      "detail": "56 precincts, 94.6% match (3 unmatched)",
+      "precincts": 56
+    },
+    {
+      "election": "2022_general",
+      "race": "27TH SENATE",
+      "type": "state_senate",
+      "detail": "116 precincts, 90.5% match (11 unmatched)",
+      "precincts": 116
+    },
+    {
+      "election": "2022_general",
+      "race": "28TH SENATE",
+      "type": "state_senate",
+      "detail": "122 precincts, 93.4% match (8 unmatched)",
+      "precincts": 122
+    },
+    {
+      "election": "2022_general",
+      "race": "29TH SENATE",
+      "type": "state_senate",
+      "detail": "65 precincts, 95.4% match (3 unmatched)",
+      "precincts": 65
+    },
+    {
+      "election": "2022_general",
+      "race": "39TH SENATE",
+      "type": "state_senate",
+      "detail": "109 precincts, 94.5% match (6 unmatched)",
+      "precincts": 109
+    },
+    {
+      "election": "2022_general",
+      "race": "41ST SENATE",
+      "type": "state_senate",
+      "detail": "42 precincts, 90.5% match (4 unmatched)",
+      "precincts": 42
+    },
+    {
+      "election": "2022_general",
+      "race": "5TH SENATE",
+      "type": "state_senate",
+      "detail": "112 precincts, 99.1% match (1 unmatched)",
+      "precincts": 112
+    },
+    {
+      "election": "2022_general",
+      "race": "6TH SENATE",
+      "type": "state_senate",
+      "detail": "102 precincts, 99.0% match (1 unmatched)",
+      "precincts": 102
+    },
+    {
+      "election": "2022_general",
+      "race": "8TH SENATE",
+      "type": "state_senate",
+      "detail": "135 precincts, 98.5% match (2 unmatched)",
+      "precincts": 135
+    },
+    {
+      "election": "2022_general",
+      "race": "9TH SENATE",
+      "type": "state_senate",
+      "detail": "147 precincts, 93.9% match (9 unmatched)",
+      "precincts": 147
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK - 11TH SUBCIRCUIT- McGUIRE VACANCY",
+      "type": "subcircuit",
+      "detail": "194 precincts, 96.4% match (7 unmatched)",
+      "precincts": 194
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK - 13TH SUBCIRCUIT- GROEBNER VACANCY",
+      "type": "subcircuit",
+      "detail": "208 precincts, 93.3% match (14 unmatched)",
+      "precincts": 208
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK - 14TH SUBCIRCUIT- BROWN VACANCY",
+      "type": "subcircuit",
+      "detail": "137 precincts, 99.3% match (1 unmatched)",
+      "precincts": 137
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK - 14TH SUBCIRCUIT- JAGIELSKI VACANCY",
+      "type": "subcircuit",
+      "detail": "137 precincts, 99.3% match (1 unmatched)",
+      "precincts": 137
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK - 1ST SUBCIRCUIT - JOHNSON VACANCY",
+      "type": "subcircuit",
+      "detail": "164 precincts, 98.2% match (3 unmatched)",
+      "precincts": 164
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK - 7TH SUBCIRCUIT - MARTIN VACANCY",
+      "type": "subcircuit",
+      "detail": "162 precincts, 98.8% match (2 unmatched)",
+      "precincts": 162
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK - 9TH SUBCIRCUIT - CLEVELAND VACANCY",
+      "type": "subcircuit",
+      "detail": "205 precincts, 96.6% match (7 unmatched)",
+      "precincts": 205
+    },
+    {
+      "election": "2022_general",
+      "race": "COOK - 9TH SUBCIRCUIT - JACOBIUS VACANCY",
+      "type": "subcircuit",
+      "detail": "205 precincts, 96.6% match (7 unmatched)",
+      "precincts": 205
+    },
+    {
+      "election": "2022_general",
+      "race": "1ST SUPREME - RETAIN THEIS",
+      "type": "supreme_court",
+      "detail": "2720 precincts, 95.1% match (133 unmatched)",
+      "precincts": 2720
+    },
+    {
+      "election": "2022_general",
+      "race": "TREASURER",
+      "type": "treasurer_state",
+      "detail": "2721 precincts, 95.1% match (134 unmatched)",
+      "precincts": 2721
+    },
+    {
+      "election": "2022_general",
+      "race": "UNITED STATES SENATOR",
+      "type": "us_senate",
+      "detail": "2721 precincts, 95.1% match (134 unmatched)",
+      "precincts": 2721
+    },
+    {
+      "election": "2022_primary",
+      "race": "10TH CONGRESS",
+      "type": "congress",
+      "detail": "65 precincts, 93.8% match (4 unmatched)",
+      "precincts": 65
+    },
+    {
+      "election": "2022_primary",
+      "race": "8TH CONGRESS",
+      "type": "congress",
+      "detail": "187 precincts, 92.5% match (14 unmatched)",
+      "precincts": 187
+    },
+    {
+      "election": "2022_primary",
+      "race": "10TH STATE CENTRAL COMMITTEEMAN",
+      "type": "state_central_comm",
+      "detail": "65 precincts, 93.8% match (4 unmatched)",
+      "precincts": 65
+    },
+    {
+      "election": "2022_primary",
+      "race": "10TH STATE CENTRAL COMMITTEEWOMAN",
+      "type": "state_central_comm",
+      "detail": "65 precincts, 93.8% match (4 unmatched)",
+      "precincts": 65
+    },
+    {
+      "election": "2022_primary",
+      "race": "8TH STATE CENTRAL COMMITTEEMAN",
+      "type": "state_central_comm",
+      "detail": "187 precincts, 92.5% match (14 unmatched)",
+      "precincts": 187
+    },
+    {
+      "election": "2022_primary",
+      "race": "8TH STATE CENTRAL COMMITTEEWOMAN",
+      "type": "state_central_comm",
+      "detail": "187 precincts, 92.5% match (14 unmatched)",
+      "precincts": 187
+    },
+    {
+      "election": "2022_primary",
+      "race": "17TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "79 precincts, 94.9% match (4 unmatched)",
+      "precincts": 79
+    },
+    {
+      "election": "2022_primary",
+      "race": "18TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "75 precincts, 90.7% match (7 unmatched)",
+      "precincts": 75
+    },
+    {
+      "election": "2022_primary",
+      "race": "21ST REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "69 precincts, 92.8% match (5 unmatched)",
+      "precincts": 69
+    },
+    {
+      "election": "2022_primary",
+      "race": "2ND REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "63 precincts, 95.2% match (3 unmatched)",
+      "precincts": 63
+    },
+    {
+      "election": "2022_primary",
+      "race": "44TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "55 precincts, 94.5% match (3 unmatched)",
+      "precincts": 55
+    },
+    {
+      "election": "2022_primary",
+      "race": "49TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "13 precincts, 92.3% match (1 unmatched)",
+      "precincts": 13
+    },
+    {
+      "election": "2022_primary",
+      "race": "51ST REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "46 precincts, 93.5% match (3 unmatched)",
+      "precincts": 46
+    },
+    {
+      "election": "2022_primary",
+      "race": "53RD REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "59 precincts, 91.5% match (5 unmatched)",
+      "precincts": 59
+    },
+    {
+      "election": "2022_primary",
+      "race": "55TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "68 precincts, 92.6% match (5 unmatched)",
+      "precincts": 68
+    },
+    {
+      "election": "2022_primary",
+      "race": "56TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "61 precincts, 91.8% match (5 unmatched)",
+      "precincts": 61
+    },
+    {
+      "election": "2022_primary",
+      "race": "57TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "64 precincts, 93.8% match (4 unmatched)",
+      "precincts": 64
+    },
+    {
+      "election": "2022_primary",
+      "race": "77TH REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "42 precincts, 97.6% match (1 unmatched)",
+      "precincts": 42
+    },
+    {
+      "election": "2022_primary",
+      "race": "82ND REPRESENTATIVE",
+      "type": "state_rep",
+      "detail": "42 precincts, 90.5% match (4 unmatched)",
+      "precincts": 42
+    },
+    {
+      "election": "2022_primary",
+      "race": "22ND SENATE",
+      "type": "state_senate",
+      "detail": "68 precincts, 95.6% match (3 unmatched)",
+      "precincts": 68
+    },
+    {
+      "election": "2022_primary",
+      "race": "25TH SENATE",
+      "type": "state_senate",
+      "detail": "13 precincts, 92.3% match (1 unmatched)",
+      "precincts": 13
+    },
+    {
+      "election": "2022_primary",
+      "race": "26TH SENATE",
+      "type": "state_senate",
+      "detail": "56 precincts, 94.6% match (3 unmatched)",
+      "precincts": 56
+    },
+    {
+      "election": "2022_primary",
+      "race": "27TH SENATE",
+      "type": "state_senate",
+      "detail": "116 precincts, 90.5% match (11 unmatched)",
+      "precincts": 116
+    },
+    {
+      "election": "2022_primary",
+      "race": "28TH SENATE",
+      "type": "state_senate",
+      "detail": "124 precincts, 91.9% match (10 unmatched)",
+      "precincts": 124
+    },
+    {
+      "election": "2022_primary",
+      "race": "29TH SENATE",
+      "type": "state_senate",
+      "detail": "66 precincts, 93.9% match (4 unmatched)",
+      "precincts": 66
+    },
+    {
+      "election": "2022_primary",
+      "race": "41ST SENATE",
+      "type": "state_senate",
+      "detail": "42 precincts, 90.5% match (4 unmatched)",
+      "precincts": 42
+    },
+    {
+      "election": "2022_primary",
+      "race": "9TH SENATE",
+      "type": "state_senate",
+      "detail": "149 precincts, 93.3% match (10 unmatched)",
+      "precincts": 149
+    },
+    {
+      "election": "2022_primary",
+      "race": "COOK - 13TH SUBCIRCUIT- GROEBNER VACANCY",
+      "type": "subcircuit",
+      "detail": "208 precincts, 93.3% match (14 unmatched)",
+      "precincts": 208
+    }
+  ],
+  "by_election": {
+    "2026_primary": {
+      "total": 464,
+      "pass": 464,
+      "warn": 0,
+      "fail": 0,
+      "distinct_precincts": 2721
+    },
+    "2025_consolidated": {
+      "total": 983,
+      "pass": 983,
+      "warn": 0,
+      "fail": 0,
+      "distinct_precincts": 1430
+    },
+    "2024_general": {
+      "total": 219,
+      "pass": 202,
+      "warn": 8,
+      "fail": 9,
+      "distinct_precincts": 3222
+    },
+    "2024_primary": {
+      "total": 162,
+      "pass": 150,
+      "warn": 12,
+      "fail": 0,
+      "distinct_precincts": 2722
+    },
+    "2023_municipal_runoff": {
+      "total": 15,
+      "pass": 15,
+      "warn": 0,
+      "fail": 0,
+      "distinct_precincts": 1291
+    },
+    "2023_municipal": {
+      "total": 53,
+      "pass": 53,
+      "warn": 0,
+      "fail": 0,
+      "distinct_precincts": 1291
+    },
+    "2022_general": {
+      "total": 215,
+      "pass": 51,
+      "warn": 143,
+      "fail": 21,
+      "distinct_precincts": 2721
+    },
+    "2022_primary": {
+      "total": 159,
+      "pass": 9,
+      "warn": 28,
+      "fail": 122,
+      "distinct_precincts": 3499
+    }
+  },
+  "by_race_type": {
+    "appellate_court": {
+      "total": 22,
+      "pass": 10,
+      "warn": 10,
+      "fail": 2
+    },
+    "attorney_general": {
+      "total": 4,
+      "pass": 2,
+      "warn": 1,
+      "fail": 1
+    },
+    "board_of_review": {
+      "total": 6,
+      "pass": 6,
+      "warn": 0,
+      "fail": 0
+    },
+    "circuit_court": {
+      "total": 181,
+      "pass": 105,
+      "warn": 66,
+      "fail": 10
+    },
+    "comptroller": {
+      "total": 4,
+      "pass": 2,
+      "warn": 1,
+      "fail": 1
+    },
+    "congress": {
+      "total": 66,
+      "pass": 37,
+      "warn": 20,
+      "fail": 9
+    },
+    "cook_assessor": {
+      "total": 3,
+      "pass": 3,
+      "warn": 0,
+      "fail": 0
+    },
+    "cook_clerk": {
+      "total": 3,
+      "pass": 3,
+      "warn": 0,
+      "fail": 0
+    },
+    "cook_commissioner": {
+      "total": 59,
+      "pass": 59,
+      "warn": 0,
+      "fail": 0
+    },
+    "cook_president": {
+      "total": 4,
+      "pass": 4,
+      "warn": 0,
+      "fail": 0
+    },
+    "cook_sheriff": {
+      "total": 3,
+      "pass": 3,
+      "warn": 0,
+      "fail": 0
+    },
+    "cook_treasurer": {
+      "total": 3,
+      "pass": 3,
+      "warn": 0,
+      "fail": 0
+    },
+    "fire_district": {
+      "total": 17,
+      "pass": 17,
+      "warn": 0,
+      "fail": 0
+    },
+    "governor": {
+      "total": 4,
+      "pass": 2,
+      "warn": 1,
+      "fail": 1
+    },
+    "municipal": {
+      "total": 367,
+      "pass": 367,
+      "warn": 0,
+      "fail": 0
+    },
+    "mwrd": {
+      "total": 6,
+      "pass": 6,
+      "warn": 0,
+      "fail": 0
+    },
+    "referendum": {
+      "total": 57,
+      "pass": 56,
+      "warn": 1,
+      "fail": 0
+    },
+    "school_district": {
+      "total": 197,
+      "pass": 197,
+      "warn": 0,
+      "fail": 0
+    },
+    "secretary_of_state": {
+      "total": 4,
+      "pass": 2,
+      "warn": 1,
+      "fail": 1
+    },
+    "state_central_comm": {
+      "total": 33,
+      "pass": 13,
+      "warn": 4,
+      "fail": 16
+    },
+    "state_rep": {
+      "total": 354,
+      "pass": 257,
+      "warn": 45,
+      "fail": 52
+    },
+    "state_senate": {
+      "total": 133,
+      "pass": 77,
+      "warn": 27,
+      "fail": 29
+    },
+    "subcircuit": {
+      "total": 138,
+      "pass": 110,
+      "warn": 9,
+      "fail": 19
+    },
+    "township_committeeperson": {
+      "total": 90,
+      "pass": 90,
+      "warn": 0,
+      "fail": 0
+    },
+    "treasurer_state": {
+      "total": 4,
+      "pass": 2,
+      "warn": 1,
+      "fail": 1
+    },
+    "us_senate": {
+      "total": 4,
+      "pass": 2,
+      "warn": 1,
+      "fail": 1
+    },
+    "library": {
+      "total": 74,
+      "pass": 74,
+      "warn": 0,
+      "fail": 0
+    },
+    "municipal_ward": {
+      "total": 81,
+      "pass": 81,
+      "warn": 0,
+      "fail": 0
+    },
+    "park_district": {
+      "total": 109,
+      "pass": 109,
+      "warn": 0,
+      "fail": 0
+    },
+    "township_office": {
+      "total": 125,
+      "pass": 125,
+      "warn": 0,
+      "fail": 0
+    },
+    "president": {
+      "total": 2,
+      "pass": 0,
+      "warn": 2,
+      "fail": 0
+    },
+    "school_board": {
+      "total": 9,
+      "pass": 0,
+      "warn": 0,
+      "fail": 9
+    },
+    "supreme_court": {
+      "total": 3,
+      "pass": 2,
+      "warn": 1,
+      "fail": 0
+    },
+    "delegate": {
+      "total": 33,
+      "pass": 33,
+      "warn": 0,
+      "fail": 0
+    },
+    "aldermanic_ward": {
+      "total": 64,
+      "pass": 64,
+      "warn": 0,
+      "fail": 0
+    },
+    "mayor": {
+      "total": 2,
+      "pass": 2,
+      "warn": 0,
+      "fail": 0
+    },
+    "city_clerk": {
+      "total": 1,
+      "pass": 1,
+      "warn": 0,
+      "fail": 0
+    },
+    "city_treasurer": {
+      "total": 1,
+      "pass": 1,
+      "warn": 0,
+      "fail": 0
+    }
+  }
+}
