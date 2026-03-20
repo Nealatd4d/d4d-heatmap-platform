@@ -2916,10 +2916,13 @@ async function exportPNG() {
   if (precinctLayer) {
     const bounds = precinctLayer.getBounds();
     if (bounds.isValid()) {
-      // Add extra top padding so the overlay doesn't cover the district
-      const overlayH = exportTitle.offsetHeight || 30;
-      map.fitBounds(bounds, { paddingTopLeft: [5, overlayH + 8], paddingBottomRight: [5, 5], maxZoom: 17, animate: false });
+      map.fitBounds(bounds, { padding: [5, 5], maxZoom: 17, animate: false });
       map.invalidateSize();
+      // Nudge the map down so the overlay doesn't cover the district tip
+      const overlayH = exportTitle.offsetHeight || 30;
+      const center = map.getCenter();
+      const offset = map.containerPointToLatLng([0, 0]).lat - map.containerPointToLatLng([0, overlayH / 2]).lat;
+      map.setView([center.lat + offset, center.lng], map.getZoom(), { animate: false });
     }
   }
 
