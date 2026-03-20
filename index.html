@@ -334,6 +334,7 @@ html,body{
 .export-title-overlay.visible{display:block}
 .export-title-overlay h2{font-size:16px;font-weight:700;color:#e8eaed;margin:0 0 4px 0;letter-spacing:-0.01em}
 .export-title-overlay .export-subtitle{font-size:12px;color:#9aa0a6;margin:0}
+.export-title-overlay .export-stats{font-size:11px;color:#bdc1c6;margin:4px 0 0 0;font-variant-numeric:tabular-nums}
 .export-title-overlay .export-branding{font-size:9px;color:#6b7280;margin-top:6px;letter-spacing:.03em}
 
 /* ══════════════════════════════════════════════
@@ -2779,8 +2780,21 @@ async function exportPNG() {
     subtitle += ` \u00B7 ${muniTitle}`;
   }
 
+  // Build stats string from header stats
+  let statsHTML = '';
+  const statEls = headerStats.querySelectorAll('.stat');
+  if (statEls.length) {
+    const parts = [];
+    statEls.forEach(s => {
+      const val = s.querySelector('.stat-val')?.textContent?.trim() || '';
+      const label = s.querySelector('.stat-label')?.textContent?.trim() || '';
+      if (val && label) parts.push(`${label}: ${val}`);
+    });
+    if (parts.length) statsHTML = `<p class="export-stats">${parts.join(' \u00B7 ')}</p>`;
+  }
+
   // Show title overlay
-  exportTitle.innerHTML = `<h2>${title}</h2><p class="export-subtitle">${subtitle}</p><p class="export-branding">D4D Election Heatmap Platform \u00B7 digital4dems.com</p>`;
+  exportTitle.innerHTML = `<h2>${title}</h2><p class="export-subtitle">${subtitle}</p>${statsHTML}<p class="export-branding">D4D Election Heatmap Platform \u00B7 digital4dems.com</p>`;
   exportTitle.classList.add('visible');
 
   // Hide UI elements that shouldn't be in the export
@@ -2791,8 +2805,20 @@ async function exportPNG() {
   const origDisplay = hideEls.map(el => el ? el.style.display : '');
   hideEls.forEach(el => { if (el) el.style.display = 'none'; });
 
+  // Save current view and fit tightly to district bounds for export
+  const savedCenter = map.getCenter();
+  const savedZoom = map.getZoom();
+  if (precinctLayer) {
+    const bounds = precinctLayer.getBounds();
+    if (bounds.isValid()) {
+      map.fitBounds(bounds, { padding: [60, 40], animate: false });
+      map.invalidateSize();
+    }
+  }
+
   try {
-    await new Promise(r => setTimeout(r, 200));
+    // Wait for tiles to load after fit
+    await new Promise(r => setTimeout(r, 800));
 
     const dataUrl = await htmlToImage.toPng(mapWrap, {
       backgroundColor: '#0f1117',
@@ -2816,6 +2842,8 @@ async function exportPNG() {
   } finally {
     hideEls.forEach((el, i) => { if (el) el.style.display = origDisplay[i]; });
     exportTitle.classList.remove('visible');
+    // Restore original map view
+    map.setView(savedCenter, savedZoom, { animate: false });
   }
 }
 
