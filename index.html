@@ -165,21 +165,29 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Sego
 const SUPA_URL = 'https://nfjfqdffulhqhszhlymo.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5mamZxZGZmdWxocWhzemhseW1vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NTAzMDgsImV4cCI6MjA4OTUyNjMwOH0.vNrXz0iCwA4scUCP2O75KWaLyh7LVQrYmUdnEGMnnCE';
 
-async function rpc(fn, params) {
-  const r = await fetch(`${SUPA_URL}/rest/v1/rpc/${fn}`, {
-    method: 'POST',
-    headers: {
-      'apikey': SUPA_KEY,
-      'Authorization': `Bearer ${SUPA_KEY}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(params || {})
-  });
-  if (!r.ok) {
-    const err = await r.text();
-    throw new Error(`RPC ${fn} failed: ${r.status} ${err}`);
+async function rpc(fn, params, { timeoutMs = 15000 } = {}) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const r = await fetch(`${SUPA_URL}/rest/v1/rpc/${fn}`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPA_KEY,
+        'Authorization': `Bearer ${SUPA_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(params || {}),
+      signal: controller.signal
+    });
+    const text = await r.text();
+    if (!r.ok) throw new Error(`RPC ${fn} failed: ${r.status} ${text || 'No response'}`);
+    try { return text ? JSON.parse(text) : []; } catch (e) { throw new Error(`RPC ${fn} invalid JSON`); }
+  } catch (err) {
+    if (err.name === 'AbortError') throw new Error(`RPC ${fn} timed out after ${timeoutMs}ms`);
+    throw err;
+  } finally {
+    clearTimeout(timer);
   }
-  return r.json();
 }
 
 /* ═══════════════════ MD5 PRECINCT ID ═══════════════════ */
@@ -341,8 +349,8 @@ function popLoading() { loadingCount = Math.max(0, loadingCount - 1); if (loadin
 /* ═══════════════════ INIT DATA ═══════════════════ */
 async function loadGeoJSON() {
   const [chiRes, subRes] = await Promise.all([
-    fetch('data/precincts_chicago.geojson').then(r => r.json()),
-    fetch('data/precincts_suburban.geojson').then(r => r.json())
+    fetch('data/precincts_chicago.geojson').then(r => { if (!r.ok) throw new Error(`Chicago GeoJSON: ${r.status}`); return r.json(); }),
+    fetch('data/precincts_suburban.geojson').then(r => { if (!r.ok) throw new Error(`Suburban GeoJSON: ${r.status}`); return r.json(); })
   ]);
 
   geoFeatures = [];
@@ -423,27 +431,48 @@ async function fetchTurnout(electionId) {
 }
 
 /* ═══════════════════ POPULATE DROPDOWNS ═══════════════════ */
+let typeRequestSeq = 0;
 async function populateTypeDropdown() {
-  selType.innerHTML = '<option value="">Select Type…</option>';
-  // Get available race types for current election
-  let availableTypes = null;
-  if (currentElectionId) {
-    const races = await fetchRaces(currentElectionId);
-    availableTypes = new Set(races.map(r => r.race_type));
-  }
-  for (const g of TYPE_GROUPS) {
-    const og = document.createElement('optgroup');
-    og.label = g.label;
-    let hasItems = false;
-    for (const it of g.items) {
-      if (availableTypes && !availableTypes.has(it.value)) continue;
-      const o = document.createElement('option');
-      o.value = it.value;
-      o.textContent = it.label;
-      og.appendChild(o);
-      hasItems = true;
+  const requestSeq = ++typeRequestSeq;
+  const electionId = currentElectionId;
+  selType.disabled = true;
+  selType.innerHTML = '<option value="">Loading types…</option>';
+  try {
+    if (!electionId) {
+      selType.innerHTML = '<option value="">Select Type…</option>';
+      return;
     }
-    if (hasItems) selType.appendChild(og);
+    const races = await fetchRaces(electionId);
+    // Ignore stale results if user changed elections while loading
+    if (requestSeq !== typeRequestSeq || electionId !== currentElectionId) return;
+    const availableTypes = new Set(
+      races.map(r => String(r.race_type || '').trim().toLowerCase()).filter(Boolean)
+    );
+    selType.innerHTML = '<option value="">Select Type…</option>';
+    for (const g of TYPE_GROUPS) {
+      const og = document.createElement('optgroup');
+      og.label = g.label;
+      let hasItems = false;
+      for (const it of g.items) {
+        if (!availableTypes.has(String(it.value).trim().toLowerCase())) continue;
+        const o = document.createElement('option');
+        o.value = it.value;
+        o.textContent = it.label;
+        og.appendChild(o);
+        hasItems = true;
+      }
+      if (hasItems) selType.appendChild(og);
+    }
+    const realOptions = [...selType.options].filter(o => o.value);
+    if (!realOptions.length) {
+      selType.innerHTML = '<option value="">No district types available</option>';
+    }
+  } catch (err) {
+    console.error('populateTypeDropdown failed:', err);
+    if (requestSeq !== typeRequestSeq) return;
+    selType.innerHTML = '<option value="">Failed to load types — tap to retry</option>';
+  } finally {
+    if (requestSeq === typeRequestSeq) selType.disabled = false;
   }
 }
 
@@ -455,49 +484,55 @@ async function populateRaceDropdown() {
     return;
   }
 
-  const races = await fetchRaces(currentElectionId);
-  const filtered = races.filter(r => r.race_type === currentRaceType);
-  
-  selRace.innerHTML = '';
-  if (!filtered.length) {
-    selRace.innerHTML = '<option value="">No races this election</option>';
-    currentRaceId = '';
-    clearMap();
-    return;
+  try {
+    const races = await fetchRaces(currentElectionId);
+    const filtered = races.filter(r => r.race_type === currentRaceType);
+    
+    selRace.innerHTML = '';
+    if (!filtered.length) {
+      selRace.innerHTML = '<option value="">No races this election</option>';
+      currentRaceId = '';
+      clearMap();
+      return;
+    }
+
+    // Sort: extract any number from the name for natural sorting
+    filtered.sort((a, b) => {
+      const na = a.race_name.match(/(\d+)/);
+      const nb = b.race_name.match(/(\d+)/);
+      if (na && nb) return parseInt(na[1]) - parseInt(nb[1]);
+      return a.race_name.localeCompare(b.race_name);
+    });
+
+    // If only one race, auto-select it
+    if (filtered.length === 1) {
+      const o = document.createElement('option');
+      o.value = filtered[0].id;
+      o.textContent = filtered[0].race_name;
+      selRace.appendChild(o);
+      selRace.disabled = true;
+      currentRaceId = filtered[0].id;
+      onRaceSelected();
+      return;
+    }
+
+    const def = document.createElement('option');
+    def.value = '';
+    def.textContent = 'Select Race…';
+    selRace.appendChild(def);
+
+    for (const r of filtered) {
+      const o = document.createElement('option');
+      o.value = r.id;
+      o.textContent = r.race_name;
+      selRace.appendChild(o);
+    }
+    selRace.disabled = false;
+  } catch (err) {
+    console.error('populateRaceDropdown failed:', err);
+    selRace.innerHTML = '<option value="">Failed to load races</option>';
+    selRace.disabled = false;
   }
-
-  // Sort: extract any number from the name for natural sorting
-  filtered.sort((a, b) => {
-    const na = a.race_name.match(/(\d+)/);
-    const nb = b.race_name.match(/(\d+)/);
-    if (na && nb) return parseInt(na[1]) - parseInt(nb[1]);
-    return a.race_name.localeCompare(b.race_name);
-  });
-
-  // If only one race, auto-select it
-  if (filtered.length === 1) {
-    const o = document.createElement('option');
-    o.value = filtered[0].id;
-    o.textContent = filtered[0].race_name;
-    selRace.appendChild(o);
-    selRace.disabled = true;
-    currentRaceId = filtered[0].id;
-    onRaceSelected();
-    return;
-  }
-
-  const def = document.createElement('option');
-  def.value = '';
-  def.textContent = 'Select Race…';
-  selRace.appendChild(def);
-
-  for (const r of filtered) {
-    const o = document.createElement('option');
-    o.value = r.id;
-    o.textContent = r.race_name;
-    selRace.appendChild(o);
-  }
-  selRace.disabled = false;
 }
 
 /* ═══════════════════ CANDIDATE HELPERS ═══════════════════ */
@@ -1026,7 +1061,13 @@ async function init() {
   initMap();
   pushLoading();
   try {
-    await Promise.all([loadGeoJSON(), loadElections()]);
+    // Load GeoJSON and elections in parallel, but don't let GeoJSON failure
+    // block the rest of the app (dropdowns, data browsing still work)
+    const [geoResult] = await Promise.allSettled([loadGeoJSON()]);
+    if (geoResult.status === 'rejected') {
+      console.warn('GeoJSON load failed (map shapes unavailable):', geoResult.reason?.message || geoResult.reason);
+    }
+    await loadElections();
     await populateTypeDropdown();
     updateLegend();
   } catch (err) {
