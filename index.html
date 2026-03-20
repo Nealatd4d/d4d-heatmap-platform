@@ -348,9 +348,10 @@ function popLoading() { loadingCount = Math.max(0, loadingCount - 1); if (loadin
 
 /* ═══════════════════ INIT DATA ═══════════════════ */
 async function loadGeoJSON() {
+  const GEOJSON_BASE = 'https://nfjfqdffulhqhszhlymo.supabase.co/storage/v1/object/public/geojson';
   const [chiRes, subRes] = await Promise.all([
-    fetch('data/precincts_chicago.geojson').then(r => { if (!r.ok) throw new Error(`Chicago GeoJSON: ${r.status}`); return r.json(); }),
-    fetch('data/precincts_suburban.geojson').then(r => { if (!r.ok) throw new Error(`Suburban GeoJSON: ${r.status}`); return r.json(); })
+    fetch(`${GEOJSON_BASE}/precincts_chicago.geojson`).then(r => { if (!r.ok) throw new Error(`Chicago GeoJSON: ${r.status}`); return r.json(); }),
+    fetch(`${GEOJSON_BASE}/precincts_suburban.geojson`).then(r => { if (!r.ok) throw new Error(`Suburban GeoJSON: ${r.status}`); return r.json(); })
   ]);
 
   geoFeatures = [];
