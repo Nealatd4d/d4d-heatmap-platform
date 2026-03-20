@@ -3,12 +3,18 @@
 Suburban Cook County SBOE CSV → Supabase Postgres loader.
 Reuses the same scan/load logic as load_sboe.py but for suburban Cook data.
 
+Duplicate protection:
+  - results table has UNIQUE (election_id, race_id, precinct_id, candidate_id)
+  - turnout table has UNIQUE (election_id, precinct_id)
+  - This loader uses temp-table + INSERT ON CONFLICT to safely handle re-runs
+  - ALWAYS refresh mv_race_precinct_results after loading
+
 Files:
   cook_suburban_2022GE.csv - 2022 General Election (suburban Cook)
   cook_suburban_2022GP.csv - 2022 Primary Election (suburban Cook)
   cook_suburban_2024GE.csv - 2024 General Election (suburban Cook)
   cook_suburban_2024GP.csv - 2024 Primary Election (suburban Cook)
-"""
+"
 import csv
 import hashlib
 import io
@@ -372,28 +378,38 @@ def main():
     conn.commit()
     print(f"  Loaded {n}")
 
-    # Results (the big one)
+    # Results (the big one) — use temp table + ON CONFLICT to prevent duplicates
     print(f"\n--- Results ({len(all_results):,}) ---")
     t1 = time.time()
-    # Drop indexes temporarily for speed
-    known_result_indexes = [
-        'idx_results_race', 'idx_results_precinct',
-        'idx_results_election', 'idx_results_race_precinct',
-    ]
-    for idx in known_result_indexes:
-        cur.execute(f"DROP INDEX IF EXISTS {idx};")
-    conn.commit()
-
-    # Load in chunks for the large dataset
     CHUNK = 200_000
     loaded = 0
     for i in range(0, len(all_results), CHUNK):
         chunk = all_results[i:i+CHUNK]
-        n = copy_tuples(cur, "results",
+        cur.execute("""CREATE TEMP TABLE tmp_results (
+            election_id text, precinct_id text, race_id text, candidate_id text,
+            votes integer, source_file text, source_contest_name text,
+            source_precinct_name text, source_candidate_name text
+        ) ON COMMIT DROP;""")
+        n = copy_tuples(cur, "tmp_results",
                         ["election_id", "precinct_id", "race_id", "candidate_id", "votes",
                          "source_file", "source_contest_name", "source_precinct_name",
                          "source_candidate_name"],
                         chunk)
+        cur.execute("""
+            INSERT INTO results (election_id, precinct_id, race_id, candidate_id, votes,
+                                 source_file, source_contest_name, source_precinct_name,
+                                 source_candidate_name)
+            SELECT election_id, precinct_id, race_id, candidate_id, votes,
+                   source_file, source_contest_name, source_precinct_name,
+                   source_candidate_name
+            FROM tmp_results
+            ON CONFLICT (election_id, race_id, precinct_id, candidate_id)
+            DO UPDATE SET votes = EXCLUDED.votes,
+                          source_file = EXCLUDED.source_file,
+                          source_contest_name = EXCLUDED.source_contest_name,
+                          source_precinct_name = EXCLUDED.source_precinct_name,
+                          source_candidate_name = EXCLUDED.source_candidate_name;
+        """)
         conn.commit()
         loaded += n
         elapsed = time.time() - t1
@@ -402,22 +418,31 @@ def main():
     t2 = time.time()
     print(f"  Total loaded: {loaded:,} in {t2-t1:.1f}s")
 
-    # Rebuild indexes
-    print("  Rebuilding indexes...")
-    cur.execute("CREATE INDEX IF NOT EXISTS idx_results_race ON results (race_id);")
-    cur.execute("CREATE INDEX IF NOT EXISTS idx_results_precinct ON results (precinct_id);")
-    cur.execute("CREATE INDEX IF NOT EXISTS idx_results_election ON results (election_id);")
-    cur.execute("CREATE INDEX IF NOT EXISTS idx_results_race_precinct ON results (race_id, precinct_id);")
-    conn.commit()
-    print(f"  Indexes rebuilt in {time.time()-t2:.1f}s")
-
-    # Turnout
+    # Turnout — use temp table + ON CONFLICT to prevent duplicates
     print(f"\n--- Turnout ({len(all_turnout):,}) ---")
     t1 = time.time()
-    n = copy_tuples(cur, "turnout",
+    cur.execute("""CREATE TEMP TABLE tmp_turnout (
+        election_id text, precinct_id text, registered_voters integer,
+        ballots_cast integer, turnout_pct numeric, source_file text,
+        source_precinct_name text
+    ) ON COMMIT DROP;""")
+    n = copy_tuples(cur, "tmp_turnout",
                     ["election_id", "precinct_id", "registered_voters", "ballots_cast",
                      "turnout_pct", "source_file", "source_precinct_name"],
                     all_turnout)
+    cur.execute("""
+        INSERT INTO turnout (election_id, precinct_id, registered_voters, ballots_cast,
+                             turnout_pct, source_file, source_precinct_name)
+        SELECT election_id, precinct_id, registered_voters, ballots_cast,
+               turnout_pct, source_file, source_precinct_name
+        FROM tmp_turnout
+        ON CONFLICT (election_id, precinct_id)
+        DO UPDATE SET registered_voters = EXCLUDED.registered_voters,
+                      ballots_cast = EXCLUDED.ballots_cast,
+                      turnout_pct = EXCLUDED.turnout_pct,
+                      source_file = EXCLUDED.source_file,
+                      source_precinct_name = EXCLUDED.source_precinct_name;
+    """)
     conn.commit()
     print(f"  Loaded {n:,} in {time.time()-t1:.1f}s")
 

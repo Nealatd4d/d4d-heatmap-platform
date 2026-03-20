@@ -399,7 +399,17 @@ def _parse_int(v):
 
 
 def supa_upsert(table, data):
-    """Upsert rows into Supabase via PostgREST."""
+    """Upsert rows into Supabase via PostgREST.
+    
+    Uses Prefer: resolution=merge-duplicates which relies on unique constraints:
+      - elections: PRIMARY KEY (id)
+      - races: PRIMARY KEY (id)
+      - candidates: PRIMARY KEY (id)
+      - results: UNIQUE (election_id, race_id, precinct_id, candidate_id)
+      - turnout: UNIQUE (election_id, precinct_id)
+    
+    Safe to re-run — duplicates are merged, not inserted.
+    """
     if not data:
         return None
     r = requests.post(

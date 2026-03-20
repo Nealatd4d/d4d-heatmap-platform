@@ -4,6 +4,11 @@ Chicago School Board XLS → Supabase Postgres loader.
 Parses BOE precinct-level XLS files (Districts 1-10) from chicagoelections.gov
 and loads them into the unified Supabase schema using psycopg2 COPY.
 
+Duplicate protection:
+  - results table has UNIQUE (election_id, race_id, precinct_id, candidate_id)
+  - Uses temp-table + INSERT ON CONFLICT to safely handle re-runs
+  - ALWAYS refresh mv_race_precinct_results after loading
+
 File format:
   Row 0: ['Total Votes', 'Candidate A', '%', 'Candidate B', '%', ...]
   Row 1: [total_votes_str, cand_a_votes, '%', cand_b_votes, '%', ...]
@@ -323,14 +328,34 @@ def main():
     conn.commit()
     print(f"  Loaded {n}")
 
-    # Results
+    # Results — use temp table + ON CONFLICT to prevent duplicates
     print(f"\n--- Results ({len(all_results):,}) ---")
     t1 = time.time()
-    n = copy_tuples(cur, "results",
+    cur.execute("""CREATE TEMP TABLE tmp_results (
+        election_id text, precinct_id text, race_id text, candidate_id text,
+        votes integer, source_file text, source_contest_name text,
+        source_precinct_name text, source_candidate_name text
+    ) ON COMMIT DROP;""")
+    n = copy_tuples(cur, "tmp_results",
                     ["election_id", "precinct_id", "race_id", "candidate_id", "votes",
                      "source_file", "source_contest_name", "source_precinct_name",
                      "source_candidate_name"],
                     all_results)
+    cur.execute("""
+        INSERT INTO results (election_id, precinct_id, race_id, candidate_id, votes,
+                             source_file, source_contest_name, source_precinct_name,
+                             source_candidate_name)
+        SELECT election_id, precinct_id, race_id, candidate_id, votes,
+               source_file, source_contest_name, source_precinct_name,
+               source_candidate_name
+        FROM tmp_results
+        ON CONFLICT (election_id, race_id, precinct_id, candidate_id)
+        DO UPDATE SET votes = EXCLUDED.votes,
+                      source_file = EXCLUDED.source_file,
+                      source_contest_name = EXCLUDED.source_contest_name,
+                      source_precinct_name = EXCLUDED.source_precinct_name,
+                      source_candidate_name = EXCLUDED.source_candidate_name;
+    """)
     conn.commit()
     t2 = time.time()
     print(f"  Loaded {n:,} in {t2-t1:.1f}s")
