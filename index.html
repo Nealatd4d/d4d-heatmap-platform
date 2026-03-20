@@ -239,18 +239,32 @@ const TYPE_GROUPS = [
     { value: 'state_senate', label: 'State Senate' },
     { value: 'congress', label: 'Congressional' },
   ]},
-  { label: 'Municipal', items: [
+  { label: 'Chicago Municipal', items: [
     { value: 'mayor', label: 'Mayor' },
     { value: 'aldermanic_ward', label: 'Alderman' },
     { value: 'city_clerk', label: 'City Clerk' },
     { value: 'city_treasurer', label: 'City Treasurer' },
   ]},
+  { label: 'Suburban Municipal', items: [
+    { value: 'municipal', label: 'Municipal Office' },
+    { value: 'municipal_ward', label: 'Municipal Ward' },
+  ]},
+  { label: 'Township', items: [
+    { value: 'township_office', label: 'Township Office' },
+    { value: 'township_committeeperson', label: 'Committeeperson' },
+  ]},
   { label: 'Cook County', items: [
     { value: 'cook_commissioner', label: 'Commissioner' },
     { value: 'cook_president', label: 'Board President' },
+    { value: 'cook_assessor', label: 'Assessor' },
+    { value: 'cook_clerk', label: 'County Clerk' },
+    { value: 'cook_treasurer', label: 'County Treasurer' },
+    { value: 'cook_sheriff', label: 'Sheriff' },
+    { value: 'board_of_review', label: 'Board of Review' },
     { value: 'mwrd', label: 'MWRD' },
   ]},
   { label: 'Judicial', items: [
+    { value: 'judge', label: 'Judge' },
     { value: 'circuit_court', label: 'Circuit Court' },
     { value: 'subcircuit', label: 'Subcircuit' },
     { value: 'appellate_court', label: 'Appellate Court' },
@@ -258,6 +272,13 @@ const TYPE_GROUPS = [
   ]},
   { label: 'Education', items: [
     { value: 'school_board', label: 'School Board' },
+    { value: 'school_district', label: 'School District' },
+  ]},
+  { label: 'District', items: [
+    { value: 'park_district', label: 'Park District' },
+    { value: 'library', label: 'Library' },
+    { value: 'fire_district', label: 'Fire District' },
+    { value: 'water_reclamation', label: 'Water Reclamation' },
   ]},
   { label: 'State-wide', items: [
     { value: 'president', label: 'President' },
@@ -267,6 +288,11 @@ const TYPE_GROUPS = [
     { value: 'secretary_of_state', label: 'Sec. of State' },
     { value: 'comptroller', label: 'Comptroller' },
     { value: 'treasurer_state', label: 'State Treasurer' },
+    { value: 'state_central_comm', label: 'State Central Comm.' },
+    { value: 'delegate', label: 'Delegate' },
+  ]},
+  { label: 'Referendums', items: [
+    { value: 'referendum', label: 'Referendum' },
   ]},
 ];
 
@@ -397,18 +423,27 @@ async function fetchTurnout(electionId) {
 }
 
 /* ═══════════════════ POPULATE DROPDOWNS ═══════════════════ */
-function populateTypeDropdown() {
+async function populateTypeDropdown() {
   selType.innerHTML = '<option value="">Select Type…</option>';
+  // Get available race types for current election
+  let availableTypes = null;
+  if (currentElectionId) {
+    const races = await fetchRaces(currentElectionId);
+    availableTypes = new Set(races.map(r => r.race_type));
+  }
   for (const g of TYPE_GROUPS) {
     const og = document.createElement('optgroup');
     og.label = g.label;
+    let hasItems = false;
     for (const it of g.items) {
+      if (availableTypes && !availableTypes.has(it.value)) continue;
       const o = document.createElement('option');
       o.value = it.value;
       o.textContent = it.label;
       og.appendChild(o);
+      hasItems = true;
     }
-    selType.appendChild(og);
+    if (hasItems) selType.appendChild(og);
   }
 }
 
@@ -922,12 +957,14 @@ function updateLegend(raceData) {
 /* ═══════════════════ EVENTS ═══════════════════ */
 selElection.addEventListener('change', async () => {
   currentElectionId = selElection.value;
+  currentRaceType = '';
   currentRaceId = '';
   selectedCandidate = ''; vsCandidate1 = ''; vsCandidate2 = '';
   viewOpts.innerHTML = '';
-  if (currentRaceType) {
-    await populateRaceDropdown();
-  }
+  await populateTypeDropdown();
+  selRace.innerHTML = '<option value="">Select Race…</option>';
+  selRace.disabled = true;
+  clearMap();
 });
 
 selType.addEventListener('change', async () => {
@@ -990,7 +1027,7 @@ async function init() {
   pushLoading();
   try {
     await Promise.all([loadGeoJSON(), loadElections()]);
-    populateTypeDropdown();
+    await populateTypeDropdown();
     updateLegend();
   } catch (err) {
     console.error('Init error:', err);
