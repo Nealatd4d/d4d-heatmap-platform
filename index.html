@@ -1696,7 +1696,7 @@ async function render() {
 
     // Only fitBounds when the precinct set changes, not on mode/candidate switches
     if (pidsChanged && precinctLayer.getLayers().length) {
-      map.fitBounds(precinctLayer.getBounds(), { padding: [20, 20], maxZoom: 16 });
+      map.fitBounds(precinctLayer.getBounds(), { padding: [5, 5], maxZoom: 17 });
     }
 
     updateStats(turnout, raceData, activePids);
@@ -2660,7 +2660,7 @@ async function renderFinance() {
     }).addTo(map);
 
     if (pidsChanged && precinctLayer.getLayers().length) {
-      map.fitBounds(precinctLayer.getBounds(), { padding: [20, 20], maxZoom: 16 });
+      map.fitBounds(precinctLayer.getBounds(), { padding: [5, 5], maxZoom: 17 });
     }
 
     updateFinanceStats(financeData);
@@ -2811,7 +2811,7 @@ async function exportPNG() {
   if (precinctLayer) {
     const bounds = precinctLayer.getBounds();
     if (bounds.isValid()) {
-      map.fitBounds(bounds, { padding: [20, 20], maxZoom: 16, animate: false });
+      map.fitBounds(bounds, { padding: [5, 5], maxZoom: 17, animate: false });
       map.invalidateSize();
     }
   }
