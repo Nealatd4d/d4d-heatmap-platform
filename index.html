@@ -731,16 +731,58 @@ async function updateViewOpts() {
 
   if (needsCompare) {
     const s = document.createElement('select');
-    elections.filter(e => e.id !== currentElectionId).forEach(e => {
-      const o = document.createElement('option');
-      o.value = e.id;
-      o.textContent = 'vs ' + e.election_name;
-      s.appendChild(o);
-    });
-    if (compareElectionId && compareElectionId !== currentElectionId) s.value = compareElectionId;
+    const curE = elections.find(e => e.id === currentElectionId);
+    const curType = curE ? curE.election_type : '';
+    const others = elections.filter(e => e.id !== currentElectionId);
+    // Sort: same-type elections first (most recent), then cross-type
+    const sameType = others.filter(e => e.election_type === curType);
+    const diffType = others.filter(e => e.election_type !== curType);
+    if (sameType.length) {
+      const grp1 = document.createElement('optgroup');
+      grp1.label = 'Same election type';
+      sameType.forEach(e => {
+        const o = document.createElement('option');
+        o.value = e.id;
+        o.textContent = 'vs ' + e.election_name;
+        grp1.appendChild(o);
+      });
+      s.appendChild(grp1);
+    }
+    if (diffType.length) {
+      const grp2 = document.createElement('optgroup');
+      grp2.label = 'Different election type ⚠️';
+      diffType.forEach(e => {
+        const o = document.createElement('option');
+        o.value = e.id;
+        o.textContent = 'vs ' + e.election_name;
+        grp2.appendChild(o);
+      });
+      s.appendChild(grp2);
+    }
+    // Default to most recent same-type if available, otherwise keep previous
+    if (compareElectionId && compareElectionId !== currentElectionId) {
+      s.value = compareElectionId;
+    } else if (sameType.length) {
+      s.value = sameType[0].id;
+    }
     compareElectionId = s.value;
-    s.addEventListener('change', () => { compareElectionId = s.value; render(); });
+    // Warning label for cross-type comparison
+    const warnEl = document.createElement('span');
+    warnEl.className = 'compare-warning';
+    warnEl.style.cssText = 'color:#f0ad4e;font-size:11px;margin-left:8px;display:none;';
+    const updateWarn = () => {
+      const selE = elections.find(e => e.id === s.value);
+      if (selE && selE.election_type !== curType) {
+        warnEl.textContent = '⚠ Comparing ' + curType + ' vs ' + selE.election_type + ' — expect large delta';
+        warnEl.style.display = 'inline';
+      } else {
+        warnEl.style.display = 'none';
+      }
+    };
+    updateWarn();
+    s.addEventListener('change', () => { compareElectionId = s.value; updateWarn(); render(); });
     viewOpts.appendChild(s);
+    viewOpts.appendChild(warnEl);
   }
 
   if (!needsCandidates || !currentRaceId) return;
