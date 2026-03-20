@@ -251,7 +251,7 @@ html,body{
 .cand-votes{min-width:36px;text-align:right;color:var(--text-dim);font-variant-numeric:tabular-nums;font-size:12px}
 
 /* ── Legend ── */
-.legend{position:absolute;bottom:16px;left:16px;z-index:var(--z-map-overlay);pointer-events:none;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;box-shadow:0 4px 20px rgba(0,0,0,.4);max-height:60vh;overflow-y:auto}
+.legend{position:absolute;bottom:16px;left:16px;z-index:450;pointer-events:none;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;box-shadow:0 4px 20px rgba(0,0,0,.4);max-height:60vh;overflow-y:auto}
 .legend-title{font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em;font-weight:600;margin-bottom:6px}
 .legend-row{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted);padding:1px 0}
 .legend-swatch{width:14px;height:10px;border-radius:2px;flex-shrink:0}
@@ -517,13 +517,10 @@ html,body{
   /* Bottom sheet hidden on desktop */
   .bottom-sheet{display:none!important}
 
-  /* Legend: normal position (no mode strip offset) */
-  .legend{bottom:16px;left:16px;pointer-events:auto;cursor:pointer}
-  .legend-title{display:flex;align-items:center;gap:4px;margin-bottom:0}
-  .legend-body{overflow:hidden;max-height:0;transition:max-height 0.25s ease}
-  .legend.legend-open .legend-body{max-height:min(300px,40vh)}
-  .legend.legend-open .legend-title::after{content:' ▴'}
-  .legend-title::after{content:' ▾';font-size:10px}
+  /* Legend: always visible on desktop, no collapsible behavior */
+  .legend{bottom:16px;left:16px;pointer-events:auto}
+  .legend-title{margin-bottom:6px}
+  .legend-body{max-height:none;overflow:visible}
 }
 
 /* Tablet tweaks */
@@ -1901,17 +1898,13 @@ function updateLegend(raceData) {
     });
     h += '<div class="legend-row"><span class="legend-swatch" style="background:#333"></span>No data</div>';
   }
-  if (isMobile) {
-    // On mobile: wrap rows in .legend-body for collapsible behavior
-    // Extract title vs rows
-    const titleMatch = h.match(/^(<div class="legend-title">[^<]*(?:<[^>]*>[^<]*<\/[^>]*>)*<\/div>)/);
-    if (titleMatch) {
-      const titlePart = titleMatch[0];
-      const bodyPart = h.slice(titlePart.length);
-      legendEl.innerHTML = titlePart + `<div class="legend-body" id="legendBody">${bodyPart}</div>`;
-    } else {
-      legendEl.innerHTML = h;
-    }
+  // Always wrap rows in .legend-body for collapsible behavior on mobile
+  // (desktop CSS overrides to max-height:none so it's always visible)
+  const titleMatch = h.match(/^(<div class="legend-title">[^<]*(?:<[^>]*>[^<]*<\/[^>]*>)*<\/div>)/);
+  if (titleMatch) {
+    const titlePart = titleMatch[0];
+    const bodyPart = h.slice(titlePart.length);
+    legendEl.innerHTML = titlePart + `<div class="legend-body" id="legendBody">${bodyPart}</div>`;
   } else {
     legendEl.innerHTML = h;
   }
@@ -2540,13 +2533,10 @@ function updateFinanceLegend(financeData) {
   }
   h += '<div class="legend-row"><span class="legend-swatch" style="background:#333"></span>No data</div>';
 
-  if (isMobile) {
-    const titleMatch = h.match(/^(<div class="legend-title">[^<]*(?:<[^>]*>[^<]*<\/[^>]*>)*<\/div>)/);
-    if (titleMatch) {
-      legendEl.innerHTML = titleMatch[0] + `<div class="legend-body" id="legendBody">${h.slice(titleMatch[0].length)}</div>`;
-    } else {
-      legendEl.innerHTML = h;
-    }
+  // Always wrap in legend-body (desktop CSS overrides to visible)
+  const titleMatch2 = h.match(/^(<div class="legend-title">[^<]*(?:<[^>]*>[^<]*<\/[^>]*>)*<\/div>)/);
+  if (titleMatch2) {
+    legendEl.innerHTML = titleMatch2[0] + `<div class="legend-body" id="legendBody">${h.slice(titleMatch2[0].length)}</div>`;
   } else {
     legendEl.innerHTML = h;
   }
