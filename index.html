@@ -563,12 +563,14 @@ html,body{
 
   <aside class="toolbar" id="toolbar" aria-label="Map controls">
     <div class="toolbar-controls" id="toolbarControls">
-      <!-- Data Layer Toggle -->
+      <!-- Data Layer Toggle (Campaign Finance hidden for now) -->
+      <!--
       <span class="toolbar-label">Data Layer</span>
       <div class="layer-toggle">
         <button class="layer-btn active" data-layer="election" onclick="setDataLayer('election')">Election Results</button>
         <button class="layer-btn" data-layer="finance" onclick="setDataLayer('finance')">Campaign Finance</button>
       </div>
+      -->
 
       <!-- Election Results controls -->
       <div id="electionControls">
@@ -596,8 +598,8 @@ html,body{
         <select id="selFocus"><option value="">All Precincts</option></select>
       </div>
 
-      <!-- Campaign Finance controls (hidden by default) -->
-      <div id="financeControls" class="finance-controls hidden">
+      <!-- Campaign Finance controls (disabled for now) -->
+      <!-- <div id="financeControls" class="finance-controls hidden">
         <span class="toolbar-label">Finance Cycle</span>
         <select id="selFinanceElection"><option value="">Loading…</option></select>
         <div class="toolbar-sep"></div>
@@ -617,7 +619,7 @@ html,body{
           <button class="mode-btn" data-fmode="swing">Swing</button>
           <button class="mode-btn" data-fmode="votes">Total $</button>
         </div>
-      </div>
+      </div> -->
       <div class="toolbar-sep"></div>
       <button class="export-btn" onclick="exportPNG()" title="Export current view as PNG">
         <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2353,14 +2355,14 @@ function setDataLayer(layer) {
   const ec = $('electionControls');
   const fc = $('financeControls');
   if (layer === 'election') {
-    ec.style.display = '';
-    fc.classList.add('hidden');
+    if (ec) ec.style.display = '';
+    if (fc) fc.classList.add('hidden');
     // Re-render with election data
     if (currentRaceId || currentMode === 'turnout') render();
     else clearMap();
   } else {
-    ec.style.display = 'none';
-    fc.classList.remove('hidden');
+    if (ec) ec.style.display = 'none';
+    if (fc) fc.classList.remove('hidden');
     // Load finance elections if not yet loaded
     if (!financeElections.length) {
       loadFinanceElections();
@@ -2376,6 +2378,7 @@ window.exportPNG = exportPNG;
 
 /* Load finance elections */
 async function loadFinanceElections() {
+  if (!selFinanceElection) return; // finance tab hidden
   try {
     financeElections = await rpc('get_finance_race_list');
     selFinanceElection.innerHTML = '';
@@ -2459,6 +2462,7 @@ async function loadFinanceCommittees() {
 
 /* Show/hide committee B and prev cycle based on mode */
 function updateFinanceControlVisibility() {
+  if (!selCommitteeB || !selFinancePrev || !selCommitteeA) return; // finance tab hidden
   const needsB = currentFinanceMode === 'vs';
   const needsPrev = ['money_delta', 'swing'].includes(currentFinanceMode);
   selCommitteeB.classList.toggle('hidden', !needsB);
@@ -2801,8 +2805,8 @@ function buildFinanceInfoHTML(feature, financeData) {
   return h;
 }
 
-/* Finance event handlers */
-selFinanceElection.addEventListener('change', async () => {
+/* Finance event handlers (guarded — finance tab is hidden for now) */
+if (selFinanceElection) selFinanceElection.addEventListener('change', async () => {
   currentFinanceElectionId = selFinanceElection.value;
   financeMapCache = {}; // clear cache for new election
   focusMunicipality = '';
@@ -2810,17 +2814,17 @@ selFinanceElection.addEventListener('change', async () => {
   await loadFinanceCommittees();
 });
 
-selCommitteeA.addEventListener('change', () => {
+if (selCommitteeA) selCommitteeA.addEventListener('change', () => {
   selectedCommitteeA = selCommitteeA.value;
   if (dataLayer === 'finance') renderFinance();
 });
 
-selCommitteeB.addEventListener('change', () => {
+if (selCommitteeB) selCommitteeB.addEventListener('change', () => {
   selectedCommitteeB = selCommitteeB.value;
   if (dataLayer === 'finance') renderFinance();
 });
 
-selFinancePrev.addEventListener('change', () => {
+if (selFinancePrev) selFinancePrev.addEventListener('change', () => {
   selectedFinancePrev = selFinancePrev.value;
   if (dataLayer === 'finance') renderFinance();
 });
