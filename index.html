@@ -22,6 +22,7 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/spark-md5@3.0.2/spark-md5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -91,6 +92,18 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Sego
 .landing-overlay{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:700;text-align:center;pointer-events:none}
 .landing-overlay h2{font-size:20px;font-weight:600;margin-bottom:8px}
 .landing-overlay p{font-size:13px;color:var(--text-muted);max-width:320px}
+
+/* ── Data Layer Toggle ── */
+.layer-toggle{display:flex;background:var(--surface-alt);border:1px solid var(--border);border-radius:6px;overflow:hidden;flex-shrink:0}
+.layer-btn{background:transparent;border:none;color:var(--text-muted);font-size:11px;font-family:inherit;padding:5px 12px;cursor:pointer;transition:all .15s;white-space:nowrap;border-right:1px solid var(--border)}
+.layer-btn:last-child{border-right:none}
+.layer-btn:hover{background:var(--surface-hover);color:var(--text)}
+.layer-btn.active{background:var(--blue-dim);color:#fff;font-weight:600}
+.finance-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.finance-controls.hidden{display:none}
+.finance-controls select{background:var(--surface-alt);color:var(--text);border:1px solid var(--border);border-radius:4px;padding:5px 24px 5px 8px;font-size:11px;font-family:inherit;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239aa0a6' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;min-width:110px}
+.finance-controls select:hover{border-color:var(--blue-dim)}
+.finance-controls select:focus{border-color:var(--blue)}
 .footer{background:var(--surface);border-top:1px solid var(--border);padding:6px 16px;font-size:10px;color:var(--text-dim);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;z-index:1000}
 .footer a{color:var(--text-muted);text-decoration:none}
 .footer a:hover{color:var(--blue)}
@@ -183,7 +196,26 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Sego
 
   /* Footer: hidden on mobile */
   .footer{display:none}
+
+  /* Finance controls: full width on mobile */
+  .layer-toggle{width:100%}
+  .layer-btn{flex:1;text-align:center;padding:8px 4px;font-size:12px}
+  .finance-controls{width:100%}
+  .finance-controls select{width:100%;min-width:unset;font-size:13px;padding:8px 28px 8px 10px}
+  .export-btn{width:100%;justify-content:center;padding:10px;font-size:13px}
 }
+
+/* Export PNG button */
+.export-btn{background:var(--surface-alt);border:1px solid var(--border);color:var(--text-muted);border-radius:4px;padding:5px 10px;cursor:pointer;display:flex;align-items:center;gap:5px;font-size:11px;font-family:inherit;transition:all .15s;white-space:nowrap}
+.export-btn:hover{border-color:var(--blue-dim);color:var(--blue);background:var(--surface-hover)}
+.export-btn svg{width:14px;height:14px;flex-shrink:0}
+
+/* Export title overlay (temporarily shown during capture) */
+.export-title-overlay{position:absolute;top:0;left:0;right:0;z-index:850;background:rgba(15,17,23,0.92);padding:16px 20px;pointer-events:none;display:none}
+.export-title-overlay.visible{display:block}
+.export-title-overlay h2{font-size:16px;font-weight:700;color:#e8eaed;margin:0 0 4px 0;letter-spacing:-0.01em}
+.export-title-overlay .export-subtitle{font-size:12px;color:#9aa0a6;margin:0}
+.export-title-overlay .export-branding{font-size:9px;color:#6b7280;margin-top:6px;letter-spacing:.03em}
 
 </style>
 </head>
@@ -214,25 +246,68 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Sego
 
   <div class="toolbar" id="toolbar">
     <div class="toolbar-controls" id="toolbarControls">
-      <span class="toolbar-label">Election</span>
-      <select id="selElection"><option value="">Loading…</option></select>
-      <div class="toolbar-sep"></div>
-      <span class="toolbar-label">District</span>
-      <select id="selType"><option value="">Select Type…</option></select>
-      <select id="selRace" disabled><option value="">Select Race…</option></select>
-      <div class="toolbar-sep"></div>
-      <span class="toolbar-label">View</span>
-      <div class="mode-group">
-        <button class="mode-btn active" data-mode="turnout">Turnout</button>
-        <button class="mode-btn" data-mode="winner">Winner</button>
-        <button class="mode-btn" data-mode="margin">Margin</button>
-        <button class="mode-btn" data-mode="candidate">Candidate</button>
-        <button class="mode-btn" data-mode="vs">Vs</button>
-        <button class="mode-btn" data-mode="turnout_delta">Turnout &Delta;</button>
-        <button class="mode-btn" data-mode="swing">Swing</button>
-        <button class="mode-btn" data-mode="votes">Votes</button>
+      <!-- Data Layer Toggle -->
+      <span class="toolbar-label">Data Layer</span>
+      <div class="layer-toggle">
+        <button class="layer-btn active" data-layer="election" onclick="setDataLayer('election')">Election Results</button>
+        <button class="layer-btn" data-layer="finance" onclick="setDataLayer('finance')">Campaign Finance</button>
       </div>
-      <div class="view-opts" id="viewOpts"></div>
+
+      <!-- Election Results controls -->
+      <div id="electionControls">
+        <span class="toolbar-label">Election</span>
+        <select id="selElection"><option value="">Loading…</option></select>
+        <div class="toolbar-sep"></div>
+        <span class="toolbar-label">District</span>
+        <select id="selType"><option value="">Select Type…</option></select>
+        <select id="selRace" disabled><option value="">Select Race…</option></select>
+        <div class="toolbar-sep"></div>
+        <span class="toolbar-label">View</span>
+        <div class="mode-group" id="electionModes">
+          <button class="mode-btn active" data-mode="turnout">Turnout</button>
+          <button class="mode-btn" data-mode="winner">Winner</button>
+          <button class="mode-btn" data-mode="margin">Margin</button>
+          <button class="mode-btn" data-mode="candidate">Candidate</button>
+          <button class="mode-btn" data-mode="vs">Vs</button>
+          <button class="mode-btn" data-mode="turnout_delta">Turnout &Delta;</button>
+          <button class="mode-btn" data-mode="swing">Swing</button>
+          <button class="mode-btn" data-mode="votes">Votes</button>
+        </div>
+        <div class="view-opts" id="viewOpts"></div>
+        <div class="toolbar-sep"></div>
+        <span class="toolbar-label">Focus</span>
+        <select id="selFocus"><option value="">All Precincts</option></select>
+      </div>
+
+      <!-- Campaign Finance controls (hidden by default) -->
+      <div id="financeControls" class="finance-controls hidden">
+        <span class="toolbar-label">Finance Cycle</span>
+        <select id="selFinanceElection"><option value="">Loading…</option></select>
+        <div class="toolbar-sep"></div>
+        <span class="toolbar-label">Committee</span>
+        <select id="selCommitteeA"><option value="">Select Committee…</option></select>
+        <select id="selCommitteeB" class="hidden"><option value="">Vs Committee…</option></select>
+        <select id="selFinancePrev" class="hidden"><option value="">Previous Cycle…</option></select>
+        <div class="toolbar-sep"></div>
+        <span class="toolbar-label">View</span>
+        <div class="mode-group" id="financeModes">
+          <button class="mode-btn active" data-fmode="supporters">Supporters</button>
+          <button class="mode-btn" data-fmode="whales">Whales</button>
+          <button class="mode-btn" data-fmode="donor_margin">Donor Margin</button>
+          <button class="mode-btn" data-fmode="candidate">Candidate $</button>
+          <button class="mode-btn" data-fmode="vs">Vs</button>
+          <button class="mode-btn" data-fmode="money_delta">Money &Delta;</button>
+          <button class="mode-btn" data-fmode="swing">Swing</button>
+          <button class="mode-btn" data-fmode="votes">Total $</button>
+        </div>
+      </div>
+      <div class="toolbar-sep"></div>
+      <button class="export-btn" onclick="exportPNG()" title="Export current view as PNG">
+        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 2v8M8 10L5 7M8 10l3-3M3 12h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Export PNG
+      </button>
     </div>
   </div>
 
@@ -243,6 +318,7 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Sego
       <h2>Select a Race</h2>
       <p>Choose an election, district type, and race from the toolbar to view precinct-level data.</p>
     </div>
+    <div class="export-title-overlay" id="exportTitle"></div>
     <div class="info-panel" id="infoPanel"></div>
     <div class="legend" id="legend"></div>
   </div>
@@ -253,7 +329,7 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Sego
   </div>
 
   <div class="footer">
-    <span>Data: IL State Board of Elections · Chicago Board of Elections · Cook County Clerk</span>
+    <span>Data: IL State Board of Elections · Chicago Board of Elections · Cook County Clerk · IL SBE Campaign Finance</span>
     <a href="https://www.perplexity.ai/computer" target="_blank" rel="noopener noreferrer">Created with Perplexity Computer</a>
   </div>
 </div>
@@ -345,6 +421,7 @@ let vsCandidate1 = '';
 let vsCandidate2 = '';
 let vsCandidates = []; // multi-candidate vs mode
 let candidateColorMap = {};
+let focusMunicipality = ''; // municipality focus filter
 
 // Render generation token to prevent stale async overwrites
 let renderSeq = 0;
@@ -357,6 +434,7 @@ const $ = id => document.getElementById(id);
 const selElection = $('selElection'), selType = $('selType'), selRace = $('selRace');
 const infoPanel = $('infoPanel'), headerStats = $('headerStats'), legendEl = $('legend');
 const landing = $('landing'), loader = $('loader'), viewOpts = $('viewOpts');
+const selFocus = $('selFocus');
 
 /* ═══════════════════ DISTRICT TYPE CONFIG ═══════════════════ */
 // Maps UI category to DB race_type values
@@ -581,6 +659,7 @@ async function loadGeoJSON() {
     const pid = chicagoPrecinctId(p.ward, p.precinct);
     f._pid = pid;
     f._label = p.name;
+    f._muni = 'CHICAGO';
     pidToFeatureIdx[pid] = geoFeatures.length;
     geoFeatures.push(f);
   }
@@ -591,6 +670,8 @@ async function loadGeoJSON() {
     const pid = suburbanPrecinctId(p.precinctid);
     f._pid = pid;
     f._label = p.name;
+    const _muniMatch = p.name.match(/^([A-Z\s]+?)\s+\d/);
+    f._muni = _muniMatch ? _muniMatch[1].trim() : p.name;
     pidToFeatureIdx[pid] = geoFeatures.length;
     geoFeatures.push(f);
   }
@@ -985,6 +1066,72 @@ async function updateViewOpts() {
   }
 }
 
+/* ═══════════════════ MUNICIPALITY FOCUS ═══════════════════ */
+function updateFocusOptions() {
+  if (!selFocus) return;
+
+  // Determine which pids are currently active
+  let activePids = null;
+  if (dataLayer === 'finance') {
+    // For finance layer, derive from financeMapCache using current key
+    const key = currentFinanceElectionId + '|' + currentFinanceMode + '|' +
+      (selectedCommitteeA || '') + '|' + (selectedCommitteeB || '') + '|' + (selectedFinancePrev || '');
+    const cached = financeMapCache[key];
+    if (cached) activePids = new Set(cached.map(r => r.precinct_id));
+  } else {
+    // Election layer
+    if (currentRaceId && raceMapCache[currentRaceId]) {
+      activePids = new Set(Object.keys(raceMapCache[currentRaceId]));
+    } else if (currentElectionId && turnoutCache[currentElectionId]) {
+      activePids = new Set(Object.keys(turnoutCache[currentElectionId]));
+    }
+  }
+
+  if (!activePids || !activePids.size) {
+    // No active data — reset to just "All Precincts"
+    selFocus.innerHTML = '<option value="">All Precincts</option>';
+    focusMunicipality = '';
+    return;
+  }
+
+  // Collect unique municipality names from active features
+  const munis = new Set();
+  for (const pid of activePids) {
+    const idx = pidToFeatureIdx[pid];
+    if (idx != null) {
+      const f = geoFeatures[idx];
+      if (f && f._muni) munis.add(f._muni);
+    }
+  }
+
+  const sortedMusis = [...munis].sort((a, b) => {
+    // CHICAGO always first, then alphabetical
+    if (a === 'CHICAGO' && b !== 'CHICAGO') return -1;
+    if (b === 'CHICAGO' && a !== 'CHICAGO') return 1;
+    return a.localeCompare(b);
+  });
+
+  // Preserve current selection if still valid
+  const prevFocus = focusMunicipality;
+
+  selFocus.innerHTML = '<option value="">All Precincts</option>';
+  for (const muni of sortedMusis) {
+    const o = document.createElement('option');
+    o.value = muni;
+    o.textContent = muni.split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+    selFocus.appendChild(o);
+  }
+
+  // Restore prior selection if still available, otherwise clear
+  if (prevFocus && munis.has(prevFocus)) {
+    selFocus.value = prevFocus;
+    focusMunicipality = prevFocus;
+  } else {
+    selFocus.value = '';
+    focusMunicipality = '';
+  }
+}
+
 /* ═══════════════════ STYLE PER FEATURE ═══════════════════ */
 function getStyle(pid, turnout, raceData, turnout2, raceData2) {
   const t = turnout ? turnout[pid] : null;
@@ -1079,6 +1226,7 @@ function getStyle(pid, turnout, raceData, turnout2, raceData2) {
 /* ═══════════════════ RENDER ═══════════════════ */
 let bgLayer = null; // gray background precincts outside current race
 let lastActivePidKey = ''; // track if precinct set changed (for fitBounds)
+let lastFocusKey = ''; // track if municipality focus changed (for fitBounds)
 
 async function render() {
   if (!currentRaceId && currentMode !== 'turnout') return;
@@ -1155,10 +1303,19 @@ async function render() {
       ? geoFeatures.filter(f => !racePids.has(f._pid) && turnoutPids.has(f._pid))
       : [];
 
+    // Apply municipality focus filter
+    const focusedActiveFeats = focusMunicipality
+      ? activeFeats.filter(f => f._muni === focusMunicipality)
+      : activeFeats;
+    const focusedBgFeats = focusMunicipality
+      ? bgFeats.filter(f => f._muni !== focusMunicipality)
+      : bgFeats;
+
     // Check if precinct set changed (for fitBounds)
     const pidKey = currentRaceId || currentElectionId;
-    const pidsChanged = pidKey !== lastActivePidKey;
+    const pidsChanged = pidKey !== lastActivePidKey || focusMunicipality !== lastFocusKey;
     lastActivePidKey = pidKey;
+    lastFocusKey = focusMunicipality;
 
     // Clear old layers
     if (precinctLayer) { map.removeLayer(precinctLayer); precinctLayer = null; }
@@ -1166,15 +1323,15 @@ async function render() {
     hoveredLayer = null;
 
     // Background layer (gray, non-interactive) for context
-    if (bgFeats.length > 0) {
-      bgLayer = L.geoJSON({ type: 'FeatureCollection', features: bgFeats }, {
+    if (focusedBgFeats.length > 0) {
+      bgLayer = L.geoJSON({ type: 'FeatureCollection', features: focusedBgFeats }, {
         style: () => ({ fillColor: '#1e2028', color: '#1a1d27', weight: 0.5, fillOpacity: 0.4 }),
         interactive: false
       }).addTo(map);
     }
 
     // Active precinct layer
-    precinctLayer = L.geoJSON({ type: 'FeatureCollection', features: activeFeats }, {
+    precinctLayer = L.geoJSON({ type: 'FeatureCollection', features: focusedActiveFeats }, {
       style: f => getStyle(f._pid, turnout, raceData, turnout2, raceData2),
       onEachFeature: (f, l) => {
         if (isMobile) {
@@ -1233,6 +1390,7 @@ async function onRaceSelected() {
     await fetchRaceMap(currentRaceId);
   }
   await updateViewOpts();
+  updateFocusOptions();
   render();
 }
 
@@ -1525,11 +1683,22 @@ selElection.addEventListener('change', async () => {
   currentRaceType = '';
   currentRaceId = '';
   selectedCandidate = ''; vsCandidate1 = ''; vsCandidate2 = ''; vsCandidates = [];
+  focusMunicipality = '';
+  if (selFocus) { selFocus.innerHTML = '<option value="">All Precincts</option>'; }
   viewOpts.innerHTML = '';
   await populateTypeDropdown();
   selRace.innerHTML = '<option value="">Select Race…</option>';
   selRace.disabled = true;
   clearMap();
+});
+
+selFocus.addEventListener('change', () => {
+  focusMunicipality = selFocus.value;
+  if (dataLayer === 'finance') {
+    renderFinance();
+  } else {
+    render();
+  }
 });
 
 selType.addEventListener('change', async () => {
@@ -1564,9 +1733,9 @@ selRace.addEventListener('change', () => {
   }
 });
 
-document.querySelectorAll('.mode-btn').forEach(btn => {
+document.querySelectorAll('#electionModes .mode-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#electionModes .mode-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentMode = btn.dataset.mode;
     updateViewOpts();
@@ -1659,6 +1828,670 @@ init();
 
 // Expose toggleToolbar globally for inline onclick handler
 window.toggleToolbar = toggleToolbar;
+
+/* ═══════════════════ CAMPAIGN FINANCE LAYER ═══════════════════ */
+
+// Finance state
+let dataLayer = 'election'; // 'election' | 'finance'
+let financeElections = [];  // from get_finance_race_list
+let financeCommittees = {}; // cache: election_id → [{committee_id, ...}]
+let financeMapCache = {};   // cache: key → [{precinct_id, metric_value, ...}]
+
+let currentFinanceElectionId = '';
+let currentFinanceMode = 'supporters';
+let selectedCommitteeA = '';
+let selectedCommitteeB = '';
+let selectedFinancePrev = '';
+
+const selFinanceElection = $('selFinanceElection');
+const selCommitteeA = $('selCommitteeA');
+const selCommitteeB = $('selCommitteeB');
+const selFinancePrev = $('selFinancePrev');
+
+// Finance color scales
+const FINANCE_COLORS = {
+  // supporters: sequential white → party color (blue for D)
+  supporters_D: ['#0d47a1','#1565c0','#1976d2','#42a5f5','#90caf9','#bbdefb','#e3f2fd'],
+  supporters_R: ['#b71c1c','#c62828','#d32f2f','#e53935','#ef5350','#ef9a9a','#ffcdd2'],
+  whales_D: ['#0d47a1','#1565c0','#1976d2','#42a5f5','#90caf9','#bbdefb','#e3f2fd'],
+  whales_R: ['#b71c1c','#c62828','#d32f2f','#e53935','#ef5350','#ef9a9a','#ffcdd2'],
+  candidate: ['#4a148c','#6a1b9a','#8e24aa','#ab47bc','#ce93d8','#e1bee7','#f3e5f5'],
+  total: ['#1b5e20','#2e7d32','#388e3c','#43a047','#66bb6a','#a5d6a7','#c8e6c9'],
+};
+
+// Diverging donor margin: red → white → blue (D positive = blue)
+function financeDonorMarginColor(v) {
+  if (v == null) return NO_DATA;
+  // v ranges from -1 to +1
+  if (v >= 0.5) return '#0d47a1';
+  if (v >= 0.3) return '#1565c0';
+  if (v >= 0.1) return '#42a5f5';
+  if (v >= 0) return '#bbdefb';
+  if (v >= -0.1) return '#ffcdd2';
+  if (v >= -0.3) return '#ef5350';
+  return '#b71c1c';
+}
+
+// Diverging vs share: 0=100%R → 0.5=even → 1=100%D
+function financeVsColor(v) {
+  if (v == null) return NO_DATA;
+  if (v >= 0.8) return '#0d47a1';
+  if (v >= 0.65) return '#1565c0';
+  if (v >= 0.55) return '#42a5f5';
+  if (v >= 0.45) return '#e3f2fd';
+  if (v >= 0.35) return '#ffcdd2';
+  if (v >= 0.2) return '#ef5350';
+  return '#b71c1c';
+}
+
+// Money delta: orange → white → green
+function financeMoneyDeltaColor(v) {
+  if (v == null) return NO_DATA;
+  if (v >= 5000) return '#1b5e20';
+  if (v >= 2000) return '#2e7d32';
+  if (v >= 500) return '#43a047';
+  if (v >= 0) return '#a5d6a7';
+  if (v >= -500) return '#ffcc80';
+  if (v >= -2000) return '#ff9800';
+  return '#e65100';
+}
+
+// Swing (donor margin change): same as deltaColor
+function financeSwingColor(v) {
+  if (v == null) return NO_DATA;
+  if (v >= 0.3) return '#0d47a1';
+  if (v >= 0.15) return '#1565c0';
+  if (v >= 0.05) return '#42a5f5';
+  if (v >= 0) return '#bbdefb';
+  if (v >= -0.05) return '#ffcdd2';
+  if (v >= -0.15) return '#ef5350';
+  return '#b71c1c';
+}
+
+/* Toggle data layer */
+function setDataLayer(layer) {
+  if (dataLayer === layer) return;
+  dataLayer = layer;
+
+  // Update toggle buttons
+  document.querySelectorAll('.layer-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.layer === layer);
+  });
+
+  // Show/hide controls
+  const ec = $('electionControls');
+  const fc = $('financeControls');
+  if (layer === 'election') {
+    ec.style.display = '';
+    fc.classList.add('hidden');
+    // Re-render with election data
+    if (currentRaceId || currentMode === 'turnout') render();
+    else clearMap();
+  } else {
+    ec.style.display = 'none';
+    fc.classList.remove('hidden');
+    // Load finance elections if not yet loaded
+    if (!financeElections.length) {
+      loadFinanceElections();
+    } else if (currentFinanceElectionId) {
+      renderFinance();
+    }
+  }
+}
+window.setDataLayer = setDataLayer;
+window.exportPNG = exportPNG;
+
+/* Load finance elections */
+async function loadFinanceElections() {
+  try {
+    financeElections = await rpc('get_finance_race_list');
+    selFinanceElection.innerHTML = '';
+    if (!financeElections.length) {
+      selFinanceElection.innerHTML = '<option value="">No finance data available</option>';
+      return;
+    }
+    for (const fe of financeElections) {
+      const o = document.createElement('option');
+      o.value = fe.id;
+      o.textContent = fe.name + ' (' + fe.race_label + ')';
+      selFinanceElection.appendChild(o);
+    }
+    currentFinanceElectionId = financeElections[0].id;
+    selFinanceElection.value = currentFinanceElectionId;
+    await loadFinanceCommittees();
+  } catch (err) {
+    console.error('loadFinanceElections error:', err);
+    selFinanceElection.innerHTML = '<option value="">Failed to load</option>';
+  }
+}
+
+/* Load finance committees for current election */
+async function loadFinanceCommittees() {
+  if (!currentFinanceElectionId) return;
+  try {
+    const committees = await rpc('get_finance_candidates', { p_election_id: currentFinanceElectionId });
+    financeCommittees[currentFinanceElectionId] = committees;
+
+    // Populate Committee A
+    selCommitteeA.innerHTML = '';
+    for (const c of committees) {
+      const o = document.createElement('option');
+      o.value = c.committee_id;
+      o.textContent = `${c.candidate_name} (${c.party}) — $${Number(c.total_dollars).toLocaleString()}`;
+      selCommitteeA.appendChild(o);
+    }
+    if (committees.length) {
+      selectedCommitteeA = committees[0].committee_id;
+      selCommitteeA.value = selectedCommitteeA;
+    }
+
+    // Populate Committee B (for vs mode)
+    selCommitteeB.innerHTML = '<option value="">Select Opponent…</option>';
+    for (const c of committees) {
+      const o = document.createElement('option');
+      o.value = c.committee_id;
+      o.textContent = `${c.candidate_name} (${c.party})`;
+      selCommitteeB.appendChild(o);
+    }
+    // Default B to second committee if available
+    if (committees.length >= 2) {
+      selectedCommitteeB = committees[1].committee_id;
+      selCommitteeB.value = selectedCommitteeB;
+    }
+
+    // Populate Previous Cycle selector
+    selFinancePrev.innerHTML = '<option value="">Select Previous…</option>';
+    for (const fe of financeElections) {
+      if (fe.id !== currentFinanceElectionId) {
+        const o = document.createElement('option');
+        o.value = fe.id;
+        o.textContent = 'vs ' + fe.name;
+        selFinancePrev.appendChild(o);
+      }
+    }
+    if (financeElections.length >= 2) {
+      const prev = financeElections.find(fe => fe.id !== currentFinanceElectionId);
+      if (prev) {
+        selectedFinancePrev = prev.id;
+        selFinancePrev.value = selectedFinancePrev;
+      }
+    }
+
+    updateFinanceControlVisibility();
+    renderFinance();
+  } catch (err) {
+    console.error('loadFinanceCommittees error:', err);
+  }
+}
+
+/* Show/hide committee B and prev cycle based on mode */
+function updateFinanceControlVisibility() {
+  const needsB = currentFinanceMode === 'vs';
+  const needsPrev = ['money_delta', 'swing'].includes(currentFinanceMode);
+  selCommitteeB.classList.toggle('hidden', !needsB);
+  selFinancePrev.classList.toggle('hidden', !needsPrev);
+  // Supporters, whales, candidate need committee A; donor_margin, votes don't
+  const needsA = ['supporters', 'whales', 'candidate', 'vs', 'money_delta'].includes(currentFinanceMode);
+  selCommitteeA.classList.toggle('hidden', !needsA);
+}
+
+/* Fetch finance map data */
+async function fetchFinanceMap(electionId, mode, committeeA, committeeB, prevElection) {
+  const key = `${electionId}|${mode}|${committeeA || ''}|${committeeB || ''}|${prevElection || ''}`;
+  if (financeMapCache[key]) return financeMapCache[key];
+
+  const params = {
+    p_election_id: electionId,
+    p_mode: mode
+  };
+  if (committeeA) params.p_committee_id_a = committeeA;
+  if (committeeB) params.p_committee_id_b = committeeB;
+  if (prevElection) params.p_election_id_prev = prevElection;
+
+  const rows = await rpc('get_finance_map', params, { timeoutMs: 20000 });
+  financeMapCache[key] = rows;
+  return rows;
+}
+
+/* Get style for finance mode */
+function getFinanceStyle(pid, financeData) {
+  const row = financeData[pid];
+  let fill = NO_DATA, fillOpacity = 0.85;
+
+  if (!row) return { fillColor: NO_DATA, color: '#1a1d27', weight: 1, fillOpacity: 0.85, dashArray: null };
+
+  const v = row.metric_value != null ? Number(row.metric_value) : null;
+  const party = row.party || 'D';
+
+  if (currentFinanceMode === 'supporters') {
+    if (v != null) {
+      const colors = party === 'R' ? FINANCE_COLORS.supporters_R : FINANCE_COLORS.supporters_D;
+      const scale = buildAdaptiveScale(
+        Object.values(financeData).map(r => Number(r.metric_value)).filter(x => !isNaN(x)),
+        colors
+      );
+      fill = scaleColor(v, scale);
+    }
+  } else if (currentFinanceMode === 'whales') {
+    if (v != null) {
+      const colors = party === 'R' ? FINANCE_COLORS.whales_R : FINANCE_COLORS.whales_D;
+      const scale = buildAdaptiveScale(
+        Object.values(financeData).map(r => Number(r.metric_value)).filter(x => !isNaN(x)),
+        colors
+      );
+      fill = scaleColor(v, scale);
+    }
+  } else if (currentFinanceMode === 'donor_margin') {
+    fill = financeDonorMarginColor(v);
+  } else if (currentFinanceMode === 'candidate') {
+    if (v != null) {
+      const scale = buildAdaptiveScale(
+        Object.values(financeData).map(r => Number(r.metric_value)).filter(x => !isNaN(x)),
+        FINANCE_COLORS.candidate
+      );
+      fill = scaleColor(v, scale);
+    }
+  } else if (currentFinanceMode === 'vs') {
+    fill = financeVsColor(v);
+  } else if (currentFinanceMode === 'money_delta') {
+    fill = financeMoneyDeltaColor(v);
+  } else if (currentFinanceMode === 'swing') {
+    fill = financeSwingColor(v);
+  } else if (currentFinanceMode === 'votes') {
+    if (v != null) {
+      const scale = buildAdaptiveScale(
+        Object.values(financeData).map(r => Number(r.metric_value)).filter(x => !isNaN(x)),
+        FINANCE_COLORS.total
+      );
+      fill = scaleColor(v, scale);
+    }
+  }
+
+  return { fillColor: fill, color: '#1a1d27', weight: 1, fillOpacity, dashArray: null };
+}
+
+/* Finance info panel */
+function showFinanceInfo(feature, financeData) {
+  const pid = feature._pid;
+  const label = feature._label;
+  const row = financeData[pid];
+
+  let h = `<h3>${label || 'Precinct'}</h3>`;
+  h += '<div class="info-row"><span style="color:var(--blue)">Campaign Finance</span></div>';
+
+  if (row) {
+    h += `<div class="info-row"><span>Value</span><span class="val">${row.display_label || '—'}</span></div>`;
+    if (row.total_dollars != null && Number(row.total_dollars) > 0) {
+      h += `<div class="info-row"><span>Total Raised</span><span class="val">$${Number(row.total_dollars).toLocaleString()}</span></div>`;
+    }
+    if (row.donor_count != null && Number(row.donor_count) > 0) {
+      h += `<div class="info-row"><span>Donors</span><span class="val">${Number(row.donor_count).toLocaleString()}</span></div>`;
+    }
+    if (row.dollar_margin != null && Number(row.dollar_margin) !== 0) {
+      const dm = Number(row.dollar_margin);
+      const sign = dm >= 0 ? '+' : '';
+      h += `<div class="info-row"><span>$ Margin (D-R)</span><span class="val" style="color:${dm >= 0 ? '#42a5f5' : '#ef5350'}">${sign}$${Math.abs(dm).toLocaleString()}</span></div>`;
+    }
+    if (row.donor_margin != null && Number(row.donor_margin) !== 0) {
+      const dnm = Number(row.donor_margin);
+      const sign = dnm >= 0 ? '+' : '';
+      h += `<div class="info-row"><span>Donor Margin</span><span class="val" style="color:${dnm >= 0 ? '#42a5f5' : '#ef5350'}">${sign}${(dnm * 100).toFixed(1)}%</span></div>`;
+    }
+  } else {
+    h += '<div class="info-row"><span>No finance data for this precinct</span></div>';
+  }
+
+  infoPanel.innerHTML = h;
+  infoPanel.classList.add('visible');
+}
+
+/* Finance legend */
+function updateFinanceLegend(financeData) {
+  let h = '';
+  const vals = Object.values(financeData).map(r => Number(r.metric_value)).filter(x => !isNaN(x));
+
+  if (currentFinanceMode === 'supporters') {
+    h = '<div class="legend-title">Supporter Share</div>';
+    const party = Object.values(financeData)[0]?.party || 'D';
+    const colors = party === 'R' ? FINANCE_COLORS.supporters_R : FINANCE_COLORS.supporters_D;
+    if (vals.length) {
+      adaptiveLegendRows(buildAdaptiveScale(vals, colors), '').forEach(([l,c]) => {
+        h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`;
+      });
+    }
+  } else if (currentFinanceMode === 'whales') {
+    h = '<div class="legend-title">Dollars Raised</div>';
+    const party = Object.values(financeData)[0]?.party || 'D';
+    const colors = party === 'R' ? FINANCE_COLORS.whales_R : FINANCE_COLORS.whales_D;
+    if (vals.length) {
+      adaptiveLegendRows(buildAdaptiveScale(vals, colors), '').forEach(([l,c]) => {
+        h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>$${l}</div>`;
+      });
+    }
+  } else if (currentFinanceMode === 'donor_margin') {
+    h = '<div class="legend-title">Donor Margin</div>';
+    [['D+50%+','#0d47a1'],['D+30–50%','#1565c0'],['D+10–30%','#42a5f5'],['Even–D+10%','#bbdefb'],['Even–R+10%','#ffcdd2'],['R+10–30%','#ef5350'],['R+30%+','#b71c1c']].forEach(([l,c]) => {
+      h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`;
+    });
+  } else if (currentFinanceMode === 'candidate') {
+    h = '<div class="legend-title">Candidate Dollars</div>';
+    if (vals.length) {
+      adaptiveLegendRows(buildAdaptiveScale(vals, FINANCE_COLORS.candidate), '').forEach(([l,c]) => {
+        h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>$${l}</div>`;
+      });
+    }
+  } else if (currentFinanceMode === 'vs') {
+    h = '<div class="legend-title">Dollar Share (D vs R)</div>';
+    [['80%+ D','#0d47a1'],['65–80% D','#1565c0'],['55–65% D','#42a5f5'],['Even','#e3f2fd'],['55–65% R','#ffcdd2'],['65–80% R','#ef5350'],['80%+ R','#b71c1c']].forEach(([l,c]) => {
+      h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`;
+    });
+  } else if (currentFinanceMode === 'money_delta') {
+    h = '<div class="legend-title">Money &Delta; (vs prev cycle)</div>';
+    [['+$5k+','#1b5e20'],['+$2k–$5k','#2e7d32'],['+$500–$2k','#43a047'],['$0–+$500','#a5d6a7'],['$0–-$500','#ffcc80'],['-$500–-$2k','#ff9800'],['-$2k+','#e65100']].forEach(([l,c]) => {
+      h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`;
+    });
+  } else if (currentFinanceMode === 'swing') {
+    h = '<div class="legend-title">Donor Margin Swing</div>';
+    [['D+30%+','#0d47a1'],['D+15–30%','#1565c0'],['D+5–15%','#42a5f5'],['Even–D+5%','#bbdefb'],['Even–R+5%','#ffcdd2'],['R+5–15%','#ef5350'],['R+15%+','#b71c1c']].forEach(([l,c]) => {
+      h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`;
+    });
+  } else if (currentFinanceMode === 'votes') {
+    h = '<div class="legend-title">Total Dollars (All Candidates)</div>';
+    if (vals.length) {
+      adaptiveLegendRows(buildAdaptiveScale(vals, FINANCE_COLORS.total), '').forEach(([l,c]) => {
+        h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>$${l}</div>`;
+      });
+    }
+  }
+  h += '<div class="legend-row"><span class="legend-swatch" style="background:#333"></span>No data</div>';
+
+  if (isMobile) {
+    const titleMatch = h.match(/^(<div class="legend-title">[^<]*(?:<[^>]*>[^<]*<\/[^>]*>)*<\/div>)/);
+    if (titleMatch) {
+      legendEl.innerHTML = titleMatch[0] + `<div class="legend-body" id="legendBody">${h.slice(titleMatch[0].length)}</div>`;
+    } else {
+      legendEl.innerHTML = h;
+    }
+  } else {
+    legendEl.innerHTML = h;
+  }
+}
+
+/* Finance header stats */
+function updateFinanceStats(financeData) {
+  const rows = Object.values(financeData);
+  if (!rows.length) { headerStats.innerHTML = ''; return; }
+
+  const totalDollars = rows.reduce((s, r) => s + (Number(r.total_dollars) || 0), 0);
+  const totalDonors = rows.reduce((s, r) => s + (Number(r.donor_count) || 0), 0);
+  const precincts = rows.length;
+
+  let h = `<div class="stat"><span class="stat-val">$${totalDollars.toLocaleString()}</span><span class="stat-label">Total Raised</span></div>`;
+  h += `<div class="stat"><span class="stat-val">${totalDonors.toLocaleString()}</span><span class="stat-label">Donors</span></div>`;
+  h += `<div class="stat"><span class="stat-val">${precincts}</span><span class="stat-label">Precincts</span></div>`;
+
+  headerStats.innerHTML = h;
+}
+
+/* Main finance render */
+async function renderFinance() {
+  if (!currentFinanceElectionId) return;
+  const mySeq = ++renderSeq;
+  pushLoading();
+  landing.style.display = 'none';
+
+  try {
+    // Determine parameters based on mode
+    const needsA = ['supporters', 'whales', 'candidate', 'vs', 'money_delta'].includes(currentFinanceMode);
+    const needsB = currentFinanceMode === 'vs';
+    const needsPrev = ['money_delta', 'swing'].includes(currentFinanceMode);
+
+    const committeeA = needsA ? selectedCommitteeA : null;
+    const committeeB = needsB ? selectedCommitteeB : null;
+    const prevElection = needsPrev ? selectedFinancePrev : null;
+
+    if (needsA && !committeeA) { return; }
+    if (needsB && !committeeB) { return; }
+    if (needsPrev && !prevElection) { return; }
+
+    const rows = await fetchFinanceMap(
+      currentFinanceElectionId, currentFinanceMode,
+      committeeA, committeeB, prevElection
+    );
+    if (mySeq !== renderSeq) return;
+
+    // Index by precinct_id
+    const financeData = {};
+    for (const r of rows) {
+      financeData[r.precinct_id] = r;
+    }
+
+    const activePids = new Set(Object.keys(financeData));
+    const activeFeats = geoFeatures.filter(f => activePids.has(f._pid));
+    const bgFeats = geoFeatures.filter(f => !activePids.has(f._pid));
+
+    // Apply municipality focus filter
+    const focusedActiveFeats = focusMunicipality
+      ? activeFeats.filter(f => f._muni === focusMunicipality)
+      : activeFeats;
+    const focusedBgFeats = focusMunicipality
+      ? bgFeats.filter(f => f._muni !== focusMunicipality)
+      : bgFeats;
+
+    // Check if set changed for fitBounds
+    const pidKey = 'finance_' + currentFinanceElectionId + '_' + currentFinanceMode;
+    const pidsChanged = pidKey !== lastActivePidKey || focusMunicipality !== lastFocusKey;
+    lastActivePidKey = pidKey;
+    lastFocusKey = focusMunicipality;
+
+    // Clear old layers
+    if (precinctLayer) { map.removeLayer(precinctLayer); precinctLayer = null; }
+    if (bgLayer) { map.removeLayer(bgLayer); bgLayer = null; }
+    hoveredLayer = null;
+
+    // Background layer
+    if (focusedBgFeats.length > 0) {
+      bgLayer = L.geoJSON({ type: 'FeatureCollection', features: focusedBgFeats }, {
+        style: () => ({ fillColor: '#1e2028', color: '#1a1d27', weight: 0.5, fillOpacity: 0.4 }),
+        interactive: false
+      }).addTo(map);
+    }
+
+    // Active precinct layer
+    precinctLayer = L.geoJSON({ type: 'FeatureCollection', features: focusedActiveFeats }, {
+      style: f => getFinanceStyle(f._pid, financeData),
+      onEachFeature: (f, l) => {
+        if (isMobile) {
+          l.on('click', (e) => {
+            L.DomEvent.stopPropagation(e);
+            if (hoveredLayer && hoveredLayer !== l) hoveredLayer.setStyle({ color: '#1a1d27', weight: 1 });
+            hoveredLayer = l;
+            l.setStyle({ color: '#fff', weight: 2.5 });
+            l.bringToFront();
+            // Bottom sheet for finance
+            const sheet = $('bottomSheet');
+            const content = $('bottomSheetContent');
+            if (sheet && content) {
+              content.innerHTML = buildFinanceInfoHTML(f, financeData);
+              sheet.classList.add('open');
+            }
+          });
+        } else {
+          l.on('mouseover', () => {
+            if (hoveredLayer && hoveredLayer !== l) hoveredLayer.setStyle({ color: '#1a1d27', weight: 1 });
+            hoveredLayer = l;
+            l.setStyle({ color: '#fff', weight: 2.5 });
+            l.bringToFront();
+            showFinanceInfo(f, financeData);
+          });
+          l.on('mouseout', () => {
+            l.setStyle({ color: '#1a1d27', weight: 1 });
+            hoveredLayer = null;
+            infoPanel.classList.remove('visible');
+          });
+        }
+      }
+    }).addTo(map);
+
+    if (pidsChanged && precinctLayer.getLayers().length) {
+      map.fitBounds(precinctLayer.getBounds(), { padding: [30, 30], maxZoom: 14 });
+    }
+
+    updateFinanceStats(financeData);
+    updateFinanceLegend(financeData);
+    updateFocusOptions();
+  } catch (err) {
+    console.error('Finance render error:', err);
+  } finally {
+    popLoading();
+  }
+}
+
+function buildFinanceInfoHTML(feature, financeData) {
+  const pid = feature._pid;
+  const label = feature._label;
+  const row = financeData[pid];
+
+  let h = `<h3>${label || 'Precinct'}</h3>`;
+  h += '<div class="info-row"><span style="color:var(--blue)">Campaign Finance</span></div>';
+  if (row) {
+    h += `<div class="info-row"><span>Value</span><span class="val">${row.display_label || '—'}</span></div>`;
+    if (Number(row.total_dollars) > 0)
+      h += `<div class="info-row"><span>Total Raised</span><span class="val">$${Number(row.total_dollars).toLocaleString()}</span></div>`;
+    if (Number(row.donor_count) > 0)
+      h += `<div class="info-row"><span>Donors</span><span class="val">${Number(row.donor_count).toLocaleString()}</span></div>`;
+    if (Number(row.dollar_margin) !== 0) {
+      const dm = Number(row.dollar_margin);
+      h += `<div class="info-row"><span>$ Margin (D-R)</span><span class="val" style="color:${dm >= 0 ? '#42a5f5' : '#ef5350'}">${dm >= 0 ? '+' : ''}$${Math.abs(dm).toLocaleString()}</span></div>`;
+    }
+  } else {
+    h += '<div class="info-row"><span>No finance data</span></div>';
+  }
+  return h;
+}
+
+/* Finance event handlers */
+selFinanceElection.addEventListener('change', async () => {
+  currentFinanceElectionId = selFinanceElection.value;
+  financeMapCache = {}; // clear cache for new election
+  focusMunicipality = '';
+  if (selFocus) { selFocus.innerHTML = '<option value="">All Precincts</option>'; }
+  await loadFinanceCommittees();
+});
+
+selCommitteeA.addEventListener('change', () => {
+  selectedCommitteeA = selCommitteeA.value;
+  if (dataLayer === 'finance') renderFinance();
+});
+
+selCommitteeB.addEventListener('change', () => {
+  selectedCommitteeB = selCommitteeB.value;
+  if (dataLayer === 'finance') renderFinance();
+});
+
+selFinancePrev.addEventListener('change', () => {
+  selectedFinancePrev = selFinancePrev.value;
+  if (dataLayer === 'finance') renderFinance();
+});
+
+// Finance mode buttons
+document.querySelectorAll('#financeModes .mode-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#financeModes .mode-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFinanceMode = btn.dataset.fmode;
+    updateFinanceControlVisibility();
+    renderFinance();
+  });
+});
+
+/* ═══════════════════ PNG EXPORT ═══════════════════ */
+async function exportPNG() {
+  if (!precinctLayer) { alert('Load a race first'); return; }
+  if (loadingCount > 0) { alert('Please wait for the map to finish loading.'); return; }
+  if (!window.htmlToImage || !window.htmlToImage.toPng) { alert('PNG export library failed to load. Please refresh and try again.'); return; }
+
+  const mapWrap = document.querySelector('.map-wrap');
+  const exportTitle = $('exportTitle');
+
+  // Build title text from current state
+  let title = '';
+  let subtitle = '';
+
+  if (dataLayer === 'election') {
+    const elOpt = selElection.options[selElection.selectedIndex];
+    const elName = elOpt ? elOpt.textContent : '';
+    const raceOpt = selRace.options[selRace.selectedIndex];
+    const raceName = raceOpt && raceOpt.value ? raceOpt.textContent : '';
+    const modeBtn = document.querySelector('#electionModes .mode-btn.active');
+    const modeName = modeBtn ? modeBtn.textContent : '';
+
+    let candInfo = '';
+    if (currentMode === 'candidate' && selectedCandidate) {
+      candInfo = ` \u00B7 ${selectedCandidate}`;
+    } else if (currentMode === 'vs' && vsCandidates.length >= 2) {
+      candInfo = ` \u00B7 ${vsCandidates.join(' vs ')}`;
+    }
+
+    title = raceName || elName;
+    subtitle = `${elName} \u00B7 ${modeName}${candInfo}`;
+  } else {
+    const fElOpt = selFinanceElection ? selFinanceElection.options[selFinanceElection.selectedIndex] : null;
+    const fElName = fElOpt ? fElOpt.textContent : '';
+    const commOpt = selCommitteeA ? selCommitteeA.options[selCommitteeA.selectedIndex] : null;
+    const commName = commOpt && commOpt.value ? commOpt.textContent : '';
+    const fModeBtn = document.querySelector('#financeModes .mode-btn.active');
+    const fModeName = fModeBtn ? fModeBtn.textContent : '';
+
+    title = commName || 'Campaign Finance';
+    subtitle = `${fElName} \u00B7 ${fModeName}`;
+  }
+
+  // Add focus municipality to subtitle if active
+  if (focusMunicipality) {
+    const muniTitle = focusMunicipality.split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+    subtitle += ` \u00B7 ${muniTitle}`;
+  }
+
+  // Show title overlay
+  exportTitle.innerHTML = `<h2>${title}</h2><p class="export-subtitle">${subtitle}</p><p class="export-branding">D4D Election Heatmap Platform \u00B7 digital4dems.com</p>`;
+  exportTitle.classList.add('visible');
+
+  // Hide UI elements that shouldn't be in the export
+  const hideEls = [
+    document.querySelector('.leaflet-control-zoom'),
+    $('infoPanel'),
+  ];
+  const origDisplay = hideEls.map(el => el ? el.style.display : '');
+  hideEls.forEach(el => { if (el) el.style.display = 'none'; });
+
+  try {
+    await new Promise(r => setTimeout(r, 200));
+
+    const dataUrl = await htmlToImage.toPng(mapWrap, {
+      backgroundColor: '#0f1117',
+      pixelRatio: 2,
+      filter: (node) => {
+        if (node.id === 'loader') return false;
+        if (node.id === 'landing') return false;
+        return true;
+      }
+    });
+
+    const link = document.createElement('a');
+    const safeName = (title + '_' + subtitle).replace(/[^a-zA-Z0-9]+/g, '_').replace(/_+/g, '_').substring(0, 80);
+    link.download = `d4d_heatmap_${safeName}.png`;
+    link.href = dataUrl;
+    link.click();
+
+  } catch (err) {
+    console.error('Export failed:', err);
+    alert('Export failed: ' + err.message);
+  } finally {
+    hideEls.forEach((el, i) => { if (el) el.style.display = origDisplay[i]; });
+    exportTitle.classList.remove('visible');
+  }
+}
 
 })();
 </script>
