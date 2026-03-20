@@ -90,13 +90,21 @@ def parse_school_board_xls(filepath, district_num):
     wb = xlrd.open_workbook(filepath, ignore_workbook_corruption=True)
     sh = wb.sheet_by_index(0)
 
-    # Extract candidate names from row 0
-    # Format: ['Total Votes', 'Candidate A', '%', 'Candidate B', '%', ...]
+    # Extract candidate names from precinct header row (NOT row 0!)
+    # Row 0 is the summary row with columns offset by 1 from precinct data.
+    # The precinct header row has: Precinct, Total Voters, Candidate A, %, ...
+    # Find the first row with 'Precinct' in col 0 to get correct column mapping.
+    header_row = 0
+    for rx in range(sh.nrows):
+        if sh.cell_value(rx, 0) == 'Precinct':
+            header_row = rx
+            break
+
     candidates = []
-    candidate_cols = []  # column indices for vote counts
+    candidate_cols = []  # column indices for vote counts in precinct data rows
     for c in range(sh.ncols):
-        v = sh.cell_value(0, c)
-        if isinstance(v, str) and v.strip() and v.strip() not in ('Total Votes', '%', ''):
+        v = sh.cell_value(header_row, c)
+        if isinstance(v, str) and v.strip() and v.strip() not in ('Precinct', 'Total Voters', 'Total Votes', '%', ''):
             candidates.append(v.strip())
             candidate_cols.append(c)
 
