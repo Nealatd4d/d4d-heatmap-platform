@@ -2916,7 +2916,9 @@ async function exportPNG() {
   if (precinctLayer) {
     const bounds = precinctLayer.getBounds();
     if (bounds.isValid()) {
-      map.fitBounds(bounds, { padding: [5, 5], maxZoom: 17, animate: false });
+      // Add extra top padding so the overlay doesn't cover the district
+      const overlayH = exportTitle.offsetHeight || 30;
+      map.fitBounds(bounds, { paddingTopLeft: [5, overlayH + 8], paddingBottomRight: [5, 5], maxZoom: 17, animate: false });
       map.invalidateSize();
     }
   }
