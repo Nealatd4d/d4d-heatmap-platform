@@ -23,6 +23,10 @@ import openpyxl
 from io import BytesIO
 from collections import defaultdict
 
+# Import unified race_type classifier
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from classify_race import classify_race_type
+
 # ── Supabase config ──
 SUPA_URL = "https://nfjfqdffulhqhszhlymo.supabase.co"
 SUPA_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5mamZxZGZmdWxocWhzemhseW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3Mzk1MDMwOCwiZXhwIjoyMDg5NTI2MzA4fQ.zy7Bfl5cOZGF_CU2yiHn3sd24olsx_Hzc985Ov_t5Ys"
@@ -532,8 +536,9 @@ def process_election(election_key):
 
         stats["contests_downloaded"] += 1
 
-        # Classify the race
-        race_type, race_display = classify_race(parsed['race_name'])
+        # Classify the race using unified classifier
+        race_type, _ = classify_race_type(parsed['race_name'], source='cook_clerk')
+        race_display = parsed['race_name']
         stats["race_types"][race_type] += 1
 
         # Generate race ID

@@ -18,6 +18,10 @@ import sys
 import time
 import psycopg2
 
+# Import unified race_type classifier
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from classify_race import classify_race_type
+
 csv.field_size_limit(1_000_000)
 
 # ── Connection ──────────────────────────────────────────────
@@ -148,10 +152,8 @@ def scan_sboe(filepath, election_id, label):
                     turnout.append((election_id, pid, reg, votes, tpct, label, pname))
                 continue
 
-            cls = classify_contest(contest)
-            if cls is None:
-                continue
-            dt_id, dt_num = cls
+            # Use unified classifier (falls back to old classify_contest for backward compat)
+            dt_id, dt_num = classify_race_type(contest, source='sboe')
 
             did = make_id(dt_id, dt_num)
             if did not in districts:

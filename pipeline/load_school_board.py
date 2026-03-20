@@ -27,6 +27,10 @@ import sys
 import time
 import psycopg2
 
+# Import unified race_type classifier
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from classify_race import classify_race_type
+
 # ── Connection ──────────────────────────────────────────────
 DB_URI = os.environ.get(
     "DATABASE_URL",
