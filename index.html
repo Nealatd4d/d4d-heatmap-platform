@@ -18,7 +18,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>D4D Election Heatmap Platform</title>
-<meta name="description" content="Precinct-level election data viewer for Cook County &amp; Chicago by Digital4Dems">
+<meta name="description" content="Precinct-level election data viewer for Illinois counties by Digital4Dems">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/spark-md5@3.0.2/spark-md5.min.js"></script>
@@ -548,7 +548,7 @@ html,body{
       <div>
         <div class="header-title desktop-title">D4D Election Heatmap Platform</div>
         <div class="header-title mobile-title">D4D Heatmap</div>
-        <div class="header-subtitle desktop-subtitle">Precinct-Level Election Data · Cook County &amp; Chicago</div>
+        <div class="header-subtitle desktop-subtitle">Illinois Precinct-Level Election Data</div>
       </div>
     </div>
     <div class="header-right">
@@ -976,11 +976,12 @@ function popLoading() { loadingCount = Math.max(0, loadingCount - 1); if (loadin
 /* ═══════════════════ INIT DATA ═══════════════════ */
 async function loadGeoJSON() {
   const GEOJSON_BASE = 'https://nfjfqdffulhqhszhlymo.supabase.co/storage/v1/object/public/geojson';
-  const [chiRes, subRes, lakeRes, dupageRes] = await Promise.all([
+  const [chiRes, subRes, lakeRes, dupageRes, dekalbRes] = await Promise.all([
     fetch(`${GEOJSON_BASE}/precincts_chicago.geojson`).then(r => { if (!r.ok) throw new Error(`Chicago GeoJSON: ${r.status}`); return r.json(); }),
     fetch(`${GEOJSON_BASE}/precincts_suburban.geojson`).then(r => { if (!r.ok) throw new Error(`Suburban GeoJSON: ${r.status}`); return r.json(); }),
     fetch(`${GEOJSON_BASE}/precincts_lake.geojson`).then(r => { if (!r.ok) throw new Error(`Lake GeoJSON: ${r.status}`); return r.json(); }),
-    fetch(`${GEOJSON_BASE}/precincts_dupage.geojson`).then(r => { if (!r.ok) throw new Error(`DuPage GeoJSON: ${r.status}`); return r.json(); })
+    fetch(`${GEOJSON_BASE}/precincts_dupage.geojson`).then(r => { if (!r.ok) throw new Error(`DuPage GeoJSON: ${r.status}`); return r.json(); }),
+    fetch(`${GEOJSON_BASE}/precincts_dekalb.geojson`).then(r => { if (!r.ok) throw new Error(`DeKalb GeoJSON: ${r.status}`); return r.json(); })
   ]);
 
   geoFeatures = [];
@@ -1037,20 +1038,48 @@ async function loadGeoJSON() {
     geoFeatures.push(f);
   }
 
-  console.log(`GeoJSON loaded: ${geoFeatures.length} features (${chiRes.features.length} Chicago + ${subRes.features.length} suburban + ${lakeRes.features.length} Lake + ${dupageRes.features.length} DuPage)`);
+  // DeKalb County
+  for (const f of dekalbRes.features) {
+    const p = f.properties;
+    const pid = p.precinct_id;
+    f._pid = pid;
+    f._label = p.name;
+    const _muniMatch = p.name.match(/^([A-Z\s]+?)\s+\d/);
+    f._muni = _muniMatch ? _muniMatch[1].trim() : p.name;
+    f._county = 'DeKalb';
+    pidToFeatureIdx[pid] = geoFeatures.length;
+    geoFeatures.push(f);
+  }
+
+  console.log(`GeoJSON loaded: ${geoFeatures.length} features (${chiRes.features.length} Chicago + ${subRes.features.length} suburban + ${lakeRes.features.length} Lake + ${dupageRes.features.length} DuPage + ${dekalbRes.features.length} DeKalb)`);
 }
 
 async function loadElections() {
   elections = await rpc('get_elections');
-  selElection.innerHTML = '';
-  for (const e of elections) {
-    const o = document.createElement('option');
-    o.value = e.id;
-    o.textContent = e.election_name;
-    selElection.appendChild(o);
+  selElection.innerHTML = '<option value="">Select Election…</option>';
+
+  // Sort by date descending and group by year
+  const sorted = [...elections].sort((a, b) => (b.election_date || '').localeCompare(a.election_date || ''));
+  const byYear = {};
+  for (const e of sorted) {
+    const yr = e.election_year || (e.election_date ? new Date(e.election_date).getFullYear() : 0);
+    if (!byYear[yr]) byYear[yr] = [];
+    byYear[yr].push(e);
   }
-  if (elections.length) {
-    currentElectionId = elections[0].id;
+  const years = Object.keys(byYear).sort((a, b) => b - a);
+  for (const yr of years) {
+    const og = document.createElement('optgroup');
+    og.label = yr;
+    for (const e of byYear[yr]) {
+      const o = document.createElement('option');
+      o.value = e.id;
+      o.textContent = e.election_name;
+      og.appendChild(o);
+    }
+    selElection.appendChild(og);
+  }
+  if (sorted.length) {
+    currentElectionId = sorted[0].id;
     selElection.value = currentElectionId;
   }
 }
@@ -2319,12 +2348,12 @@ function clearMap() {
   viewOpts.innerHTML = '';
   legendEl.innerHTML = '';
   landing.style.display = '';
-  map.setView([41.92, -87.85], 9);
+  map.setView([41.88, -88.0], 9);
 }
 
 /* ═══════════════════ INIT ═══════════════════ */
 function initMap() {
-  map = L.map('map', { center: [41.92, -87.85], zoom: 9, zoomControl: true, attributionControl: false });
+  map = L.map('map', { center: [41.88, -88.0], zoom: 9, zoomControl: true, attributionControl: false });
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', { subdomains: 'abcd', maxZoom: 19 }).addTo(map);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png', { subdomains: 'abcd', maxZoom: 19, pane: 'overlayPane' }).addTo(map);
   map.on('click', () => { infoPanel.classList.remove('visible'); if (isMobile) closeBottomSheet(); });
