@@ -237,6 +237,7 @@ html,body{
 /* ── Info panel ── */
 .info-panel{position:absolute;bottom:16px;right:16px;z-index:var(--z-map-overlay);pointer-events:none;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px;min-width:240px;max-width:340px;max-height:60vh;overflow-y:auto;opacity:0;transition:opacity .15s;box-shadow:0 4px 20px rgba(0,0,0,.4)}
 .info-panel.visible{opacity:1}
+.info-panel.pinned{opacity:1;pointer-events:auto;border-color:var(--blue-dim)}
 .info-panel h3{font-size:13px;font-weight:600;margin-bottom:6px}
 .info-row{display:flex;justify-content:space-between;font-size:12px;padding:2px 0;color:var(--text-muted)}
 .info-row .val{color:var(--text);font-weight:500;font-variant-numeric:tabular-nums}
@@ -946,6 +947,9 @@ let renderSeq = 0;
 let loadingCount = 0;
 // Track previously hovered layer for efficient unhover
 let hoveredLayer = null;
+// Desktop click-to-pin: tracks the currently pinned (clicked) layer
+let pinnedLayer = null;
+let pinnedFeatureData = null;
 
 const $ = id => document.getElementById(id);
 const selElection = $('selElection'), selType = $('selType'), selRace = $('selRace');
@@ -2000,6 +2004,9 @@ async function render() {
     if (precinctLayer) { map.removeLayer(precinctLayer); precinctLayer = null; }
     if (bgLayer) { map.removeLayer(bgLayer); bgLayer = null; }
     hoveredLayer = null;
+    pinnedLayer = null;
+    pinnedFeatureData = null;
+    infoPanel.classList.remove('pinned');
 
     // Background layer (gray, non-interactive) for context
     if (focusedBgFeats.length > 0) {
@@ -2026,8 +2033,7 @@ async function render() {
           });
         } else {
           l.on('mouseover', () => {
-            // Reset only previously hovered layer (efficient)
-            if (hoveredLayer && hoveredLayer !== l) {
+            if (hoveredLayer && hoveredLayer !== l && hoveredLayer !== pinnedLayer) {
               hoveredLayer.setStyle({ color: '#1a1d27', weight: 1 });
             }
             hoveredLayer = l;
@@ -2036,9 +2042,28 @@ async function render() {
             showInfo(f, turnout, raceData, turnout2, raceData2);
           });
           l.on('mouseout', () => {
-            l.setStyle({ color: '#1a1d27', weight: 1 });
+            if (l !== pinnedLayer) {
+              l.setStyle({ color: '#1a1d27', weight: 1 });
+            }
             hoveredLayer = null;
-            infoPanel.classList.remove('visible');
+            if (!pinnedLayer) {
+              infoPanel.classList.remove('visible');
+            } else {
+              showInfo(pinnedFeatureData.f, pinnedFeatureData.turnout, pinnedFeatureData.raceData, pinnedFeatureData.turnout2, pinnedFeatureData.raceData2);
+              infoPanel.classList.add('pinned');
+            }
+          });
+          l.on('click', (e) => {
+            L.DomEvent.stopPropagation(e);
+            if (pinnedLayer && pinnedLayer !== l) {
+              pinnedLayer.setStyle({ color: '#1a1d27', weight: 1 });
+            }
+            pinnedLayer = l;
+            pinnedFeatureData = { f, turnout, raceData, turnout2, raceData2 };
+            l.setStyle({ color: '#fff', weight: 2.5 });
+            l.bringToFront();
+            showInfo(f, turnout, raceData, turnout2, raceData2);
+            infoPanel.classList.add('pinned');
           });
         }
       }
@@ -2528,7 +2553,9 @@ document.querySelectorAll('#electionModes .mode-btn').forEach(btn => {
 function clearMap() {
   if (precinctLayer) { map.removeLayer(precinctLayer); precinctLayer = null; }
   if (bgLayer) { map.removeLayer(bgLayer); bgLayer = null; }
-  infoPanel.classList.remove('visible');
+  pinnedLayer = null;
+  pinnedFeatureData = null;
+  infoPanel.classList.remove('visible', 'pinned');
   headerStats.innerHTML = '';
   vsCandidates = [];
   viewOpts.innerHTML = '';
@@ -2542,7 +2569,15 @@ function initMap() {
   map = L.map('map', { center: [41.88, -88.0], zoom: 9, zoomControl: true, attributionControl: false });
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', { subdomains: 'abcd', maxZoom: 19 }).addTo(map);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png', { subdomains: 'abcd', maxZoom: 19, pane: 'overlayPane' }).addTo(map);
-  map.on('click', () => { infoPanel.classList.remove('visible'); if (isMobile) closeBottomSheet(); });
+  map.on('click', () => {
+    if (pinnedLayer) {
+      pinnedLayer.setStyle({ color: '#1a1d27', weight: 1 });
+      pinnedLayer = null;
+      pinnedFeatureData = null;
+    }
+    infoPanel.classList.remove('visible', 'pinned');
+    if (isMobile) closeBottomSheet();
+  });
 }
 
 /* ═══════════════════ LEGEND TOGGLE (MOBILE) ═══════════════════ */
@@ -3073,6 +3108,9 @@ async function renderFinance() {
     if (precinctLayer) { map.removeLayer(precinctLayer); precinctLayer = null; }
     if (bgLayer) { map.removeLayer(bgLayer); bgLayer = null; }
     hoveredLayer = null;
+    pinnedLayer = null;
+    pinnedFeatureData = null;
+    infoPanel.classList.remove('pinned');
 
     // Background layer
     if (focusedBgFeats.length > 0) {
@@ -3103,16 +3141,37 @@ async function renderFinance() {
           });
         } else {
           l.on('mouseover', () => {
-            if (hoveredLayer && hoveredLayer !== l) hoveredLayer.setStyle({ color: '#1a1d27', weight: 1 });
+            if (hoveredLayer && hoveredLayer !== l && hoveredLayer !== pinnedLayer) {
+              hoveredLayer.setStyle({ color: '#1a1d27', weight: 1 });
+            }
             hoveredLayer = l;
             l.setStyle({ color: '#fff', weight: 2.5 });
             l.bringToFront();
             showFinanceInfo(f, financeData);
           });
           l.on('mouseout', () => {
-            l.setStyle({ color: '#1a1d27', weight: 1 });
+            if (l !== pinnedLayer) {
+              l.setStyle({ color: '#1a1d27', weight: 1 });
+            }
             hoveredLayer = null;
-            infoPanel.classList.remove('visible');
+            if (!pinnedLayer) {
+              infoPanel.classList.remove('visible');
+            } else if (pinnedFeatureData && pinnedFeatureData.financeData) {
+              showFinanceInfo(pinnedFeatureData.f, pinnedFeatureData.financeData);
+              infoPanel.classList.add('pinned');
+            }
+          });
+          l.on('click', (e) => {
+            L.DomEvent.stopPropagation(e);
+            if (pinnedLayer && pinnedLayer !== l) {
+              pinnedLayer.setStyle({ color: '#1a1d27', weight: 1 });
+            }
+            pinnedLayer = l;
+            pinnedFeatureData = { f, financeData };
+            l.setStyle({ color: '#fff', weight: 2.5 });
+            l.bringToFront();
+            showFinanceInfo(f, financeData);
+            infoPanel.classList.add('pinned');
           });
         }
       }
