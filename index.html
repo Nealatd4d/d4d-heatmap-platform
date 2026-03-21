@@ -2385,6 +2385,8 @@ function updateLegend(raceData) {
     const titlePart = titleMatch[0];
     const bodyPart = h.slice(titlePart.length);
     legendEl.innerHTML = titlePart + `<div class="legend-body" id="legendBody">${bodyPart}</div>`;
+    // Auto-open legend on mobile so users see it immediately
+    if (isMobile) legendEl.classList.add('legend-open');
   } else {
     legendEl.innerHTML = h;
   }
@@ -3034,6 +3036,7 @@ function updateFinanceLegend(financeData) {
   const titleMatch2 = h.match(/^(<div class="legend-title">[^<]*(?:<[^>]*>[^<]*<\/[^>]*>)*<\/div>)/);
   if (titleMatch2) {
     legendEl.innerHTML = titleMatch2[0] + `<div class="legend-body" id="legendBody">${h.slice(titleMatch2[0].length)}</div>`;
+    if (isMobile) legendEl.classList.add('legend-open');
   } else {
     legendEl.innerHTML = h;
   }
