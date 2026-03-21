@@ -87,6 +87,12 @@ COUNTIES = {
         "normalize_fn": normalize_dekalb_precinct,
         "label_prefix": "SBOE DeKalb",
     },
+    "lake": {
+        "jurisdiction_id": "lake_county",
+        "data_dir": None,  # Set at runtime
+        "normalize_fn": lambda name: name,  # Lake SBOE names match GeoJSON directly
+        "label_prefix": "SBOE Lake",
+    },
 }
 
 # ── Scan CSVs ───────────────────────────────────────────────
