@@ -26,6 +26,7 @@ from collections import defaultdict
 # Import unified race_type classifier
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from classify_race import classify_race_type
+from normalize_race import normalize_race_name
 
 # ── Supabase config ──
 SUPA_URL = "https://nfjfqdffulhqhszhlymo.supabase.co"
@@ -536,20 +537,23 @@ def process_election(election_key):
 
         stats["contests_downloaded"] += 1
 
+        # Normalize race name for cross-county consistency
+        normalized_name = normalize_race_name(parsed['race_name'])
+
         # Classify the race using unified classifier
-        race_type, _ = classify_race_type(parsed['race_name'], source='cook_clerk')
-        race_display = parsed['race_name']
+        race_type, _ = classify_race_type(normalized_name, source='cook_clerk')
+        race_display = normalized_name
         stats["race_types"][race_type] += 1
 
-        # Generate race ID
-        race_id = hashlib.md5(f"{election_id}|{parsed['race_name']}".encode()).hexdigest()[:16]
+        # Generate race ID from normalized name
+        race_id = hashlib.md5(f"{election_id}|{normalized_name}".strip().lower().encode()).hexdigest()[:16]
 
         # -- races table: id, election_id, district_id, name, source_contest_name, race_type --
         race_batch.append({
             "id": race_id,
             "election_id": election_id,
             "district_id": None,
-            "name": parsed['race_name'],
+            "name": normalized_name,
             "source_contest_name": parsed['race_name'],
             "race_type": race_type,
         })

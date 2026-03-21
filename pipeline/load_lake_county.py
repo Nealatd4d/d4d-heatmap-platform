@@ -37,6 +37,7 @@ import psycopg2
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from classify_race import classify_race_type
+from normalize_race import normalize_race_name
 
 # ── Connection ──────────────────────────────────────────────
 DB_URI = os.environ.get(
@@ -448,10 +449,13 @@ def parse_xml_election_file(filepath, election_id, source_label):
             dname = f"{dt_id.replace('_', ' ').title()} {dt_num}" if dt_num else dt_id.replace('_', ' ').title()
             districts[did] = (did, dt_id, dt_num, dname)
         
+        # Normalize race name for cross-county consistency
+        normalized_name = normalize_race_name(contest_name)
+
         # Create race
-        rid = make_id(election_id, contest_name)
+        rid = make_id(election_id, normalized_name)
         if rid not in races:
-            races[rid] = (rid, election_id, did, contest_name, contest_name, get_race_type(dt_id))
+            races[rid] = (rid, election_id, did, normalized_name, contest_name, get_race_type(dt_id))
         
         # Create candidate entries
         cand_ids = []
@@ -581,17 +585,19 @@ def parse_xlsx_election_file(filepath, election_id, source_label):
             dname = f"{dt_id.replace('_', ' ').title()} {dt_num}" if dt_num else dt_id.replace('_', ' ').title()
             districts[did] = (did, dt_id, dt_num, dname)
         
-        rid = make_id(election_id, contest_name)
+        normalized_name = normalize_race_name(contest_name)
+
+        rid = make_id(election_id, normalized_name)
         if rid not in races:
-            races[rid] = (rid, election_id, did, contest_name, contest_name, get_race_type(dt_id))
-        
+            races[rid] = (rid, election_id, did, normalized_name, contest_name, get_race_type(dt_id))
+
         cand_ids = []
         for _, cname in cand_names:
             cid = make_id(cname, '')
             if cid not in candidates:
                 candidates[cid] = (cid, cname, None)
             cand_ids.append(cid)
-        
+
         for vals in rows_data[3:]:
             if not vals or not vals[0] or vals[0].strip() == 'Total:':
                 continue

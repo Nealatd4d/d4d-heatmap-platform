@@ -21,6 +21,7 @@ import psycopg2
 # Import unified race_type classifier
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from classify_race import classify_race_type
+from normalize_race import normalize_race_name
 
 csv.field_size_limit(1_000_000)
 
@@ -160,9 +161,10 @@ def scan_sboe(filepath, election_id, label):
                 dname = f"{dt_id.replace('_', ' ').title()} {dt_num}" if dt_num else dt_id.replace('_', ' ').title()
                 districts[did] = (did, dt_id, dt_num, dname)
 
-            rid = make_id(election_id, contest)
+            normalized_contest = normalize_race_name(contest)
+            rid = make_id(election_id, normalized_contest)
             if rid not in races:
-                races[rid] = (rid, election_id, did, contest, contest, dt_id)
+                races[rid] = (rid, election_id, did, normalized_contest, contest, dt_id)
 
             pd_key = (pid, did)
             if pd_key not in pd_set:
