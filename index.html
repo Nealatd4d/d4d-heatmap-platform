@@ -2388,6 +2388,8 @@ function updateLegend(raceData) {
   } else {
     legendEl.innerHTML = h;
   }
+  // Auto-open legend on mobile so users see it without tapping
+  if (isMobile) legendEl.classList.add('legend-open');
 }
 
 
@@ -3035,6 +3037,8 @@ function updateFinanceLegend(financeData) {
   } else {
     legendEl.innerHTML = h;
   }
+  // Auto-open legend on mobile so users see it without tapping
+  if (isMobile) legendEl.classList.add('legend-open');
 }
 
 /* Finance header stats */
