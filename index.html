@@ -1046,6 +1046,116 @@ async function fetchRaceMap(raceId) {
   return m;
 }
 
+/* ── Swing comparison helpers (v2 — reviewed + Bug 1/2/3 fixed) ── */
+function getRaceName(race) {
+  return String(race?.race_name || race?.name || race?.source_contest_name || '').trim();
+}
+function getRaceDistrictId(race) {
+  const v = race?.district_id;
+  if (v == null) return '';
+  const s = String(v).trim();
+  return s && s.toLowerCase() !== 'null' ? s : '';
+}
+function normalizeOrdinalNumbers(text) {
+  return String(text || '').replace(/\b(\d+)(st|nd|rd|th)\b/gi, '$1');
+}
+function normalizeRaceName(name) {
+  return normalizeOrdinalNumbers(String(name || ''))
+    .toLowerCase()
+    .replace(/\s*-\s*(dem|rep|gop|ind|lib|grn|green)\b.*$/gi, '')
+    .replace(/\b(democratic|republican|independent|nonpartisan)\b/gi, ' ')
+    .replace(/\bcmsnr\.?\b/gi, 'commissioner')
+    .replace(/\bcomm\.?\b/gi, 'commissioner')
+    .replace(/\btrst\.?\b/gi, 'trustee')
+    .replace(/\bmtg\b/gi, 'meeting')
+    .replace(/\bcommissioner,?\s*county\s+board\b/gi, 'county commissioner')
+    .replace(/\bcounty\s+board\b/gi, 'county commissioner')
+    .replace(/\bcook\s+county\s+commissioner\b/gi, 'county commissioner')
+    .replace(/\bdist\.?(?=\s*\d)/gi, 'district')
+    .replace(/\bward\s+(\d+)\b/gi, 'district $1')
+    .replace(/\b(\d+)\s+district\b/gi, 'district $1')
+    .replace(/\s+-\s+/g, ' ')
+    .replace(/-(?=\s)/g, ' ')
+    .replace(/(?<=\s)-/g, ' ')
+    .replace(/[()\\/.,:;]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+function tokenizeRaceName(name) {
+  return normalizeRaceName(name).split(' ').map(s => s.trim()).filter(Boolean)
+    .filter(s => !['the','of','for','and'].includes(s));
+}
+function extractDistrictNumbers(name) {
+  const normalized = normalizeRaceName(name);
+  const nums = new Set();
+  for (const m of normalized.matchAll(/\bdistrict\s+(\d+)\b/g)) nums.add(String(parseInt(m[1], 10)));
+  if (!nums.size) { for (const m of normalized.matchAll(/\b(\d+)\b/g)) nums.add(String(parseInt(m[1], 10))); }
+  return [...nums];
+}
+function tokenOverlapScore(aName, bName) {
+  const a = new Set(tokenizeRaceName(aName)), b = new Set(tokenizeRaceName(bName));
+  if (!a.size || !b.size) return 0;
+  let overlap = 0;
+  for (const token of a) { if (b.has(token)) overlap += 1; }
+  return overlap / Math.max(a.size, b.size);
+}
+function scoreRaceMatch(baseRace, candidateRace) {
+  if (!baseRace || !candidateRace) return -Infinity;
+  if (String(baseRace.race_type || '') !== String(candidateRace.race_type || '')) return -Infinity;
+  const baseName = getRaceName(baseRace), candidateName = getRaceName(candidateRace);
+  const baseNorm = normalizeRaceName(baseName), candidateNorm = normalizeRaceName(candidateName);
+  const baseDistrictId = getRaceDistrictId(baseRace), candidateDistrictId = getRaceDistrictId(candidateRace);
+  let score = 0;
+  if (baseDistrictId && candidateDistrictId && baseDistrictId === candidateDistrictId) score += 1000;
+  if (baseNorm && candidateNorm) {
+    if (baseNorm === candidateNorm) score += 200;
+    else if (baseNorm.includes(candidateNorm) || candidateNorm.includes(baseNorm)) score += 120;
+  }
+  const bdn = extractDistrictNumbers(baseName), cdn = extractDistrictNumbers(candidateName);
+  if (bdn.length && cdn.length) { const ov = bdn.filter(n => cdn.includes(n)); if (ov.length) score += 80 + ov.length * 10; }
+  score += Math.round(tokenOverlapScore(baseName, candidateName) * 50);
+  return score;
+}
+function findEquivalentRace(currentRace, compareRaces) {
+  if (!currentRace || !Array.isArray(compareRaces) || !compareRaces.length) return null;
+  const sameType = compareRaces.filter(r => String(r.race_type || '') === String(currentRace.race_type || ''));
+  if (!sameType.length) return null;
+  const currentDistrictId = getRaceDistrictId(currentRace);
+  if (currentDistrictId) {
+    const districtMatches = sameType.filter(r => getRaceDistrictId(r) === currentDistrictId);
+    if (districtMatches.length === 1) return districtMatches[0];
+    if (districtMatches.length > 1) {
+      let bestRace = null, bestScore = -Infinity;
+      for (const race of districtMatches) {
+        const score = scoreRaceMatch(currentRace, race);
+        if (score > bestScore) { bestScore = score; bestRace = race; }
+      }
+      return bestRace;
+    }
+  }
+  let bestRace = null, bestScore = -Infinity;
+  for (const race of sameType) {
+    const score = scoreRaceMatch(currentRace, race);
+    if (score > bestScore) { bestScore = score; bestRace = race; }
+  }
+  return bestScore >= 90 ? bestRace : null;
+}
+async function fetchSwingComparisonRaceMap({ compareElectionId, currentElectionId, currentRaceId }) {
+  if (!compareElectionId || !currentElectionId || !currentRaceId) return null;
+  const [compareRaces, currentRaces] = await Promise.all([
+    fetchRaces(compareElectionId),
+    racesForElection[currentElectionId]
+      ? Promise.resolve(racesForElection[currentElectionId])
+      : fetchRaces(currentElectionId)
+  ]);
+  const currentRace = (currentRaces || []).find(r => r.id === currentRaceId);
+  if (!currentRace) return null;
+  const matchedRace = findEquivalentRace(currentRace, compareRaces || []);
+  if (!matchedRace) return null;
+  return fetchRaceMap(matchedRace.id);
+}
+/* ── End swing comparison helpers ── */
+
 async function fetchTurnout(electionId) {
   if (turnoutCache[electionId]) return turnoutCache[electionId];
   const rows = await rpc('get_race_turnout', { p_election_id: electionId });
@@ -1584,19 +1694,12 @@ async function render() {
       if (mySeq !== renderSeq) return;
     }
     if (currentMode === 'swing' && compareElectionId && currentRaceId) {
-      const compareRaces = await fetchRaces(compareElectionId);
+      raceData2 = await fetchSwingComparisonRaceMap({
+        compareElectionId,
+        currentElectionId,
+        currentRaceId
+      });
       if (mySeq !== renderSeq) return;
-      const currentRaces = racesForElection[currentElectionId] || [];
-      const thisRace = currentRaces.find(r => r.id === currentRaceId);
-      if (thisRace) {
-        const matchRace = compareRaces.find(r =>
-          r.race_type === thisRace.race_type && r.race_name === thisRace.race_name
-        );
-        if (matchRace) {
-          raceData2 = await fetchRaceMap(matchRace.id);
-          if (mySeq !== renderSeq) return;
-        }
-      }
     }
 
     // Compute adaptive scales from current data
