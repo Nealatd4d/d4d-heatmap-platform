@@ -534,6 +534,155 @@ html,body{
   .header-stats{gap:10px}
 }
 
+/* ══════════════════════════════════════════════
+   DISTRICT FOCUS PANEL
+══════════════════════════════════════════════ */
+.district-panel{
+  position:fixed;top:var(--header-h);bottom:var(--mode-strip-h);left:0;
+  width:320px;background:var(--surface);border-right:1px solid var(--border);
+  z-index:var(--z-toolbar-sheet);
+  transform:translateX(-100%);transition:transform .3s ease;
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.district-panel.open{transform:translateX(0)}
+
+.district-panel-header{
+  padding:10px 12px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;flex-shrink:0;
+}
+.district-panel-header h3{font-size:13px;font-weight:600;color:var(--text);margin:0}
+.district-close-btn{
+  background:transparent;border:none;color:var(--text-muted);
+  font-size:18px;cursor:pointer;padding:2px 6px;border-radius:4px;
+  line-height:1;
+}
+.district-close-btn:hover{background:var(--surface-hover);color:var(--text)}
+
+.district-panel-body{flex:1;overflow-y:auto;overflow-x:hidden;padding:0}
+.district-level{padding:8px 0}
+
+/* Search */
+.district-search{padding:4px 12px 8px}
+.district-search input{
+  width:100%;background:var(--surface-alt);color:var(--text);
+  border:1px solid var(--border);border-radius:4px;
+  padding:7px 10px;font-size:12px;font-family:inherit;outline:none;
+}
+.district-search input:focus{border-color:var(--blue)}
+.district-search input::placeholder{color:var(--text-dim)}
+
+/* Tree */
+.dp-category{border-bottom:1px solid var(--border)}
+.dp-category-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 12px;cursor:pointer;font-size:12px;font-weight:600;
+  color:var(--text-muted);text-transform:uppercase;letter-spacing:.04em;
+  transition:background .15s;user-select:none;
+}
+.dp-category-header:hover{background:var(--surface-hover)}
+.dp-category-header .dp-arrow{
+  font-size:10px;transition:transform .2s;color:var(--text-dim);
+}
+.dp-category.collapsed .dp-category-body{display:none}
+.dp-category.collapsed .dp-arrow{transform:rotate(-90deg)}
+
+.dp-type-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:5px 12px 5px 24px;cursor:pointer;font-size:12px;font-weight:500;
+  color:var(--text);transition:background .15s;user-select:none;
+}
+.dp-type-header:hover{background:var(--surface-hover)}
+.dp-type-header .dp-arrow{font-size:9px;transition:transform .2s;color:var(--text-dim)}
+.dp-type.collapsed .dp-type-body{display:none}
+.dp-type.collapsed .dp-arrow{transform:rotate(-90deg)}
+
+.dp-district{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:4px 12px 4px 40px;cursor:pointer;font-size:12px;
+  color:var(--text-muted);transition:background .15s;
+}
+.dp-district:hover{background:var(--surface-hover);color:var(--text)}
+.dp-district.active{background:rgba(79,195,247,.1);color:var(--blue)}
+.dp-badge{
+  background:var(--surface-alt);color:var(--text-dim);
+  font-size:10px;padding:1px 6px;border-radius:8px;font-weight:500;
+  flex-shrink:0;margin-left:6px;
+}
+
+/* Timeline (Level 2) */
+.district-back-btn{
+  background:transparent;border:none;color:var(--blue);
+  font-size:12px;cursor:pointer;padding:8px 12px;
+  font-family:inherit;font-weight:500;
+  transition:background .15s;display:block;width:100%;text-align:left;
+}
+.district-back-btn:hover{background:var(--surface-hover)}
+
+.district-title{
+  font-size:14px;font-weight:600;color:var(--text);
+  padding:4px 12px 8px;margin:0;
+}
+
+.district-elections{padding:0 12px}
+.dp-election-card{
+  background:var(--surface-alt);border:1px solid var(--border);
+  border-radius:6px;padding:10px 12px;margin-bottom:8px;
+  cursor:pointer;transition:all .15s;
+}
+.dp-election-card:hover{border-color:var(--blue-dim);background:var(--surface-hover)}
+.dp-election-card.active{border-color:var(--blue);background:rgba(79,195,247,.08)}
+.dp-election-card .dp-el-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px}
+.dp-election-card .dp-el-date{font-size:11px;color:var(--text-dim)}
+.dp-election-card .dp-el-race{font-size:11px;color:var(--text-muted);margin-top:2px}
+
+.district-nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 12px;border-top:1px solid var(--border);
+  flex-shrink:0;
+}
+.district-nav button{
+  background:var(--surface-alt);border:1px solid var(--border);
+  color:var(--text-muted);border-radius:4px;padding:5px 12px;
+  font-size:12px;font-family:inherit;cursor:pointer;transition:all .15s;
+}
+.district-nav button:hover:not(:disabled){border-color:var(--blue-dim);color:var(--text)}
+.district-nav button:disabled{opacity:.4;cursor:default}
+.district-nav-label{font-size:11px;color:var(--text-dim)}
+
+/* Districts toggle button in toolbar */
+.district-toggle-btn{
+  background:var(--surface-alt);border:1px solid var(--border);
+  color:var(--text-muted);border-radius:4px;padding:5px 10px;
+  cursor:pointer;display:flex;align-items:center;gap:5px;
+  font-size:12px;font-family:inherit;transition:all .15s;white-space:nowrap;
+  width:100%;justify-content:center;
+}
+.district-toggle-btn:hover{border-color:var(--blue-dim);color:var(--blue);background:var(--surface-hover)}
+.district-toggle-btn.active{border-color:var(--blue);color:var(--blue);background:rgba(79,195,247,.08)}
+.district-toggle-btn svg{width:14px;height:14px;flex-shrink:0}
+
+/* Mobile: bottom sheet style */
+@media(max-width:768px){
+  .district-panel{
+    top:auto;bottom:var(--mode-strip-h);left:0;right:0;
+    width:100%;height:70vh;
+    border-right:none;border-top:1px solid var(--border);
+    border-radius:12px 12px 0 0;
+    transform:translateY(100%);
+  }
+  .district-panel.open{transform:translateY(0)}
+  .district-search input{font-size:14px;padding:10px 12px;min-height:var(--touch-min)}
+  .dp-category-header{padding:10px 12px;font-size:13px;min-height:var(--touch-min)}
+  .dp-type-header{padding:8px 12px 8px 24px;font-size:13px;min-height:var(--touch-min)}
+  .dp-district{padding:8px 12px 8px 40px;font-size:13px;min-height:var(--touch-min)}
+  .district-toggle-btn{padding:10px;font-size:14px;min-height:var(--touch-min)}
+}
+
+/* Desktop: adjust grid to account for panel */
+@media(min-width:769px){
+  .district-panel{top:var(--header-h);bottom:0}
+}
+
 </style>
 </head>
 <body>
@@ -571,6 +720,15 @@ html,body{
         <button class="layer-btn" data-layer="finance" onclick="setDataLayer('finance')">Campaign Finance</button>
       </div>
       -->
+
+      <!-- District Browser toggle -->
+      <button class="district-toggle-btn" id="districtToggleBtn" onclick="window.toggleDistrictPanel()">
+        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 3h12M2 7h8M2 11h10M2 15h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Districts
+      </button>
+      <div class="toolbar-sep"></div>
 
       <!-- Election Results controls -->
       <div id="electionControls">
@@ -629,6 +787,34 @@ html,body{
       </button>
     </div>
   </aside>
+
+  <!-- District Focus Panel -->
+  <div id="districtPanel" class="district-panel">
+    <div class="district-panel-header">
+      <h3>Districts</h3>
+      <button class="district-close-btn" onclick="window.toggleDistrictPanel()" title="Close">&times;</button>
+    </div>
+    <div class="district-panel-body" id="districtPanelBody">
+      <!-- Level 1: District browser -->
+      <div id="districtBrowser" class="district-level">
+        <div class="district-search">
+          <input type="text" id="districtSearch" placeholder="Search districts…">
+        </div>
+        <div id="districtTree"></div>
+      </div>
+      <!-- Level 2: Election timeline -->
+      <div id="districtTimeline" class="district-level" style="display:none">
+        <button id="districtBack" class="district-back-btn">&larr; All Districts</button>
+        <h3 id="districtTitle" class="district-title"></h3>
+        <div id="districtElections" class="district-elections"></div>
+        <div class="district-nav">
+          <button id="districtPrev" disabled>&larr; Prev</button>
+          <span id="districtNavLabel" class="district-nav-label"></span>
+          <button id="districtNext" disabled>Next &rarr;</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <main class="map-wrap">
     <div id="map"></div>
@@ -2381,6 +2567,9 @@ function preventIOSBounce() {
       if (el.classList.contains('toolbar') && el.classList.contains('expanded')) {
         return; // allow scroll in expanded toolbar
       }
+      if (el.classList.contains('district-panel')) {
+        return; // allow scroll in district panel
+      }
       if (el.classList.contains('header-stats')) {
         return; // allow horizontal scroll on stats
       }
@@ -3187,6 +3376,318 @@ function syncModeStrip() {
 
 // Initialize strip buttons
 updateModeStripButtons();
+
+/* ═══════════════════ DISTRICT FOCUS PANEL ═══════════════════ */
+const districtPanel = $('districtPanel');
+const districtTree = $('districtTree');
+const districtSearch = $('districtSearch');
+const districtBrowser = $('districtBrowser');
+const districtTimeline = $('districtTimeline');
+const districtTitle = $('districtTitle');
+const districtElections = $('districtElections');
+const districtPrev = $('districtPrev');
+const districtNext = $('districtNext');
+const districtNavLabel = $('districtNavLabel');
+const districtBack = $('districtBack');
+const districtToggleBtn = $('districtToggleBtn');
+
+let districtBrowserData = null; // cached result from get_district_browser
+let districtTimelineData = null; // elections for selected district
+let selectedDistrictId = '';
+let selectedDistrictName = '';
+let timelineIndex = -1; // currently highlighted election in timeline
+
+function toggleDistrictPanel() {
+  if (!districtPanel) return;
+  const isOpen = districtPanel.classList.toggle('open');
+  if (districtToggleBtn) districtToggleBtn.classList.toggle('active', isOpen);
+  if (isOpen && !districtBrowserData) {
+    loadDistrictBrowser();
+  }
+  // On mobile, close the toolbar when opening district panel
+  if (isOpen && isMobile) {
+    const tb = $('toolbar');
+    const ft = $('filterToggle');
+    if (tb) tb.classList.remove('expanded');
+    if (ft) { ft.classList.remove('active'); ft.setAttribute('aria-expanded', 'false'); }
+  }
+}
+window.toggleDistrictPanel = toggleDistrictPanel;
+
+async function loadDistrictBrowser() {
+  districtTree.innerHTML = '<div style="padding:12px;color:var(--text-dim);font-size:12px">Loading districts…</div>';
+  try {
+    districtBrowserData = await rpc('get_district_browser');
+    buildDistrictTree(districtBrowserData);
+  } catch (err) {
+    console.error('loadDistrictBrowser error:', err);
+    districtTree.innerHTML = '<div style="padding:12px;color:#ef5350;font-size:12px">Failed to load districts</div>';
+  }
+}
+
+function buildDistrictTree(data) {
+  if (!data || !data.length) {
+    districtTree.innerHTML = '<div style="padding:12px;color:var(--text-dim);font-size:12px">No districts found</div>';
+    return;
+  }
+
+  // Group: category → type → districts
+  const tree = new Map(); // category → Map(type_id → {type_name, districts: []})
+  for (const d of data) {
+    const cat = d.category || 'Other';
+    if (!tree.has(cat)) tree.set(cat, new Map());
+    const catMap = tree.get(cat);
+    if (!catMap.has(d.type_id)) catMap.set(d.type_id, { type_name: d.type_name, districts: [] });
+    catMap.get(d.type_id).districts.push(d);
+  }
+
+  // Category display order
+  const catOrder = ['legislative', 'statewide', 'county', 'municipal', 'judicial', 'education', 'special'];
+  const catLabels = {
+    legislative: 'Legislative', statewide: 'Statewide', county: 'County',
+    municipal: 'Municipal', judicial: 'Judicial', education: 'Education',
+    special: 'Special', township: 'Township', district: 'District'
+  };
+
+  const sortedCats = [...tree.keys()].sort((a, b) => {
+    const ai = catOrder.indexOf(a), bi = catOrder.indexOf(b);
+    return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+  });
+
+  districtTree.innerHTML = '';
+  for (const cat of sortedCats) {
+    const catMap = tree.get(cat);
+    const catEl = document.createElement('div');
+    catEl.className = 'dp-category';
+    catEl.dataset.category = cat;
+
+    const catHeader = document.createElement('div');
+    catHeader.className = 'dp-category-header';
+    catHeader.innerHTML = `<span>${catLabels[cat] || cat}</span><span class="dp-arrow">&#9660;</span>`;
+    catHeader.addEventListener('click', () => catEl.classList.toggle('collapsed'));
+    catEl.appendChild(catHeader);
+
+    const catBody = document.createElement('div');
+    catBody.className = 'dp-category-body';
+
+    for (const [typeId, typeInfo] of catMap) {
+      const typeEl = document.createElement('div');
+      typeEl.className = 'dp-type';
+      typeEl.dataset.typeId = typeId;
+
+      const typeHeader = document.createElement('div');
+      typeHeader.className = 'dp-type-header';
+      const totalElections = typeInfo.districts.reduce((s, d) => s + (d.election_count || 0), 0);
+      typeHeader.innerHTML = `<span>${typeInfo.type_name}</span><span class="dp-arrow">&#9660;</span>`;
+      typeHeader.addEventListener('click', (e) => { e.stopPropagation(); typeEl.classList.toggle('collapsed'); });
+      typeEl.appendChild(typeHeader);
+
+      const typeBody = document.createElement('div');
+      typeBody.className = 'dp-type-body';
+
+      for (const d of typeInfo.districts) {
+        const dEl = document.createElement('div');
+        dEl.className = 'dp-district';
+        dEl.dataset.districtId = d.district_id;
+        dEl.dataset.districtName = d.district_name;
+        const displayName = d.district_name || `District ${d.district_number}`;
+        dEl.innerHTML = `<span>${displayName}</span><span class="dp-badge">${d.election_count}</span>`;
+        dEl.addEventListener('click', () => selectDistrict(d.district_id, displayName));
+        typeBody.appendChild(dEl);
+      }
+
+      typeEl.appendChild(typeBody);
+      // Start collapsed if many types in this category
+      if (catMap.size > 3) typeEl.classList.add('collapsed');
+      catBody.appendChild(typeEl);
+    }
+
+    catEl.appendChild(catBody);
+    districtTree.appendChild(catEl);
+  }
+}
+
+// Search/filter
+if (districtSearch) {
+  districtSearch.addEventListener('input', () => {
+    const q = districtSearch.value.trim().toLowerCase();
+    if (!districtTree) return;
+
+    const categories = districtTree.querySelectorAll('.dp-category');
+    categories.forEach(cat => {
+      let catHasMatch = false;
+      const types = cat.querySelectorAll('.dp-type');
+      types.forEach(type => {
+        let typeHasMatch = false;
+        const districts = type.querySelectorAll('.dp-district');
+        districts.forEach(d => {
+          const name = (d.dataset.districtName || '').toLowerCase();
+          const match = !q || name.includes(q);
+          d.style.display = match ? '' : 'none';
+          if (match) typeHasMatch = true;
+        });
+        type.style.display = typeHasMatch ? '' : 'none';
+        if (typeHasMatch) {
+          catHasMatch = true;
+          // Expand matching types when searching
+          if (q) type.classList.remove('collapsed');
+        }
+      });
+      cat.style.display = catHasMatch ? '' : 'none';
+      // Expand matching categories when searching
+      if (q && catHasMatch) cat.classList.remove('collapsed');
+    });
+  });
+}
+
+async function selectDistrict(districtId, districtName) {
+  selectedDistrictId = districtId;
+  selectedDistrictName = districtName;
+  timelineIndex = -1;
+
+  // Mark active in tree
+  districtTree.querySelectorAll('.dp-district').forEach(d => {
+    d.classList.toggle('active', d.dataset.districtId === districtId);
+  });
+
+  // Switch to timeline view
+  districtBrowser.style.display = 'none';
+  districtTimeline.style.display = '';
+  districtTitle.textContent = districtName;
+  districtElections.innerHTML = '<div style="padding:12px;color:var(--text-dim);font-size:12px">Loading elections…</div>';
+  districtPrev.disabled = true;
+  districtNext.disabled = true;
+  districtNavLabel.textContent = '';
+
+  try {
+    districtTimelineData = await rpc('get_district_elections', { p_district_id: districtId });
+    renderTimeline();
+  } catch (err) {
+    console.error('get_district_elections error:', err);
+    districtElections.innerHTML = '<div style="padding:12px;color:#ef5350;font-size:12px">Failed to load elections</div>';
+  }
+}
+
+function renderTimeline() {
+  if (!districtTimelineData || !districtTimelineData.length) {
+    districtElections.innerHTML = '<div style="padding:12px;color:var(--text-dim);font-size:12px">No elections found</div>';
+    districtPrev.disabled = true;
+    districtNext.disabled = true;
+    districtNavLabel.textContent = '';
+    return;
+  }
+
+  districtElections.innerHTML = '';
+  districtTimelineData.forEach((el, i) => {
+    const card = document.createElement('div');
+    card.className = 'dp-election-card';
+    if (i === timelineIndex) card.classList.add('active');
+    card.dataset.index = i;
+
+    const dateStr = el.election_date
+      ? new Date(el.election_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+      : el.election_year || '';
+
+    card.innerHTML = `
+      <div class="dp-el-name">${el.election_name}</div>
+      <div class="dp-el-date">${dateStr}</div>
+      <div class="dp-el-race">${el.race_name}</div>
+    `;
+    card.addEventListener('click', () => loadTimelineElection(i));
+    districtElections.appendChild(card);
+  });
+
+  updateNavButtons();
+}
+
+function updateNavButtons() {
+  const total = districtTimelineData ? districtTimelineData.length : 0;
+  districtPrev.disabled = timelineIndex <= 0;
+  districtNext.disabled = timelineIndex >= total - 1;
+  if (timelineIndex >= 0 && total > 0) {
+    districtNavLabel.textContent = `${timelineIndex + 1} / ${total}`;
+  } else {
+    districtNavLabel.textContent = total > 0 ? `${total} elections` : '';
+  }
+}
+
+async function loadTimelineElection(idx) {
+  if (!districtTimelineData || idx < 0 || idx >= districtTimelineData.length) return;
+  timelineIndex = idx;
+  const el = districtTimelineData[idx];
+
+  // Highlight the active card
+  districtElections.querySelectorAll('.dp-election-card').forEach((c, i) => {
+    c.classList.toggle('active', i === idx);
+  });
+  updateNavButtons();
+
+  // Scroll card into view
+  const activeCard = districtElections.querySelector('.dp-election-card.active');
+  if (activeCard) activeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  // Drive the existing flow: election → type → race → render
+  try {
+    // 1. Set election
+    currentElectionId = el.election_id;
+    selElection.value = el.election_id;
+
+    // 2. Fetch races for this election
+    const races = await fetchRaces(el.election_id);
+
+    // 3. Find the specific race
+    const targetRace = races.find(r => r.id === el.race_id);
+    if (!targetRace) {
+      console.warn('Race not found in election:', el.race_id);
+      return;
+    }
+
+    // 4. Set the type dropdown
+    currentRaceType = targetRace.race_type;
+    await populateTypeDropdown();
+    selType.value = currentRaceType;
+
+    // 5. Populate and set the race dropdown
+    await populateRaceDropdown();
+    currentRaceId = el.race_id;
+    selRace.value = el.race_id;
+
+    // 6. Render
+    await onRaceSelected();
+
+    // On mobile, close the panel after selection
+    if (isMobile) {
+      districtPanel.classList.remove('open');
+      if (districtToggleBtn) districtToggleBtn.classList.remove('active');
+    }
+  } catch (err) {
+    console.error('loadTimelineElection error:', err);
+  }
+}
+
+// Back button
+if (districtBack) {
+  districtBack.addEventListener('click', () => {
+    districtTimeline.style.display = 'none';
+    districtBrowser.style.display = '';
+    districtTimelineData = null;
+    timelineIndex = -1;
+  });
+}
+
+// Prev/Next buttons
+if (districtPrev) {
+  districtPrev.addEventListener('click', () => {
+    if (timelineIndex > 0) loadTimelineElection(timelineIndex - 1);
+  });
+}
+if (districtNext) {
+  districtNext.addEventListener('click', () => {
+    if (districtTimelineData && timelineIndex < districtTimelineData.length - 1) {
+      loadTimelineElection(timelineIndex + 1);
+    }
+  });
+}
 
 })();
 </script>
