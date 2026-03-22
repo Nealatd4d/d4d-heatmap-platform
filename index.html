@@ -3357,9 +3357,9 @@ async function exportPNG() {
     if (parts.length) statsHTML = `<p class="export-stats">${parts.join(' \u00B7 ')}</p>`;
   }
 
-  // Show title overlay
-  exportTitle.innerHTML = `<h2>${title}</h2><p class="export-subtitle">${subtitle}</p>${statsHTML}<p class="export-branding">D4D Election Heatmap Platform \u00B7 digital4dems.com</p>`;
-  exportTitle.classList.add('visible');
+  // No header overlay — keep the export clean
+  exportTitle.innerHTML = '';
+  exportTitle.classList.remove('visible');
 
   // Hide UI elements that shouldn't be in the export
   const hideEls = [
@@ -3375,13 +3375,8 @@ async function exportPNG() {
   if (precinctLayer) {
     const bounds = precinctLayer.getBounds();
     if (bounds.isValid()) {
-      map.fitBounds(bounds, { padding: [5, 5], maxZoom: 17, animate: false });
+      map.fitBounds(bounds, { padding: [40, 10], maxZoom: 17, animate: false });
       map.invalidateSize();
-      // Nudge the map down so the overlay doesn't cover the district tip
-      const overlayH = exportTitle.offsetHeight || 30;
-      const center = map.getCenter();
-      const offset = map.containerPointToLatLng([0, 0]).lat - map.containerPointToLatLng([0, overlayH / 2]).lat;
-      map.setView([center.lat + offset, center.lng], map.getZoom(), { animate: false });
     }
   }
 
