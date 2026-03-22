@@ -252,7 +252,7 @@ html,body{
 .cand-votes{min-width:36px;text-align:right;color:var(--text-dim);font-variant-numeric:tabular-nums;font-size:12px}
 
 /* ── Legend ── */
-.legend{position:absolute;bottom:10px;left:10px;z-index:450;pointer-events:none;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;box-shadow:0 4px 20px rgba(0,0,0,.4);max-height:60vh;overflow-y:auto}
+.legend{position:absolute;bottom:10px;left:10px;z-index:450;pointer-events:none;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;box-shadow:0 4px 20px rgba(0,0,0,.4);max-height:none;overflow-y:visible}
 .legend-title{font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.05em;font-weight:600;margin-bottom:6px}
 .legend-row{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted);padding:1px 0}
 .legend-swatch{width:14px;height:10px;border-radius:2px;flex-shrink:0}
@@ -2247,12 +2247,11 @@ function positionLegend(forExport) {
     }
   }
 
-  // For each corner, check if the legend rectangle would overlap the district bounding box.
-  // A corner is "clear" if the legend fits entirely in the gap between the district and the map edge.
+  // Build candidate positions: 4 corners + 4 edge-hugging positions near the district
   const candidates = [
+    // Fixed corners
     {
       name: 'br',
-      // Legend box: right edge at mapW-pad, bottom edge at mapH-pad
       lx1: mapW - pad - lW, ly1: mapH - pad - lH, lx2: mapW - pad, ly2: mapH - pad,
       css: { bottom: pad+'px', right: pad+'px', top: 'auto', left: 'auto' }
     },
@@ -2268,11 +2267,50 @@ function positionLegend(forExport) {
     },
     {
       name: 'tl',
-      // Must clear both zoom control AND export overlay
       lx1: pad, ly1: Math.max(pad + exportTopReserve, zoomH), lx2: pad + lW, ly2: Math.max(pad + exportTopReserve, zoomH) + lH,
       css: { top: Math.max(pad + exportTopReserve, zoomH)+'px', left: pad+'px', bottom: 'auto', right: 'auto' }
     },
   ];
+
+  // Add edge-hugging positions: place legend just outside the district bounds
+  // Left of district, vertically centered
+  const dCenterY = (minY + maxY) / 2;
+  if (minX - pad - lW > pad) {
+    const ly = Math.max(pad + exportTopReserve, Math.min(dCenterY - lH/2, mapH - pad - lH));
+    candidates.push({
+      name: 'left-of-district',
+      lx1: minX - pad - lW, ly1: ly, lx2: minX - pad, ly2: ly + lH,
+      css: { top: ly+'px', left: (minX - pad - lW)+'px', bottom: 'auto', right: 'auto' }
+    });
+  }
+  // Right of district, vertically centered
+  if (maxX + pad + lW < mapW - pad) {
+    const ly = Math.max(pad + exportTopReserve, Math.min(dCenterY - lH/2, mapH - pad - lH));
+    candidates.push({
+      name: 'right-of-district',
+      lx1: maxX + pad, ly1: ly, lx2: maxX + pad + lW, ly2: ly + lH,
+      css: { top: ly+'px', left: (maxX + pad)+'px', bottom: 'auto', right: 'auto' }
+    });
+  }
+  // Below district, horizontally centered
+  const dCenterX = (minX + maxX) / 2;
+  if (maxY + pad + lH < mapH - pad) {
+    const lx = Math.max(pad, Math.min(dCenterX - lW/2, mapW - pad - lW));
+    candidates.push({
+      name: 'below-district',
+      lx1: lx, ly1: maxY + pad, lx2: lx + lW, ly2: maxY + pad + lH,
+      css: { top: (maxY + pad)+'px', left: lx+'px', bottom: 'auto', right: 'auto' }
+    });
+  }
+  // Above district
+  if (minY - pad - lH > pad + exportTopReserve) {
+    const lx = Math.max(pad, Math.min(dCenterX - lW/2, mapW - pad - lW));
+    candidates.push({
+      name: 'above-district',
+      lx1: lx, ly1: minY - pad - lH, lx2: lx + lW, ly2: minY - pad,
+      css: { top: (minY - pad - lH)+'px', left: lx+'px', bottom: 'auto', right: 'auto' }
+    });
+  }
 
   // Check overlap between legend rect and district bounding box
   // Add a small buffer around the district
