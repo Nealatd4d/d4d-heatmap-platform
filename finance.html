@@ -245,9 +245,9 @@ const esc=s=>{if(!s)return'';const d=document.createElement('div');d.textContent
 const partyColor=p=>{if(!p)return'var(--other)';const l=p.toLowerCase();if(l.includes('democrat'))return'var(--dem)';if(l.includes('republic'))return'var(--rep)';return'var(--other)'};
 const partyHex=p=>{if(!p)return'#9aa0a6';const l=p.toLowerCase();if(l.includes('democrat'))return'#4fc3f7';if(l.includes('republic'))return'#ef5350';return'#9aa0a6'};
 
-let currentEntity=null,activeTab='network',searchTimeout=null;
+let currentEntity=null,activeTab='network',searchTimeout=null,currentSimulation=null;
 
-async function apiFetch(path){const r=await fetch(API+path);if(!r.ok)throw new Error('API '+r.status);return r.json()}
+async function apiFetch(path){const r=await fetch(API+path,{signal:AbortSignal.timeout(15000)});if(!r.ok)throw new Error('API '+r.status);return r.json()}
 
 // Stats
 async function loadStats(){
@@ -435,11 +435,13 @@ function renderNetwork(donorData){
     links.push({source:'donor',target:nid,value:c.totalAmount,w:Math.max(.5,lScale(c.totalAmount))});
   });
   
+  if(currentSimulation) currentSimulation.stop();
   const sim=d3.forceSimulation(nodes)
     .force('link',d3.forceLink(links).id(d=>d.id).distance(d=>80+(1-d.value/maxAmt)*100))
     .force('charge',d3.forceManyBody().strength(d=>d.type==='donor'?-400:-100))
     .force('center',d3.forceCenter(W/2,H/2))
     .force('collision',d3.forceCollide(d=>d.r+3));
+  currentSimulation=sim;
   
   // Pin center
   nodes[0].fx=W/2;nodes[0].fy=H/2;
@@ -447,11 +449,13 @@ function renderNetwork(donorData){
   const link=g.selectAll('.link').data(links).join('line')
     .attr('class','link').attr('stroke','#4a4e5a').attr('stroke-width',d=>d.w);
   
+  let dragStartX=0,dragStartY=0,wasDragged=false;
   const node=g.selectAll('.node').data(nodes).join('g')
     .attr('class',d=>'node'+(d.type==='donor'?' node-center':''))
-    .call(d3.drag().on('start',(e,d)=>{if(!e.active)sim.alphaTarget(.3).restart();d.fx=d.x;d.fy=d.y})
-      .on('drag',(e,d)=>{d.fx=e.x;d.fy=e.y})
-      .on('end',(e,d)=>{if(!e.active)sim.alphaTarget(0);if(d.type!=='donor'){d.fx=null;d.fy=null}}));
+    .call(d3.drag().on('start',(e,d)=>{dragStartX=e.x;dragStartY=e.y;wasDragged=false;if(!e.active)sim.alphaTarget(.3).restart();d.fx=d.x;d.fy=d.y})
+      .on('drag',(e,d)=>{d.fx=e.x;d.fy=e.y;if(Math.abs(e.x-dragStartX)>3||Math.abs(e.y-dragStartY)>3)wasDragged=true})
+      .on('end',(e,d)=>{if(!e.active)sim.alphaTarget(0);if(d.type!=='donor'){d.fx=null;d.fy=null}
+        if(!wasDragged&&d.type==='committee'&&d.cid){apiFetch('/api/finance/search?q='+encodeURIComponent(d.name)+'&limit=5').then(r=>{const m=r.committees.find(c=>c.committeeId===d.cid)||r.committees[0];if(m)selectCommittee(m)}).catch(()=>{})}}));
   
   node.append('circle').attr('r',d=>d.r)
     .attr('fill',d=>d.type==='donor'?'#fdd835':partyHex(d.party))
@@ -473,14 +477,7 @@ function renderNetwork(donorData){
     tooltip.style('left',(e.clientX-r.left+12)+'px').style('top',(e.clientY-r.top-10)+'px');
   }).on('mouseout',()=>tooltip.style('display','none'));
   
-  node.on('click',(e,d)=>{
-    if(d.type==='committee'&&d.cid){
-      apiFetch('/api/finance/search?q='+encodeURIComponent(d.name)+'&limit=5').then(r=>{
-        const m=r.committees.find(c=>c.committeeId===d.cid)||r.committees[0];
-        if(m)selectCommittee(m);
-      }).catch(()=>{});
-    }
-  });
+  // Click handler removed — navigation is now handled in dragend when wasDragged is false
   
   sim.on('tick',()=>{
     link.attr('x1',d=>d.source.x).attr('y1',d=>d.source.y).attr('x2',d=>d.target.x).attr('y2',d=>d.target.y);
@@ -516,7 +513,9 @@ function renderCommitteeNet(mf,container){
   (mf.outflows||[]).forEach(f=>{const nid='out-'+f.toCommitteeId;nodes.push({id:nid,name:f.toCommitteeName,type:'outflow',amount:f.totalAmount,r:10});links.push({source:'center',target:nid,value:f.totalAmount})});
   
   nodes[0].fx=W/2;nodes[0].fy=H/2;
+  if(currentSimulation) currentSimulation.stop();
   const sim=d3.forceSimulation(nodes).force('link',d3.forceLink(links).id(d=>d.id).distance(120)).force('charge',d3.forceManyBody().strength(-150)).force('center',d3.forceCenter(W/2,H/2));
+  currentSimulation=sim;
   const link=g.selectAll('.link').data(links).join('line').attr('stroke','#4a4e5a').attr('stroke-width',2);
   const node=g.selectAll('.node').data(nodes).join('g').attr('class','node');
   node.append('circle').attr('r',d=>d.r).attr('fill',d=>d.type==='center'?'#4fc3f7':d.type==='inflow'?'#66bb6a':'#ef5350').attr('fill-opacity',.7);
@@ -695,7 +694,33 @@ async function loadMoneyFlow(id){
   const container=$('#sankeyContainer');
   container.innerHTML='<div class="viz-loading"><div class="spinner"></div></div>';
   try{
-    const data=await apiFetch('/api/finance/money-flow?committeeId='+id+'&limit=50');
+    // The /money-flow endpoint is unpopulated, so build inflows from overlay-points
+    // by aggregating donors that look like committees/PACs across all cycles
+    const cycles=['2026P','2024G','2024P','2022G','2022P'];
+    const donorMap={};
+    const committeeName=currentEntity?.data?.name||currentEntity?.name||'Committee';
+    for(const cycle of cycles){
+      try{
+        const pts=await apiFetch('/api/finance/overlay-points/'+cycle+'?committeeId='+id+'&limit=5000');
+        for(const p of (pts.points||[])){
+          const dn=p.donorName||'';
+          // Identify committee/PAC donors by keywords
+          const lc=dn.toLowerCase();
+          const isOrg=lc.includes('pac')||lc.includes('committee')||lc.includes('democratic')||lc.includes('republican')||lc.includes('party')||lc.includes('friends of')||lc.includes('citizens for')||lc.includes('fund')||lc.includes('seiu')||lc.includes('afscme')||lc.includes('union')||lc.includes('laborers')||lc.includes('teamsters')||lc.includes('association')||lc.includes('coalition')||lc.includes('council')||lc.includes('education')||lc.includes('ilae')||lc.includes('i.p.a.c.e');
+          if(!isOrg) continue;
+          const key=dn.trim();
+          if(!key) continue;
+          if(!donorMap[key]) donorMap[key]={name:key,totalAmount:0,count:0,firstDate:p.date,lastDate:p.date};
+          donorMap[key].totalAmount+=p.amount||0;
+          donorMap[key].count++;
+          if(p.date<donorMap[key].firstDate) donorMap[key].firstDate=p.date;
+          if(p.date>donorMap[key].lastDate) donorMap[key].lastDate=p.date;
+        }
+      }catch(e){/* skip cycle */}
+    }
+    const inflows=Object.values(donorMap).sort((a,b)=>b.totalAmount-a.totalAmount).slice(0,25)
+      .map(d=>({fromCommitteeName:d.name,totalAmount:d.totalAmount,transferCount:d.count,firstDate:d.firstDate,lastDate:d.lastDate}));
+    const data={committee:{committeeId:id,name:committeeName,type:'Candidate'},inflows,outflows:[]};
     renderSankey(data,container);
   }catch(e){container.innerHTML='<div class="viz-empty">Could not load money flow data</div>'}
 }

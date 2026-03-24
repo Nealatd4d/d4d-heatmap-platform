@@ -929,6 +929,7 @@ html,body{
     <button class="strip-btn active" data-strip-mode="turnout">Turnout</button>
     <button class="strip-btn" data-strip-mode="winner">Winner</button>
     <button class="strip-btn" data-strip-mode="margin">Margin</button>
+    <button class="strip-btn" data-strip-mode="districts" onclick="window.toggleDistrictPanel()">Districts</button>
     <button class="strip-btn more-btn" data-strip-mode="more" title="More controls">⋮</button>
   </nav>
 
@@ -3480,6 +3481,13 @@ function updateModeStripButtons() {
     btn.addEventListener('click', () => handleStripClick(key));
     modeStrip.appendChild(btn);
   });
+  // Add Districts button
+  const distBtn = document.createElement('button');
+  distBtn.className = 'strip-btn';
+  distBtn.dataset.stripMode = 'districts';
+  distBtn.textContent = 'Districts';
+  distBtn.addEventListener('click', () => window.toggleDistrictPanel());
+  modeStrip.appendChild(distBtn);
   // Always add the "more" button last
   const moreBtn = document.createElement('button');
   moreBtn.className = 'strip-btn more-btn';
@@ -3506,7 +3514,7 @@ function syncModeStrip() {
   const activeKey = (dataLayer === 'finance') ? currentFinanceMode : currentMode;
   modeStrip.querySelectorAll('.strip-btn').forEach(b => {
     const m = b.dataset.stripMode;
-    if (m === 'more') return;
+    if (m === 'more' || m === 'districts') return;
     b.classList.toggle('active', m === activeKey);
   });
 }
