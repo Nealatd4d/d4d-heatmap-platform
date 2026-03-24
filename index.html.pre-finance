@@ -218,30 +218,6 @@ html,body{
 .finance-controls select{background:var(--surface-alt);color:var(--text);border:1px solid var(--border);border-radius:4px;padding:5px 24px 5px 8px;font-size:12px;font-family:inherit;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239aa0a6' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;min-width:110px}
 .finance-controls select:hover{border-color:var(--blue-dim)}
 .finance-controls select:focus{border-color:var(--blue)}
-.finance-search-input{background:var(--surface-alt);color:var(--text);border:1px solid var(--border);border-radius:4px;padding:5px 8px;font-size:12px;font-family:inherit;outline:none;width:200px}
-.finance-search-input:focus{border-color:var(--blue)}
-.finance-search-input::placeholder{color:var(--text-dim)}
-.finance-search-dropdown{position:absolute;top:100%;left:0;right:0;background:var(--surface);border:1px solid var(--border);border-radius:0 0 6px 6px;max-height:240px;overflow-y:auto;z-index:999;box-shadow:0 8px 24px rgba(0,0,0,.5)}
-.finance-search-dropdown.hidden{display:none}
-.finance-search-item{padding:8px 10px;cursor:pointer;font-size:12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-.finance-search-item:hover{background:var(--surface-hover)}
-.finance-search-item .search-name{color:var(--text)}
-.finance-search-item .search-party{color:var(--text-muted);font-size:11px}
-.finance-clear-btn{background:none;border:1px solid var(--border);color:var(--text-muted);border-radius:4px;padding:4px 8px;cursor:pointer;font-size:12px}
-.finance-clear-btn:hover{color:var(--text);border-color:var(--blue-dim)}
-.finance-clear-btn.hidden{display:none}
-.finance-active-filter{display:flex;align-items:center;gap:6px;background:var(--surface-alt);border:1px solid var(--blue-dim);border-radius:4px;padding:4px 8px;font-size:11px;color:var(--blue)}
-.finance-time-toggle{display:flex;border:1px solid var(--border);border-radius:4px;overflow:hidden}
-.time-mode-btn{background:var(--surface-alt);color:var(--text-muted);border:none;padding:5px 12px;font-size:12px;font-family:inherit;cursor:pointer;transition:background .15s,color .15s}
-.time-mode-btn:hover{background:var(--surface-hover);color:var(--text)}
-.time-mode-btn.active{background:var(--blue-dim);color:#fff;font-weight:600}
-.finance-date-range{display:flex;align-items:center;gap:6px}
-.finance-date-input{background:var(--surface-alt);color:var(--text);border:1px solid var(--border);border-radius:4px;padding:5px 8px;font-size:12px;font-family:inherit;outline:none;color-scheme:dark}
-.finance-date-input:focus{border-color:var(--blue)}
-.finance-date-sep{color:var(--text-muted);font-size:12px}
-.finance-date-apply{background:var(--blue-dim);color:#fff;border:none;border-radius:4px;padding:5px 12px;font-size:12px;font-family:inherit;cursor:pointer;font-weight:600;transition:background .15s}
-.finance-date-apply:hover{background:var(--blue)}
-.finance-date-label{font-size:11px;color:var(--text-muted);margin-top:2px}
 
 /* ══════════════════════════════════════════════
    MAP WRAP
@@ -259,14 +235,9 @@ html,body{
 .leaflet-control-attribution{display:none!important}
 
 /* ── Info panel ── */
-.info-panel{position:absolute;bottom:16px;left:260px;z-index:500;pointer-events:none;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px;min-width:240px;max-width:340px;max-height:60vh;overflow-y:auto;opacity:0;transition:opacity .15s;box-shadow:0 4px 20px rgba(0,0,0,.4)}
+.info-panel{position:absolute;bottom:16px;right:16px;z-index:var(--z-map-overlay);pointer-events:none;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px;min-width:240px;max-width:340px;max-height:60vh;overflow-y:auto;opacity:0;transition:opacity .15s;box-shadow:0 4px 20px rgba(0,0,0,.4)}
 .info-panel.visible{opacity:1}
 .info-panel.pinned{opacity:1;pointer-events:auto;border-color:var(--blue-dim)}
-.info-panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
-.info-panel-header h3{font-size:13px;font-weight:600;margin:0}
-.info-panel-close{display:none;background:transparent;border:none;color:var(--text-muted);font-size:16px;cursor:pointer;padding:0 2px;border-radius:4px;line-height:1;flex-shrink:0}
-.info-panel-close:hover{background:var(--surface-hover);color:var(--text)}
-.info-panel.pinned .info-panel-close{display:block}
 .info-panel h3{font-size:13px;font-weight:600;margin-bottom:6px}
 .info-row{display:flex;justify-content:space-between;font-size:12px;padding:2px 0;color:var(--text-muted)}
 .info-row .val{color:var(--text);font-weight:500;font-variant-numeric:tabular-nums}
@@ -296,9 +267,7 @@ html,body{
 ══════════════════════════════════════════════ */
 .bottom-sheet{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);border-radius:12px 12px 0 0;transform:translateY(100%);transition:transform 0.3s ease;z-index:var(--z-bottom-sheet);max-height:70vh;overflow-y:auto;display:none}
 .bottom-sheet.open{transform:translateY(0)}
-.bottom-sheet-handle{width:32px;height:4px;background:var(--text-dim);border-radius:2px;margin:10px auto 4px;flex-shrink:0;cursor:pointer}
-.bottom-sheet-close{position:absolute;top:8px;right:12px;background:transparent;border:none;color:var(--text-muted);font-size:20px;cursor:pointer;padding:2px 6px;border-radius:4px;line-height:1;z-index:1}
-.bottom-sheet-close:hover{background:var(--surface-hover);color:var(--text)}
+.bottom-sheet-handle{width:32px;height:4px;background:var(--text-dim);border-radius:2px;margin:10px auto 4px;flex-shrink:0}
 .bottom-sheet-content{padding:4px 14px 20px}
 .bottom-sheet-content h3{font-size:14px;font-weight:600;margin-bottom:8px;padding-top:2px}
 
@@ -456,10 +425,6 @@ html,body{
     padding:10px 28px 10px 10px;
     min-height:var(--touch-min);
   }
-  .finance-time-toggle{width:100%}
-  .time-mode-btn{flex:1;text-align:center;padding:10px 12px;font-size:14px;min-height:var(--touch-min)}
-  .finance-date-range{flex-wrap:wrap}
-  .finance-date-input{flex:1;min-width:0;font-size:14px;padding:10px 8px;min-height:var(--touch-min)}
   .export-btn{width:100%;justify-content:center;padding:12px;font-size:14px;min-height:var(--touch-min)}
 
   /* Show mode strip on mobile */
@@ -544,10 +509,6 @@ html,body{
   .layer-btn{flex:1;text-align:center}
   .finance-controls{width:100%;flex-direction:column;gap:6px}
   .finance-controls select{width:100%;min-width:unset}
-  .finance-time-toggle{width:100%}
-  .time-mode-btn{flex:1;text-align:center}
-  .finance-date-range{flex-wrap:wrap}
-  .finance-date-input{flex:1;min-width:0}
 
   /* Export button full width */
   .export-btn{width:100%;justify-content:center;padding:8px}
@@ -580,13 +541,11 @@ html,body{
 .district-panel{
   position:fixed;top:var(--header-h);bottom:var(--mode-strip-h);left:0;
   width:320px;background:var(--surface);border-right:1px solid var(--border);
-  z-index:calc(var(--z-toolbar-sheet) + 10);
+  z-index:var(--z-toolbar-sheet);
   transform:translateX(-100%);transition:transform .3s ease;
   display:flex;flex-direction:column;overflow:hidden;
 }
 .district-panel.open{transform:translateX(0)}
-.district-scrim{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.3);z-index:calc(var(--z-toolbar-sheet) + 5);cursor:pointer}
-.district-scrim.visible{display:block}
 
 .district-panel-header{
   padding:10px 12px;border-bottom:1px solid var(--border);
@@ -754,11 +713,14 @@ html,body{
 
   <aside class="toolbar" id="toolbar" aria-label="Map controls">
     <div class="toolbar-controls" id="toolbarControls">
+      <!-- Data Layer Toggle (Campaign Finance hidden for now) -->
+      <!--
       <span class="toolbar-label">Data Layer</span>
       <div class="layer-toggle">
         <button class="layer-btn active" data-layer="election" onclick="setDataLayer('election')">Election Results</button>
         <button class="layer-btn" data-layer="finance" onclick="setDataLayer('finance')">Campaign Finance</button>
       </div>
+      -->
 
       <!-- District Browser toggle -->
       <button class="district-toggle-btn" id="districtToggleBtn" onclick="window.toggleDistrictPanel()">
@@ -795,72 +757,28 @@ html,body{
         <select id="selFocus"><option value="">All Precincts</option></select>
       </div>
 
-      <div id="financeControls" class="finance-controls hidden">
-        <span class="toolbar-label">Time</span>
-        <div class="finance-time-toggle">
-          <button class="time-mode-btn active" data-tmode="cycle" onclick="setFinanceTimeMode('cycle')">Cycle</button>
-          <button class="time-mode-btn" data-tmode="range" onclick="setFinanceTimeMode('range')">Date Range</button>
-        </div>
-        <div id="finTimeCycle">
-          <select id="selFinanceCycle">
-            <option value="2026P">2026 Primary</option>
-            <option value="2025C">2025 Consolidated</option>
-            <option value="2024G" selected>2024 General</option>
-            <option value="2024P">2024 Primary</option>
-            <option value="2023C">2023 Consolidated</option>
-            <option value="2022G">2022 General</option>
-            <option value="2022P">2022 Primary</option>
-            <option value="2020G">2020 General</option>
-            <option value="2020P">2020 Primary</option>
-          </select>
-        </div>
-        <div id="finTimeRange" class="hidden">
-          <div class="finance-date-range">
-            <input type="date" id="finDateStart" value="2024-01-01" class="finance-date-input">
-            <span class="finance-date-sep">to</span>
-            <input type="date" id="finDateEnd" value="2024-12-31" class="finance-date-input">
-            <button id="finDateApply" class="finance-date-apply" title="Apply date range">Go</button>
-          </div>
-          <div id="finDateLabel" class="finance-date-label"></div>
-        </div>
+      <!-- Campaign Finance controls (disabled for now) -->
+      <!-- <div id="financeControls" class="finance-controls hidden">
+        <span class="toolbar-label">Finance Cycle</span>
+        <select id="selFinanceElection"><option value="">Loading…</option></select>
         <div class="toolbar-sep"></div>
-        <span class="toolbar-label">Filter</span>
-        <select id="selFinanceJurisdiction">
-          <option value="">All Jurisdictions</option>
-          <option value="chicago">Chicago</option>
-          <option value="suburban">Cook Suburban</option>
-          <option value="dupage_county">DuPage County</option>
-          <option value="lake_county">Lake County</option>
-          <option value="dekalb_county">DeKalb County</option>
-        </select>
-        <div class="finance-search-wrap" style="position:relative">
-          <input type="text" id="financeCommitteeSearch" placeholder="Search committee/candidate..."
-                 autocomplete="off" class="finance-search-input">
-          <div id="financeSearchResults" class="finance-search-dropdown hidden"></div>
-        </div>
-        <button id="clearCommitteeFilter" class="finance-clear-btn hidden" title="Clear committee filter">✕</button>
-        <div class="toolbar-sep"></div>
-        <span class="toolbar-label">Min $</span>
-        <select id="selMinAmount">
-          <option value="0">All</option>
-          <option value="100">$100+</option>
-          <option value="500">$500+</option>
-          <option value="1000">$1,000+</option>
-          <option value="5000">$5,000+</option>
-          <option value="10000">$10,000+</option>
-        </select>
+        <span class="toolbar-label">Committee</span>
+        <select id="selCommitteeA"><option value="">Select Committee…</option></select>
+        <select id="selCommitteeB" class="hidden"><option value="">Vs Committee…</option></select>
+        <select id="selFinancePrev" class="hidden"><option value="">Previous Cycle…</option></select>
         <div class="toolbar-sep"></div>
         <span class="toolbar-label">View</span>
         <div class="mode-group" id="financeModes">
-          <button class="mode-btn active" data-fmode="total">Total $</button>
-          <button class="mode-btn" data-fmode="donors">Donors</button>
-          <button class="mode-btn" data-fmode="avg">Avg $</button>
-          <button class="mode-btn" data-fmode="candidate">Candidate</button>
+          <button class="mode-btn active" data-fmode="supporters">Supporters</button>
+          <button class="mode-btn" data-fmode="whales">Whales</button>
+          <button class="mode-btn" data-fmode="donor_margin">Donor Margin</button>
+          <button class="mode-btn" data-fmode="candidate">Candidate $</button>
+          <button class="mode-btn" data-fmode="vs">Vs</button>
+          <button class="mode-btn" data-fmode="money_delta">Money &Delta;</button>
+          <button class="mode-btn" data-fmode="swing">Swing</button>
+          <button class="mode-btn" data-fmode="votes">Total $</button>
         </div>
-        <div class="toolbar-sep"></div>
-        <span class="toolbar-label">Focus</span>
-        <select id="selFinanceFocus"><option value="">All Precincts</option></select>
-      </div>
+      </div> -->
       <div class="toolbar-sep"></div>
       <button class="export-btn" onclick="exportPNG()" title="Export current view as PNG">
         <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -872,7 +790,6 @@ html,body{
   </aside>
 
   <!-- District Focus Panel -->
-  <div id="districtScrim" class="district-scrim" onclick="window.toggleDistrictPanel()"></div>
   <div id="districtPanel" class="district-panel">
     <div class="district-panel-header">
       <h3>Districts</h3>
@@ -912,9 +829,8 @@ html,body{
     <div class="legend" id="legend"></div>
   </main>
 
-  <div class="bottom-sheet" id="bottomSheet" style="position:relative">
-    <div class="bottom-sheet-handle" onclick="closeBottomSheet()"></div>
-    <button class="bottom-sheet-close" onclick="closeBottomSheet()" aria-label="Close" title="Close">&times;</button>
+  <div class="bottom-sheet" id="bottomSheet">
+    <div class="bottom-sheet-handle"></div>
     <div class="bottom-sheet-content" id="bottomSheetContent"></div>
   </div>
 
@@ -1847,8 +1763,11 @@ function updateFocusOptions() {
   // Determine which pids are currently active
   let activePids = null;
   if (dataLayer === 'finance') {
-    // Finance layer uses its own focus dropdown (selFinanceFocus)
-    return;
+    // For finance layer, derive from financeMapCache using current key
+    const key = currentFinanceElectionId + '|' + currentFinanceMode + '|' +
+      (selectedCommitteeA || '') + '|' + (selectedCommitteeB || '') + '|' + (selectedFinancePrev || '');
+    const cached = financeMapCache[key];
+    if (cached) activePids = new Set(cached.map(r => r.precinct_id));
   } else {
     // Election layer
     if (currentRaceId && raceMapCache[currentRaceId]) {
@@ -2187,7 +2106,7 @@ function showInfo(feature, turnout, raceData, turnout2, raceData2) {
   const t = turnout ? turnout[pid] : null;
   const rd = raceData ? raceData[pid] : null;
 
-  let h = `<div class="info-panel-header"><h3>${label || 'Precinct'}</h3><button class="info-panel-close" onclick="dismissInfoPanel()" title="Close">&times;</button></div>`;
+  let h = `<h3>${label || 'Precinct'}</h3>`;
 
   if (t) {
     h += `<div class="info-row"><span>Registered</span><span class="val">${(t.registered || 0).toLocaleString()}</span></div>`;
@@ -2524,23 +2443,13 @@ function toggleToolbar() {
   ft.setAttribute('aria-expanded', String(isExpanded));
 }
 
-function dismissInfoPanel() {
-  if (pinnedLayer) {
-    pinnedLayer.setStyle({ color: '#1a1d27', weight: 1 });
-    pinnedLayer = null;
-    pinnedFeatureData = null;
-  }
-  infoPanel.classList.remove('visible', 'pinned');
-}
-window.dismissInfoPanel = dismissInfoPanel;
-
 function buildInfoHTML(feature, turnout, raceData, turnout2, raceData2) {
   const pid = feature._pid;
   const label = feature._label;
   const t = turnout ? turnout[pid] : null;
   const rd = raceData ? raceData[pid] : null;
 
-  let h = `<div class="info-panel-header"><h3>${label || 'Precinct'}</h3><button class="info-panel-close" onclick="dismissInfoPanel()" title="Close">&times;</button></div>`;
+  let h = `<h3>${label || 'Precinct'}</h3>`;
 
   if (t) {
     h += `<div class="info-row"><span>Registered</span><span class="val">${(t.registered || 0).toLocaleString()}</span></div>`;
@@ -2614,7 +2523,6 @@ function closeBottomSheet() {
     hoveredLayer = null;
   }
 }
-window.closeBottomSheet = closeBottomSheet;
 
 /* ═══════════════════ EVENTS ═══════════════════ */
 selElection.addEventListener('change', async () => {
@@ -2710,16 +2618,7 @@ function initMap() {
       pinnedFeatureData = null;
     }
     infoPanel.classList.remove('visible', 'pinned');
-    if (isMobile) {
-      closeBottomSheet();
-      // Close toolbar when tapping map
-      const tb = $('toolbar');
-      const ft = $('filterToggle');
-      if (tb && tb.classList.contains('expanded')) {
-        tb.classList.remove('expanded');
-        if (ft) { ft.classList.remove('active'); ft.setAttribute('aria-expanded', 'false'); }
-      }
-    }
+    if (isMobile) closeBottomSheet();
   });
 }
 
@@ -2793,64 +2692,111 @@ window.toggleToolbar = toggleToolbar;
 
 /* ═══════════════════ CAMPAIGN FINANCE LAYER ═══════════════════ */
 
-const FINANCE_API = 'https://de1c0922-8718-46e3-8972-0e490363414c-00-8zny1suz8wo3.spock.replit.dev';
-
 // Finance state
 let dataLayer = 'election'; // 'election' | 'finance'
-let financeCache = {};      // key → {precincts, total}
-let currentFinanceCycle = '2024G';
-let financeTimeMode = 'cycle';  // 'cycle' | 'range'
-let finDateStart = '2024-01-01';
-let finDateEnd = '2024-12-31';
-let currentFinanceMode = 'total';  // 'total' | 'donors' | 'avg' | 'candidate'
-let currentFinanceJurisdiction = '';
-let currentFinanceCommitteeId = '';
-let currentFinanceCommitteeName = '';
-let currentFinanceMinAmount = 0;
+let financeElections = [];  // from get_finance_race_list
+let financeCommittees = {}; // cache: election_id → [{committee_id, ...}]
+let financeMapCache = {};   // cache: key → [{precinct_id, metric_value, ...}]
+
+let currentFinanceElectionId = '';
+let currentFinanceMode = 'supporters';
+let selectedCommitteeA = '';
+let selectedCommitteeB = '';
+let selectedFinancePrev = '';
+
+const selFinanceElection = $('selFinanceElection');
+const selCommitteeA = $('selCommitteeA');
+const selCommitteeB = $('selCommitteeB');
+const selFinancePrev = $('selFinancePrev');
 
 // Finance color scales
 const FINANCE_COLORS = {
-  total: ['#e8f5e9','#a5d6a7','#66bb6a','#43a047','#2e7d32','#1b5e20','#0a3d0a'],
-  donors: ['#e3f2fd','#90caf9','#42a5f5','#1e88e5','#1565c0','#0d47a1','#0a2f6b'],
-  avg: ['#fce4ec','#f48fb1','#ec407a','#d81b60','#ad1457','#880e4f','#5c0a35'],
-  candidate: ['#ede7f6','#ce93d8','#ab47bc','#8e24aa','#6a1b9a','#4a148c','#2a0a4c'],
+  // supporters: sequential white → party color (blue for D)
+  supporters_D: ['#0d47a1','#1565c0','#1976d2','#42a5f5','#90caf9','#bbdefb','#e3f2fd'],
+  supporters_R: ['#b71c1c','#c62828','#d32f2f','#e53935','#ef5350','#ef9a9a','#ffcdd2'],
+  whales_D: ['#0d47a1','#1565c0','#1976d2','#42a5f5','#90caf9','#bbdefb','#e3f2fd'],
+  whales_R: ['#b71c1c','#c62828','#d32f2f','#e53935','#ef5350','#ef9a9a','#ffcdd2'],
+  candidate: ['#4a148c','#6a1b9a','#8e24aa','#ab47bc','#ce93d8','#e1bee7','#f3e5f5'],
+  total: ['#1b5e20','#2e7d32','#388e3c','#43a047','#66bb6a','#a5d6a7','#c8e6c9'],
 };
 
-/* DOM elements */
-const selFinanceCycle = $('selFinanceCycle');
-const selFinanceJurisdiction = $('selFinanceJurisdiction');
-const financeCommitteeSearch = $('financeCommitteeSearch');
-const financeSearchResults = $('financeSearchResults');
-const clearCommitteeFilter = $('clearCommitteeFilter');
-const selMinAmount = $('selMinAmount');
-const selFinanceFocus = $('selFinanceFocus');
-const finTimeCycleEl = $('finTimeCycle');
-const finTimeRangeEl = $('finTimeRange');
-const finDateStartEl = $('finDateStart');
-const finDateEndEl = $('finDateEnd');
-const finDateApplyEl = $('finDateApply');
-const finDateLabelEl = $('finDateLabel');
+// Diverging donor margin: red → white → blue (D positive = blue)
+function financeDonorMarginColor(v) {
+  if (v == null) return NO_DATA;
+  // v ranges from -1 to +1
+  if (v >= 0.5) return '#0d47a1';
+  if (v >= 0.3) return '#1565c0';
+  if (v >= 0.1) return '#42a5f5';
+  if (v >= 0) return '#bbdefb';
+  if (v >= -0.1) return '#ffcdd2';
+  if (v >= -0.3) return '#ef5350';
+  return '#b71c1c';
+}
+
+// Diverging vs share: 0=100%R → 0.5=even → 1=100%D
+function financeVsColor(v) {
+  if (v == null) return NO_DATA;
+  if (v >= 0.8) return '#0d47a1';
+  if (v >= 0.65) return '#1565c0';
+  if (v >= 0.55) return '#42a5f5';
+  if (v >= 0.45) return '#e3f2fd';
+  if (v >= 0.35) return '#ffcdd2';
+  if (v >= 0.2) return '#ef5350';
+  return '#b71c1c';
+}
+
+// Money delta: orange → white → green
+function financeMoneyDeltaColor(v) {
+  if (v == null) return NO_DATA;
+  if (v >= 5000) return '#1b5e20';
+  if (v >= 2000) return '#2e7d32';
+  if (v >= 500) return '#43a047';
+  if (v >= 0) return '#a5d6a7';
+  if (v >= -500) return '#ffcc80';
+  if (v >= -2000) return '#ff9800';
+  return '#e65100';
+}
+
+// Swing (donor margin change): same as deltaColor
+function financeSwingColor(v) {
+  if (v == null) return NO_DATA;
+  if (v >= 0.3) return '#0d47a1';
+  if (v >= 0.15) return '#1565c0';
+  if (v >= 0.05) return '#42a5f5';
+  if (v >= 0) return '#bbdefb';
+  if (v >= -0.05) return '#ffcdd2';
+  if (v >= -0.15) return '#ef5350';
+  return '#b71c1c';
+}
 
 /* Toggle data layer */
 function setDataLayer(layer) {
   if (dataLayer === layer) return;
   dataLayer = layer;
 
+  // Update toggle buttons
   document.querySelectorAll('.layer-btn').forEach(b => {
     b.classList.toggle('active', b.dataset.layer === layer);
   });
 
+  // Show/hide controls
   const ec = $('electionControls');
   const fc = $('financeControls');
   if (layer === 'election') {
     if (ec) ec.style.display = '';
     if (fc) fc.classList.add('hidden');
+    // Re-render with election data
     if (currentRaceId || currentMode === 'turnout') render();
     else clearMap();
   } else {
     if (ec) ec.style.display = 'none';
     if (fc) fc.classList.remove('hidden');
-    renderFinance();
+    // Load finance elections if not yet loaded
+    if (!financeElections.length) {
+      loadFinanceElections();
+    } else if (currentFinanceElectionId) {
+      renderFinance();
+    }
   }
   updateModeStripButtons();
   syncModeStrip();
@@ -2858,136 +2804,175 @@ function setDataLayer(layer) {
 window.setDataLayer = setDataLayer;
 window.exportPNG = exportPNG;
 
-/* Build cache key */
-function financeCacheKey() {
-  if (financeTimeMode === 'range') {
-    return `range|${finDateStart}|${finDateEnd}|${currentFinanceJurisdiction}|${currentFinanceCommitteeId}|${currentFinanceMinAmount}`;
-  }
-  return `${currentFinanceCycle}|${currentFinanceJurisdiction}|${currentFinanceCommitteeId}|${currentFinanceMinAmount}`;
-}
-
-/* Fetch precinct totals from Replit API */
-async function fetchFinancePrecincTotals() {
-  const key = financeCacheKey();
-  if (financeCache[key]) return financeCache[key];
-
-  let url;
-  const params = [];
-  if (financeTimeMode === 'range') {
-    url = `${FINANCE_API}/api/finance/precinct-totals/all?`;
-    if (finDateStart) params.push(`startDate=${finDateStart}`);
-    if (finDateEnd) params.push(`endDate=${finDateEnd}`);
-  } else {
-    url = `${FINANCE_API}/api/finance/precinct-totals/${currentFinanceCycle}?`;
-  }
-  if (currentFinanceJurisdiction) params.push(`jurisdiction=${currentFinanceJurisdiction}`);
-  if (currentFinanceCommitteeId) params.push(`committeeId=${currentFinanceCommitteeId}`);
-  if (currentFinanceMinAmount > 0) params.push(`minAmount=${currentFinanceMinAmount}`);
-  url += params.join('&');
-
-  const res = await fetch(url, { signal: AbortSignal.timeout(20000) });
-  if (!res.ok) throw new Error(`Finance API error: ${res.status}`);
-  const data = await res.json();
-  financeCache[key] = data;
-  return data;
-}
-
-/* Committee search */
-let searchTimeout = null;
-if (financeCommitteeSearch) {
-  financeCommitteeSearch.addEventListener('input', (e) => {
-    clearTimeout(searchTimeout);
-    const q = e.target.value.trim();
-    if (q.length < 2) {
-      financeSearchResults.classList.add('hidden');
+/* Load finance elections */
+async function loadFinanceElections() {
+  if (!selFinanceElection) return; // finance tab hidden
+  try {
+    financeElections = await rpc('get_finance_race_list');
+    selFinanceElection.innerHTML = '';
+    if (!financeElections.length) {
+      selFinanceElection.innerHTML = '<option value="">No finance data available</option>';
       return;
     }
-    searchTimeout = setTimeout(async () => {
-      try {
-        const res = await fetch(`${FINANCE_API}/api/finance/search?q=${encodeURIComponent(q)}&limit=15`);
-        const data = await res.json();
-        const committees = data.committees || [];
-        if (!committees.length) {
-          financeSearchResults.innerHTML = '<div class="finance-search-item"><span class="search-name" style="color:var(--text-muted)">No results</span></div>';
-        } else {
-          financeSearchResults.innerHTML = committees.map(c => `
-            <div class="finance-search-item" data-cid="${c.committeeId}" data-name="${(c.candidateName || c.name).replace(/"/g, '&quot;')}">
-              <span class="search-name">${c.candidateName || c.name}</span>
-              <span class="search-party">${c.party || ''} · ${c.name}</span>
-            </div>
-          `).join('');
-        }
-        financeSearchResults.classList.remove('hidden');
-
-        // Attach click handlers
-        financeSearchResults.querySelectorAll('.finance-search-item[data-cid]').forEach(item => {
-          item.addEventListener('click', () => {
-            currentFinanceCommitteeId = item.dataset.cid;
-            currentFinanceCommitteeName = item.dataset.name;
-            financeCommitteeSearch.value = currentFinanceCommitteeName;
-            financeSearchResults.classList.add('hidden');
-            clearCommitteeFilter.classList.remove('hidden');
-            // Switch to candidate mode automatically
-            currentFinanceMode = 'candidate';
-            document.querySelectorAll('#financeModes .mode-btn').forEach(b => {
-              b.classList.toggle('active', b.dataset.fmode === 'candidate');
-            });
-            syncModeStrip();
-            financeCache = {}; // Clear cache for new filter
-            renderFinance();
-          });
-        });
-      } catch (err) {
-        console.error('Committee search error:', err);
-      }
-    }, 300);
-  });
-
-  // Close dropdown on outside click
-  document.addEventListener('click', (e) => {
-    if (!financeSearchResults.contains(e.target) && e.target !== financeCommitteeSearch) {
-      financeSearchResults.classList.add('hidden');
+    for (const fe of financeElections) {
+      const o = document.createElement('option');
+      o.value = fe.id;
+      o.textContent = fe.name + ' (' + fe.race_label + ')';
+      selFinanceElection.appendChild(o);
     }
-  });
+    currentFinanceElectionId = financeElections[0].id;
+    selFinanceElection.value = currentFinanceElectionId;
+    await loadFinanceCommittees();
+  } catch (err) {
+    console.error('loadFinanceElections error:', err);
+    selFinanceElection.innerHTML = '<option value="">Failed to load</option>';
+  }
 }
 
-if (clearCommitteeFilter) {
-  clearCommitteeFilter.addEventListener('click', () => {
-    currentFinanceCommitteeId = '';
-    currentFinanceCommitteeName = '';
-    financeCommitteeSearch.value = '';
-    clearCommitteeFilter.classList.add('hidden');
-    financeCache = {};
+/* Load finance committees for current election */
+async function loadFinanceCommittees() {
+  if (!currentFinanceElectionId) return;
+  try {
+    const committees = await rpc('get_finance_candidates', { p_election_id: currentFinanceElectionId });
+    financeCommittees[currentFinanceElectionId] = committees;
+
+    // Populate Committee A
+    selCommitteeA.innerHTML = '';
+    for (const c of committees) {
+      const o = document.createElement('option');
+      o.value = c.committee_id;
+      o.textContent = `${c.candidate_name} (${c.party}) — $${Number(c.total_dollars).toLocaleString()}`;
+      selCommitteeA.appendChild(o);
+    }
+    if (committees.length) {
+      selectedCommitteeA = committees[0].committee_id;
+      selCommitteeA.value = selectedCommitteeA;
+    }
+
+    // Populate Committee B (for vs mode)
+    selCommitteeB.innerHTML = '<option value="">Select Opponent…</option>';
+    for (const c of committees) {
+      const o = document.createElement('option');
+      o.value = c.committee_id;
+      o.textContent = `${c.candidate_name} (${c.party})`;
+      selCommitteeB.appendChild(o);
+    }
+    // Default B to second committee if available
+    if (committees.length >= 2) {
+      selectedCommitteeB = committees[1].committee_id;
+      selCommitteeB.value = selectedCommitteeB;
+    }
+
+    // Populate Previous Cycle selector
+    selFinancePrev.innerHTML = '<option value="">Select Previous…</option>';
+    for (const fe of financeElections) {
+      if (fe.id !== currentFinanceElectionId) {
+        const o = document.createElement('option');
+        o.value = fe.id;
+        o.textContent = 'vs ' + fe.name;
+        selFinancePrev.appendChild(o);
+      }
+    }
+    if (financeElections.length >= 2) {
+      const prev = financeElections.find(fe => fe.id !== currentFinanceElectionId);
+      if (prev) {
+        selectedFinancePrev = prev.id;
+        selFinancePrev.value = selectedFinancePrev;
+      }
+    }
+
+    updateFinanceControlVisibility();
     renderFinance();
-  });
+  } catch (err) {
+    console.error('loadFinanceCommittees error:', err);
+  }
 }
 
-/* Get finance fill color for a precinct */
+/* Show/hide committee B and prev cycle based on mode */
+function updateFinanceControlVisibility() {
+  if (!selCommitteeB || !selFinancePrev || !selCommitteeA) return; // finance tab hidden
+  const needsB = currentFinanceMode === 'vs';
+  const needsPrev = ['money_delta', 'swing'].includes(currentFinanceMode);
+  selCommitteeB.classList.toggle('hidden', !needsB);
+  selFinancePrev.classList.toggle('hidden', !needsPrev);
+  // Supporters, whales, candidate need committee A; donor_margin, votes don't
+  const needsA = ['supporters', 'whales', 'candidate', 'vs', 'money_delta'].includes(currentFinanceMode);
+  selCommitteeA.classList.toggle('hidden', !needsA);
+}
+
+/* Fetch finance map data */
+async function fetchFinanceMap(electionId, mode, committeeA, committeeB, prevElection) {
+  const key = `${electionId}|${mode}|${committeeA || ''}|${committeeB || ''}|${prevElection || ''}`;
+  if (financeMapCache[key]) return financeMapCache[key];
+
+  const params = {
+    p_election_id: electionId,
+    p_mode: mode
+  };
+  if (committeeA) params.p_committee_id_a = committeeA;
+  if (committeeB) params.p_committee_id_b = committeeB;
+  if (prevElection) params.p_election_id_prev = prevElection;
+
+  const rows = await rpc('get_finance_map', params, { timeoutMs: 20000 });
+  financeMapCache[key] = rows;
+  return rows;
+}
+
+/* Get style for finance mode */
 function getFinanceStyle(pid, financeData) {
   const row = financeData[pid];
+  let fill = NO_DATA, fillOpacity = 0.85;
+
   if (!row) return { fillColor: NO_DATA, color: '#1a1d27', weight: 1, fillOpacity: 0.85, dashArray: null };
 
-  let v = null;
-  if (currentFinanceMode === 'total') v = row.totalAmount;
-  else if (currentFinanceMode === 'donors') v = row.donorCount;
-  else if (currentFinanceMode === 'avg') v = row.avgAmount;
-  else if (currentFinanceMode === 'candidate') v = row.totalAmount;
+  const v = row.metric_value != null ? Number(row.metric_value) : null;
+  const party = row.party || 'D';
 
-  if (v == null || v === 0) return { fillColor: NO_DATA, color: '#1a1d27', weight: 1, fillOpacity: 0.85, dashArray: null };
+  if (currentFinanceMode === 'supporters') {
+    if (v != null) {
+      const colors = party === 'R' ? FINANCE_COLORS.supporters_R : FINANCE_COLORS.supporters_D;
+      const scale = buildAdaptiveScale(
+        Object.values(financeData).map(r => Number(r.metric_value)).filter(x => !isNaN(x)),
+        colors
+      );
+      fill = scaleColor(v, scale);
+    }
+  } else if (currentFinanceMode === 'whales') {
+    if (v != null) {
+      const colors = party === 'R' ? FINANCE_COLORS.whales_R : FINANCE_COLORS.whales_D;
+      const scale = buildAdaptiveScale(
+        Object.values(financeData).map(r => Number(r.metric_value)).filter(x => !isNaN(x)),
+        colors
+      );
+      fill = scaleColor(v, scale);
+    }
+  } else if (currentFinanceMode === 'donor_margin') {
+    fill = financeDonorMarginColor(v);
+  } else if (currentFinanceMode === 'candidate') {
+    if (v != null) {
+      const scale = buildAdaptiveScale(
+        Object.values(financeData).map(r => Number(r.metric_value)).filter(x => !isNaN(x)),
+        FINANCE_COLORS.candidate
+      );
+      fill = scaleColor(v, scale);
+    }
+  } else if (currentFinanceMode === 'vs') {
+    fill = financeVsColor(v);
+  } else if (currentFinanceMode === 'money_delta') {
+    fill = financeMoneyDeltaColor(v);
+  } else if (currentFinanceMode === 'swing') {
+    fill = financeSwingColor(v);
+  } else if (currentFinanceMode === 'votes') {
+    if (v != null) {
+      const scale = buildAdaptiveScale(
+        Object.values(financeData).map(r => Number(r.metric_value)).filter(x => !isNaN(x)),
+        FINANCE_COLORS.total
+      );
+      fill = scaleColor(v, scale);
+    }
+  }
 
-  const allVals = Object.values(financeData).map(r => {
-    if (currentFinanceMode === 'total' || currentFinanceMode === 'candidate') return r.totalAmount;
-    if (currentFinanceMode === 'donors') return r.donorCount;
-    if (currentFinanceMode === 'avg') return r.avgAmount;
-    return r.totalAmount;
-  }).filter(x => x != null && x > 0);
-
-  const colorKey = currentFinanceMode === 'candidate' ? 'candidate' : currentFinanceMode;
-  const colors = FINANCE_COLORS[colorKey] || FINANCE_COLORS.total;
-  const scale = buildAdaptiveScale(allVals, colors);
-  const fill = scaleColor(v, scale);
-
-  return { fillColor: fill, color: '#1a1d27', weight: 1, fillOpacity: 0.85, dashArray: null };
+  return { fillColor: fill, color: '#1a1d27', weight: 1, fillOpacity, dashArray: null };
 }
 
 /* Finance info panel */
@@ -3000,11 +2985,23 @@ function showFinanceInfo(feature, financeData) {
   h += '<div class="info-row"><span style="color:var(--blue)">Campaign Finance</span></div>';
 
   if (row) {
-    h += `<div class="info-row"><span>Total Raised</span><span class="val">$${Number(row.totalAmount).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})}</span></div>`;
-    h += `<div class="info-row"><span>Donors</span><span class="val">${Number(row.donorCount).toLocaleString()}</span></div>`;
-    h += `<div class="info-row"><span>Receipts</span><span class="val">${Number(row.receiptCount).toLocaleString()}</span></div>`;
-    h += `<div class="info-row"><span>Avg Donation</span><span class="val">$${Number(row.avgAmount).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})}</span></div>`;
-    if (row.jurisdiction) h += `<div class="info-row"><span>Jurisdiction</span><span class="val">${row.jurisdiction}</span></div>`;
+    h += `<div class="info-row"><span>Value</span><span class="val">${row.display_label || '—'}</span></div>`;
+    if (row.total_dollars != null && Number(row.total_dollars) > 0) {
+      h += `<div class="info-row"><span>Total Raised</span><span class="val">$${Number(row.total_dollars).toLocaleString()}</span></div>`;
+    }
+    if (row.donor_count != null && Number(row.donor_count) > 0) {
+      h += `<div class="info-row"><span>Donors</span><span class="val">${Number(row.donor_count).toLocaleString()}</span></div>`;
+    }
+    if (row.dollar_margin != null && Number(row.dollar_margin) !== 0) {
+      const dm = Number(row.dollar_margin);
+      const sign = dm >= 0 ? '+' : '';
+      h += `<div class="info-row"><span>$ Margin (D-R)</span><span class="val" style="color:${dm >= 0 ? '#42a5f5' : '#ef5350'}">${sign}$${Math.abs(dm).toLocaleString()}</span></div>`;
+    }
+    if (row.donor_margin != null && Number(row.donor_margin) !== 0) {
+      const dnm = Number(row.donor_margin);
+      const sign = dnm >= 0 ? '+' : '';
+      h += `<div class="info-row"><span>Donor Margin</span><span class="val" style="color:${dnm >= 0 ? '#42a5f5' : '#ef5350'}">${sign}${(dnm * 100).toFixed(1)}%</span></div>`;
+    }
   } else {
     h += '<div class="info-row"><span>No finance data for this precinct</span></div>';
   }
@@ -3013,55 +3010,67 @@ function showFinanceInfo(feature, financeData) {
   infoPanel.classList.add('visible');
 }
 
-function buildFinanceInfoHTML(feature, financeData) {
-  const pid = feature._pid;
-  const label = feature._label;
-  const row = financeData[pid];
-
-  let h = `<div class="info-panel-header"><h3>${label || 'Precinct'}</h3><button class="info-panel-close" onclick="dismissInfoPanel()" title="Close">&times;</button></div>`;
-  h += '<div class="info-row"><span style="color:var(--blue)">Campaign Finance</span></div>';
-  if (row) {
-    h += `<div class="info-row"><span>Total Raised</span><span class="val">$${Number(row.totalAmount).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})}</span></div>`;
-    h += `<div class="info-row"><span>Donors</span><span class="val">${Number(row.donorCount).toLocaleString()}</span></div>`;
-    h += `<div class="info-row"><span>Receipts</span><span class="val">${Number(row.receiptCount).toLocaleString()}</span></div>`;
-    h += `<div class="info-row"><span>Avg Donation</span><span class="val">$${Number(row.avgAmount).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})}</span></div>`;
-  } else {
-    h += '<div class="info-row"><span>No finance data</span></div>';
-  }
-  return h;
-}
-
 /* Finance legend */
 function updateFinanceLegend(financeData) {
   let h = '';
-  const allVals = Object.values(financeData).map(r => {
-    if (currentFinanceMode === 'total' || currentFinanceMode === 'candidate') return r.totalAmount;
-    if (currentFinanceMode === 'donors') return r.donorCount;
-    if (currentFinanceMode === 'avg') return r.avgAmount;
-    return r.totalAmount;
-  }).filter(x => x != null && x > 0);
+  const vals = Object.values(financeData).map(r => Number(r.metric_value)).filter(x => !isNaN(x));
 
-  const modeLabels = {
-    total: 'Total Donations',
-    donors: 'Donor Count',
-    avg: 'Average Donation',
-    candidate: currentFinanceCommitteeName || 'Candidate $'
-  };
-
-  h = `<div class="legend-title">${modeLabels[currentFinanceMode] || 'Donations'}</div>`;
-
-  const colorKey = currentFinanceMode === 'candidate' ? 'candidate' : currentFinanceMode;
-  const colors = FINANCE_COLORS[colorKey] || FINANCE_COLORS.total;
-
-  if (allVals.length) {
-    const prefix = (currentFinanceMode === 'donors') ? '' : '$';
-    const scale = buildAdaptiveScale(allVals, colors);
-    adaptiveLegendRows(scale, '').forEach(([l, c]) => {
-      h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${prefix}${l}</div>`;
+  if (currentFinanceMode === 'supporters') {
+    h = '<div class="legend-title">Supporter Share</div>';
+    const party = Object.values(financeData)[0]?.party || 'D';
+    const colors = party === 'R' ? FINANCE_COLORS.supporters_R : FINANCE_COLORS.supporters_D;
+    if (vals.length) {
+      adaptiveLegendRows(buildAdaptiveScale(vals, colors), '').forEach(([l,c]) => {
+        h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`;
+      });
+    }
+  } else if (currentFinanceMode === 'whales') {
+    h = '<div class="legend-title">Dollars Raised</div>';
+    const party = Object.values(financeData)[0]?.party || 'D';
+    const colors = party === 'R' ? FINANCE_COLORS.whales_R : FINANCE_COLORS.whales_D;
+    if (vals.length) {
+      adaptiveLegendRows(buildAdaptiveScale(vals, colors), '').forEach(([l,c]) => {
+        h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>$${l}</div>`;
+      });
+    }
+  } else if (currentFinanceMode === 'donor_margin') {
+    h = '<div class="legend-title">Donor Margin</div>';
+    [['D+50%+','#0d47a1'],['D+30–50%','#1565c0'],['D+10–30%','#42a5f5'],['Even–D+10%','#bbdefb'],['Even–R+10%','#ffcdd2'],['R+10–30%','#ef5350'],['R+30%+','#b71c1c']].forEach(([l,c]) => {
+      h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`;
     });
+  } else if (currentFinanceMode === 'candidate') {
+    h = '<div class="legend-title">Candidate Dollars</div>';
+    if (vals.length) {
+      adaptiveLegendRows(buildAdaptiveScale(vals, FINANCE_COLORS.candidate), '').forEach(([l,c]) => {
+        h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>$${l}</div>`;
+      });
+    }
+  } else if (currentFinanceMode === 'vs') {
+    h = '<div class="legend-title">Dollar Share (D vs R)</div>';
+    [['80%+ D','#0d47a1'],['65–80% D','#1565c0'],['55–65% D','#42a5f5'],['Even','#e3f2fd'],['55–65% R','#ffcdd2'],['65–80% R','#ef5350'],['80%+ R','#b71c1c']].forEach(([l,c]) => {
+      h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`;
+    });
+  } else if (currentFinanceMode === 'money_delta') {
+    h = '<div class="legend-title">Money &Delta; (vs prev cycle)</div>';
+    [['+$5k+','#1b5e20'],['+$2k–$5k','#2e7d32'],['+$500–$2k','#43a047'],['$0–+$500','#a5d6a7'],['$0–-$500','#ffcc80'],['-$500–-$2k','#ff9800'],['-$2k+','#e65100']].forEach(([l,c]) => {
+      h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`;
+    });
+  } else if (currentFinanceMode === 'swing') {
+    h = '<div class="legend-title">Donor Margin Swing</div>';
+    [['D+30%+','#0d47a1'],['D+15–30%','#1565c0'],['D+5–15%','#42a5f5'],['Even–D+5%','#bbdefb'],['Even–R+5%','#ffcdd2'],['R+5–15%','#ef5350'],['R+15%+','#b71c1c']].forEach(([l,c]) => {
+      h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>${l}</div>`;
+    });
+  } else if (currentFinanceMode === 'votes') {
+    h = '<div class="legend-title">Total Dollars (All Candidates)</div>';
+    if (vals.length) {
+      adaptiveLegendRows(buildAdaptiveScale(vals, FINANCE_COLORS.total), '').forEach(([l,c]) => {
+        h += `<div class="legend-row"><span class="legend-swatch" style="background:${c}"></span>$${l}</div>`;
+      });
+    }
   }
   h += '<div class="legend-row"><span class="legend-swatch" style="background:#333"></span>No data</div>';
 
+  // Always wrap in legend-body (desktop CSS overrides to visible)
   const titleMatch2 = h.match(/^(<div class="legend-title">[^<]*(?:<[^>]*>[^<]*<\/[^>]*>)*<\/div>)/);
   if (titleMatch2) {
     legendEl.innerHTML = titleMatch2[0] + `<div class="legend-body" id="legendBody">${h.slice(titleMatch2[0].length)}</div>`;
@@ -3069,6 +3078,7 @@ function updateFinanceLegend(financeData) {
   } else {
     legendEl.innerHTML = h;
   }
+  // Auto-open legend on mobile so users see it without tapping
   if (isMobile) legendEl.classList.add('legend-open');
 }
 
@@ -3077,82 +3087,67 @@ function updateFinanceStats(financeData) {
   const rows = Object.values(financeData);
   if (!rows.length) { headerStats.innerHTML = ''; return; }
 
-  const totalDollars = rows.reduce((s, r) => s + (Number(r.totalAmount) || 0), 0);
-  const totalDonors = rows.reduce((s, r) => s + (Number(r.donorCount) || 0), 0);
-  const totalReceipts = rows.reduce((s, r) => s + (Number(r.receiptCount) || 0), 0);
+  const totalDollars = rows.reduce((s, r) => s + (Number(r.total_dollars) || 0), 0);
+  const totalDonors = rows.reduce((s, r) => s + (Number(r.donor_count) || 0), 0);
   const precincts = rows.length;
 
-  let h = `<div class="stat"><span class="stat-val">$${totalDollars.toLocaleString(undefined, {maximumFractionDigits: 0})}</span><span class="stat-label">Total Raised</span></div>`;
+  let h = `<div class="stat"><span class="stat-val">$${totalDollars.toLocaleString()}</span><span class="stat-label">Total Raised</span></div>`;
   h += `<div class="stat"><span class="stat-val">${totalDonors.toLocaleString()}</span><span class="stat-label">Donors</span></div>`;
-  h += `<div class="stat"><span class="stat-val">${totalReceipts.toLocaleString()}</span><span class="stat-label">Receipts</span></div>`;
-  h += `<div class="stat"><span class="stat-val">${precincts.toLocaleString()}</span><span class="stat-label">Precincts</span></div>`;
-  if (currentFinanceCommitteeName) {
-    h += `<div class="stat"><span class="stat-val" style="font-size:11px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${currentFinanceCommitteeName}</span><span class="stat-label">Committee</span></div>`;
-  }
+  h += `<div class="stat"><span class="stat-val">${precincts}</span><span class="stat-label">Precincts</span></div>`;
 
   headerStats.innerHTML = h;
 }
 
-/* Finance focus (municipality filter within finance layer) */
-function updateFinanceFocusOptions(financeData) {
-  if (!selFinanceFocus) return;
-  const munis = new Set();
-  for (const pid in financeData) {
-    const idx = pidToFeatureIdx[pid];
-    if (idx != null && geoFeatures[idx]) {
-      const m = geoFeatures[idx]._muni;
-      if (m) munis.add(m);
-    }
-  }
-  const sorted = [...munis].sort();
-  selFinanceFocus.innerHTML = '<option value="">All Precincts</option>';
-  for (const m of sorted) {
-    const o = document.createElement('option');
-    o.value = m;
-    o.textContent = m;
-    selFinanceFocus.appendChild(o);
-  }
-}
-
 /* Main finance render */
 async function renderFinance() {
-  if (financeTimeMode === 'cycle' && !currentFinanceCycle) return;
-  if (financeTimeMode === 'range' && (!finDateStart || !finDateEnd)) return;
+  if (!currentFinanceElectionId) return;
   const mySeq = ++renderSeq;
   pushLoading();
   landing.style.display = 'none';
 
   try {
-    const apiData = await fetchFinancePrecincTotals();
+    // Determine parameters based on mode
+    const needsA = ['supporters', 'whales', 'candidate', 'vs', 'money_delta'].includes(currentFinanceMode);
+    const needsB = currentFinanceMode === 'vs';
+    const needsPrev = ['money_delta', 'swing'].includes(currentFinanceMode);
+
+    const committeeA = needsA ? selectedCommitteeA : null;
+    const committeeB = needsB ? selectedCommitteeB : null;
+    const prevElection = needsPrev ? selectedFinancePrev : null;
+
+    if (needsA && !committeeA) { return; }
+    if (needsB && !committeeB) { return; }
+    if (needsPrev && !prevElection) { return; }
+
+    const rows = await fetchFinanceMap(
+      currentFinanceElectionId, currentFinanceMode,
+      committeeA, committeeB, prevElection
+    );
     if (mySeq !== renderSeq) return;
 
-    const precincts = apiData.precincts || [];
-
-    // Index by precinctId
+    // Index by precinct_id
     const financeData = {};
-    for (const p of precincts) {
-      financeData[p.precinctId] = p;
+    for (const r of rows) {
+      financeData[r.precinct_id] = r;
     }
 
     const activePids = new Set(Object.keys(financeData));
     const activeFeats = geoFeatures.filter(f => activePids.has(f._pid));
     const bgFeats = geoFeatures.filter(f => !activePids.has(f._pid));
 
-    // Apply focus filter
-    const financeFocusVal = selFinanceFocus ? selFinanceFocus.value : '';
-    const focusedActiveFeats = financeFocusVal
-      ? activeFeats.filter(f => f._muni === financeFocusVal)
+    // Apply municipality focus filter
+    const focusedActiveFeats = focusMunicipality
+      ? activeFeats.filter(f => f._muni === focusMunicipality)
       : activeFeats;
-    const focusedBgFeats = financeFocusVal
-      ? [...bgFeats, ...activeFeats.filter(f => f._muni !== financeFocusVal)]
+    const focusedBgFeats = focusMunicipality
+      ? bgFeats.filter(f => f._muni !== focusMunicipality)
       : bgFeats;
 
     // Check if set changed for fitBounds
-    const timeKey = financeTimeMode === 'range' ? `range_${finDateStart}_${finDateEnd}` : currentFinanceCycle;
-    const pidKey = 'finance_' + timeKey + '_' + currentFinanceMode + '_' + currentFinanceCommitteeId + '_' + currentFinanceJurisdiction;
-    const pidsChanged = pidKey !== lastActivePidKey || financeFocusVal !== lastFocusKey;
+    const pidKey = 'finance_' + currentFinanceElectionId + '_' + currentFinanceMode;
+    const pidsChanged = pidKey !== lastActivePidKey || focusMunicipality !== lastFocusKey;
     lastActivePidKey = pidKey;
-    lastFocusKey = financeFocusVal;
+    lastFocusKey = focusMunicipality;
 
     // Clear old layers
     if (precinctLayer) { map.removeLayer(precinctLayer); precinctLayer = null; }
@@ -3181,6 +3176,7 @@ async function renderFinance() {
             hoveredLayer = l;
             l.setStyle({ color: '#fff', weight: 2.5 });
             l.bringToFront();
+            // Bottom sheet for finance
             const sheet = $('bottomSheet');
             const content = $('bottomSheetContent');
             if (sheet && content) {
@@ -3233,7 +3229,7 @@ async function renderFinance() {
     if (pidsChanged) setTimeout(positionLegend, 100);
     updateFinanceStats(financeData);
     updateFinanceLegend(financeData);
-    updateFinanceFocusOptions(financeData);
+    updateFocusOptions();
   } catch (err) {
     console.error('Finance render error:', err);
   } finally {
@@ -3241,73 +3237,51 @@ async function renderFinance() {
   }
 }
 
-/* Time mode toggle */
-function setFinanceTimeMode(mode) {
-  financeTimeMode = mode;
-  document.querySelectorAll('.time-mode-btn').forEach(b => {
-    b.classList.toggle('active', b.dataset.tmode === mode);
-  });
-  if (finTimeCycleEl) finTimeCycleEl.classList.toggle('hidden', mode !== 'cycle');
-  if (finTimeRangeEl) finTimeRangeEl.classList.toggle('hidden', mode !== 'range');
-  if (mode === 'range') {
-    updateFinDateLabel();
-  }
-  financeCache = {};
-  if (dataLayer === 'finance') renderFinance();
-}
-window.setFinanceTimeMode = setFinanceTimeMode;
+function buildFinanceInfoHTML(feature, financeData) {
+  const pid = feature._pid;
+  const label = feature._label;
+  const row = financeData[pid];
 
-function updateFinDateLabel() {
-  if (!finDateLabelEl) return;
-  if (finDateStart && finDateEnd) {
-    const s = new Date(finDateStart + 'T00:00:00');
-    const e = new Date(finDateEnd + 'T00:00:00');
-    const fmt = d => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    finDateLabelEl.textContent = `${fmt(s)} – ${fmt(e)}`;
+  let h = `<h3>${label || 'Precinct'}</h3>`;
+  h += '<div class="info-row"><span style="color:var(--blue)">Campaign Finance</span></div>';
+  if (row) {
+    h += `<div class="info-row"><span>Value</span><span class="val">${row.display_label || '—'}</span></div>`;
+    if (Number(row.total_dollars) > 0)
+      h += `<div class="info-row"><span>Total Raised</span><span class="val">$${Number(row.total_dollars).toLocaleString()}</span></div>`;
+    if (Number(row.donor_count) > 0)
+      h += `<div class="info-row"><span>Donors</span><span class="val">${Number(row.donor_count).toLocaleString()}</span></div>`;
+    if (Number(row.dollar_margin) !== 0) {
+      const dm = Number(row.dollar_margin);
+      h += `<div class="info-row"><span>$ Margin (D-R)</span><span class="val" style="color:${dm >= 0 ? '#42a5f5' : '#ef5350'}">${dm >= 0 ? '+' : ''}$${Math.abs(dm).toLocaleString()}</span></div>`;
+    }
   } else {
-    finDateLabelEl.textContent = '';
+    h += '<div class="info-row"><span>No finance data</span></div>';
   }
+  return h;
 }
 
-/* Finance event handlers */
-if (selFinanceCycle) selFinanceCycle.addEventListener('change', () => {
-  currentFinanceCycle = selFinanceCycle.value;
-  financeCache = {};
+/* Finance event handlers (guarded — finance tab is hidden for now) */
+if (selFinanceElection) selFinanceElection.addEventListener('change', async () => {
+  currentFinanceElectionId = selFinanceElection.value;
+  financeMapCache = {}; // clear cache for new election
+  focusMunicipality = '';
+  if (selFocus) { selFocus.innerHTML = '<option value="">All Precincts</option>'; }
+  await loadFinanceCommittees();
+});
+
+if (selCommitteeA) selCommitteeA.addEventListener('change', () => {
+  selectedCommitteeA = selCommitteeA.value;
   if (dataLayer === 'finance') renderFinance();
 });
 
-if (selFinanceJurisdiction) selFinanceJurisdiction.addEventListener('change', () => {
-  currentFinanceJurisdiction = selFinanceJurisdiction.value;
-  financeCache = {};
+if (selCommitteeB) selCommitteeB.addEventListener('change', () => {
+  selectedCommitteeB = selCommitteeB.value;
   if (dataLayer === 'finance') renderFinance();
 });
 
-if (selMinAmount) selMinAmount.addEventListener('change', () => {
-  currentFinanceMinAmount = Number(selMinAmount.value) || 0;
-  financeCache = {};
+if (selFinancePrev) selFinancePrev.addEventListener('change', () => {
+  selectedFinancePrev = selFinancePrev.value;
   if (dataLayer === 'finance') renderFinance();
-});
-
-if (selFinanceFocus) selFinanceFocus.addEventListener('change', () => {
-  if (dataLayer === 'finance') renderFinance();
-});
-
-// Date range Go button
-if (finDateApplyEl) finDateApplyEl.addEventListener('click', () => {
-  finDateStart = finDateStartEl ? finDateStartEl.value : '';
-  finDateEnd = finDateEndEl ? finDateEndEl.value : '';
-  if (!finDateStart || !finDateEnd) { alert('Please select both start and end dates.'); return; }
-  if (finDateStart > finDateEnd) { alert('Start date must be before end date.'); return; }
-  updateFinDateLabel();
-  financeCache = {};
-  if (dataLayer === 'finance') renderFinance();
-});
-
-// Also allow Enter key in date inputs to trigger Go
-[finDateStartEl, finDateEndEl].forEach(el => {
-  if (el) el.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') { e.preventDefault(); finDateApplyEl && finDateApplyEl.click(); }
-  });
 });
 
 // Finance mode buttons
@@ -3316,7 +3290,8 @@ document.querySelectorAll('#financeModes .mode-btn').forEach(btn => {
     document.querySelectorAll('#financeModes .mode-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentFinanceMode = btn.dataset.fmode;
-    if (dataLayer === 'finance') renderFinance();
+    updateFinanceControlVisibility();
+    renderFinance();
     syncModeStrip();
   });
 });
@@ -3352,27 +3327,20 @@ async function exportPNG() {
     title = raceName || elName;
     subtitle = `${elName} \u00B7 ${modeName}${candInfo}`;
   } else {
-    let fTimeName = '';
-    if (financeTimeMode === 'range' && finDateStart && finDateEnd) {
-      const s = new Date(finDateStart + 'T00:00:00');
-      const e = new Date(finDateEnd + 'T00:00:00');
-      const fmt = d => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-      fTimeName = `${fmt(s)} \u2013 ${fmt(e)}`;
-    } else {
-      const fCycleOpt = selFinanceCycle ? selFinanceCycle.options[selFinanceCycle.selectedIndex] : null;
-      fTimeName = fCycleOpt ? fCycleOpt.textContent : '';
-    }
+    const fElOpt = selFinanceElection ? selFinanceElection.options[selFinanceElection.selectedIndex] : null;
+    const fElName = fElOpt ? fElOpt.textContent : '';
+    const commOpt = selCommitteeA ? selCommitteeA.options[selCommitteeA.selectedIndex] : null;
+    const commName = commOpt && commOpt.value ? commOpt.textContent : '';
     const fModeBtn = document.querySelector('#financeModes .mode-btn.active');
     const fModeName = fModeBtn ? fModeBtn.textContent : '';
 
-    title = currentFinanceCommitteeName || 'Campaign Finance';
-    subtitle = `${fTimeName} \u00B7 ${fModeName}`;
+    title = commName || 'Campaign Finance';
+    subtitle = `${fElName} \u00B7 ${fModeName}`;
   }
 
   // Add focus municipality to subtitle if active
-  const exportFocusVal = (dataLayer === 'finance' && selFinanceFocus) ? selFinanceFocus.value : focusMunicipality;
-  if (exportFocusVal) {
-    const muniTitle = exportFocusVal.split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+  if (focusMunicipality) {
+    const muniTitle = focusMunicipality.split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
     subtitle += ` \u00B7 ${muniTitle}`;
   }
 
@@ -3457,9 +3425,9 @@ const ELECTION_STRIP_MODES = [
   { key: 'margin', label: 'Margin' }
 ];
 const FINANCE_STRIP_MODES = [
-  { key: 'total', label: 'Total $' },
-  { key: 'donors', label: 'Donors' },
-  { key: 'avg', label: 'Avg $' }
+  { key: 'supporters', label: 'Donors' },
+  { key: 'whales', label: 'Whales' },
+  { key: 'donor_margin', label: 'Margin' }
 ];
 
 function updateModeStripButtons() {
@@ -3532,9 +3500,6 @@ function toggleDistrictPanel() {
   if (!districtPanel) return;
   const isOpen = districtPanel.classList.toggle('open');
   if (districtToggleBtn) districtToggleBtn.classList.toggle('active', isOpen);
-  // Toggle scrim backdrop
-  const scrim = $('districtScrim');
-  if (scrim) scrim.classList.toggle('visible', isOpen);
   if (isOpen && !districtBrowserData) {
     loadDistrictBrowser();
   }
