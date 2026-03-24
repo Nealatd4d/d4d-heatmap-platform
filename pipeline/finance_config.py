@@ -6,13 +6,16 @@ Target: HD-18 (Gabel vs Hutchinson, 2022 & 2024 generals)
 import os
 
 # ── Supabase ──
+# IMPORTANT: Set these as environment variables. Never hardcode credentials.
+# Export SUPA_SERVICE_KEY and PG_CONN in your shell or Replit Secrets.
 SUPA_URL = "https://nfjfqdffulhqhszhlymo.supabase.co"
-SUPA_KEY = os.environ.get("SUPA_SERVICE_KEY",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5mamZxZGZmdWxocWhzemhseW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3Mzk1MDMwOCwiZXhwIjoyMDg5NTI2MzA4fQ.zy7Bfl5cOZGF_CU2yiHn3sd24olsx_Hzc985Ov_t5Ys"
-)
-PG_CONN = os.environ.get("PG_CONN",
-    "postgresql://postgres.nfjfqdffulhqhszhlymo:D4dHeatmap2026!Pg@aws-0-us-west-2.pooler.supabase.com:5432/postgres"
-)
+SUPA_KEY = os.environ.get("SUPA_SERVICE_KEY")
+PG_CONN = os.environ.get("PG_CONN")
+
+if not SUPA_KEY:
+    raise EnvironmentError("SUPA_SERVICE_KEY environment variable is required. Set it in Replit Secrets or your shell.")
+if not PG_CONN:
+    raise EnvironmentError("PG_CONN environment variable is required. Set it in Replit Secrets or your shell.")
 
 # ── IL SBE bulk data ──
 SBE_RECEIPTS_URL = "https://www.elections.il.gov/Downloads/CampaignDisclosure/CampaignDisclosureDataFiles/Receipts.txt"
