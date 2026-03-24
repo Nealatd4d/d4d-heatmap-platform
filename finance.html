@@ -95,11 +95,21 @@ input,button,select{font-family:inherit;font-size:inherit}
 .welcome p{max-width:420px;font-size:13px;line-height:1.6}
 .welcome-hints{margin-top:20px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
 
+/* KPI CARDS */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:16px;flex-shrink:0}
+.kpi-card{background:var(--surface-alt);border:1px solid var(--border);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:4px;transition:border-color .15s}
+.kpi-card:hover{border-color:var(--blue-dim)}
+.kpi-value{font-size:22px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.kpi-label{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-dim)}
+.kpi-sub{font-size:11px;color:var(--text-dim);margin-top:2px}
+
 /* TABS */
-.tabs{display:flex;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto}
+.tabs{display:flex;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
 .tab{padding:10px 20px;font-size:12px;font-weight:600;color:var(--text-dim);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;user-select:none}
 .tab:hover{color:var(--text-muted)}
 .tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.tab .tab-count{font-size:10px;font-weight:400;color:var(--text-dim);margin-left:4px}
 
 /* VIZ PANELS */
 .viz-area{flex:1;overflow:hidden;position:relative;min-height:0}
@@ -132,7 +142,7 @@ input,button,select{font-family:inherit;font-size:inherit}
 .grid line{stroke:var(--border);stroke-opacity:.3}
 .grid .domain{display:none}
 .chart-title{font-size:13px;font-weight:600;color:var(--text-muted)}
-.timeline-chart-wrap{width:100%;min-height:220px}
+.timeline-chart-wrap{width:100%;min-height:220px;position:relative}
 .timeline-chart-wrap svg{display:block;width:100%}
 
 /* TABLE */
@@ -146,10 +156,38 @@ td{padding:7px 12px;border-bottom:1px solid var(--border);color:var(--text-muted
 tr:hover td{background:var(--surface-hover)}
 tr{cursor:pointer}
 td.amount{text-align:right;font-variant-numeric:tabular-nums;color:var(--text);font-weight:500}
+.type-tag{display:inline-block;font-size:9px;font-weight:600;letter-spacing:.04em;padding:1px 6px;border-radius:3px;text-transform:uppercase}
+.type-tag.pac{background:rgba(79,195,247,.15);color:var(--blue)}
+.type-tag.ind{background:var(--surface-alt);color:var(--text-dim)}
+.summary-bar{padding:10px 12px;background:var(--surface-alt);border-bottom:1px solid var(--border);font-size:12px;color:var(--text-muted);display:flex;align-items:center;gap:8px}
+.summary-bar strong{color:var(--text)}
+
+/* FEED */
+.feed-list{flex:1;overflow:auto;padding:0}
+.feed-item{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--border);transition:background .1s}
+.feed-item:hover{background:var(--surface-hover)}
+.feed-date{font-size:11px;color:var(--text-dim);min-width:85px;white-space:nowrap}
+.feed-amount{font-size:13px;font-weight:600;color:var(--text);min-width:80px;text-align:right;font-variant-numeric:tabular-nums}
+.feed-donor{font-size:12px;color:var(--text-muted);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 /* SANKEY */
 .sankey-container{flex:1;padding:16px;overflow:auto}
 .sankey-label{font-size:10px;fill:var(--text-muted)}
+
+/* SIDEBAR CHARTS */
+.sidebar-section{padding:16px;border-bottom:1px solid var(--border)}
+.sidebar-section-title{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-dim);margin-bottom:12px;font-weight:600}
+.donut-wrap{display:flex;align-items:center;gap:16px}
+.donut-legend{display:flex;flex-direction:column;gap:6px}
+.donut-legend-item{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text-muted)}
+.donut-legend-swatch{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+.donut-legend-value{font-weight:600;color:var(--text);margin-left:auto;font-variant-numeric:tabular-nums}
+.cycle-bar-wrap{display:flex;flex-direction:column;gap:6px}
+.cycle-bar-row{display:flex;align-items:center;gap:8px}
+.cycle-bar-label{font-size:11px;color:var(--text-dim);min-width:40px}
+.cycle-bar-track{flex:1;height:14px;background:var(--surface-alt);border-radius:3px;overflow:hidden;position:relative}
+.cycle-bar-fill{height:100%;border-radius:3px;background:var(--blue);opacity:.6;transition:width .4s ease}
+.cycle-bar-value{font-size:11px;color:var(--text);font-weight:600;min-width:60px;text-align:right;font-variant-numeric:tabular-nums}
 
 /* FOOTER */
 .footer{background:var(--surface);border-top:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-dim);flex-shrink:0}
@@ -159,14 +197,19 @@ td.amount{text-align:right;font-variant-numeric:tabular-nums;color:var(--text);f
 /* RESPONSIVE */
 @media(max-width:900px){
   .main{flex-direction:column}
-  .sidebar{width:100%;min-width:100%;border-right:none;border-bottom:1px solid var(--border);overflow:visible;position:relative;z-index:10}
+  .sidebar{width:100%;min-width:100%;border-right:none;border-bottom:1px solid var(--border);overflow:visible;position:relative;z-index:10;max-height:50vh}
   .stats-bar{padding:8px 12px;gap:16px}
   .stat-value{font-size:14px}
   .header-back span.hb-text{display:none}
+  .kpi-row{grid-template-columns:repeat(2,1fr);gap:8px;padding:12px}
+  .kpi-value{font-size:18px}
 }
 @media(max-width:600px){
   .stats-bar{gap:12px}
   .tab{padding:8px 14px;font-size:11px}
+  .kpi-row{grid-template-columns:repeat(2,1fr);gap:6px;padding:8px}
+  .kpi-value{font-size:16px}
+  .kpi-card{padding:10px}
 }
 </style>
 </head>
@@ -213,16 +256,32 @@ td.amount{text-align:right;font-variant-numeric:tabular-nums;color:var(--text);f
       </div>
     </div>
     <div id="vizWrapper" style="display:none;flex-direction:column;flex:1;overflow:hidden">
+      <!-- KPI Cards row -->
+      <div class="kpi-row" id="kpiRow" style="display:none">
+        <div class="kpi-card"><div class="kpi-value" id="kpiRaised">—</div><div class="kpi-label">Total Raised</div><div class="kpi-sub" id="kpiRaisedSub"></div></div>
+        <div class="kpi-card"><div class="kpi-value" id="kpiSpent">—</div><div class="kpi-label">Total Spent</div><div class="kpi-sub" id="kpiSpentSub"></div></div>
+        <div class="kpi-card"><div class="kpi-value" id="kpiCash">—</div><div class="kpi-label">Cash on Hand</div><div class="kpi-sub" id="kpiCashSub"></div></div>
+        <div class="kpi-card"><div class="kpi-value" id="kpiBurn">—</div><div class="kpi-label">Burn Rate</div><div class="kpi-sub" id="kpiBurnSub"></div></div>
+      </div>
+      <!-- Timeline chart area (always visible for committees) -->
+      <div id="timelineSection" style="display:none;flex-shrink:0;max-height:380px;overflow:hidden">
+        <div class="timeline-container" id="timelineContainer" style="overflow-y:auto"></div>
+      </div>
+      <!-- Tabbed detail views -->
       <div class="tabs" id="tabBar">
-        <div class="tab active" data-tab="network">Network Graph</div>
-        <div class="tab" data-tab="timeline">Timeline</div>
-        <div class="tab" data-tab="contributions">Contributions</div>
+        <div class="tab active" data-tab="topdonors">Top Donors</div>
+        <div class="tab" data-tab="pacdonations">PAC Donations</div>
+        <div class="tab" data-tab="latest">Latest Donations</div>
+        <div class="tab" data-tab="frequent">Most Frequent</div>
+        <div class="tab" data-tab="network">Donor Network</div>
         <div class="tab" data-tab="moneyflow">Money Flow</div>
       </div>
       <div class="viz-area">
-        <div class="viz-panel active" id="panel-network"><div class="network-container" id="networkContainer"><div class="viz-empty">Select a donor to view their contribution network</div></div></div>
-        <div class="viz-panel" id="panel-timeline"><div class="timeline-container" id="timelineContainer"><div class="viz-empty">Select a committee to view fundraising timeline</div></div></div>
-        <div class="viz-panel" id="panel-contributions"><div class="viz-empty" id="contribEmpty">Select an entity to view contributions</div><div class="table-container" id="contribTable" style="display:none"></div></div>
+        <div class="viz-panel active" id="panel-topdonors"><div class="viz-empty">Select a committee to view top donors</div></div>
+        <div class="viz-panel" id="panel-pacdonations"><div class="viz-empty">Select a committee to view PAC donations</div></div>
+        <div class="viz-panel" id="panel-latest"><div class="viz-empty">Select a committee to view latest donations</div></div>
+        <div class="viz-panel" id="panel-frequent"><div class="viz-empty">Select a committee to view frequent donors</div></div>
+        <div class="viz-panel" id="panel-network"><div class="network-container" id="networkContainer"><div class="viz-empty">Select a donor to view their contribution network</div></div></div>
         <div class="viz-panel" id="panel-moneyflow"><div class="sankey-container" id="sankeyContainer"><div class="viz-empty">Select a committee to view money flow</div></div></div>
       </div>
     </div>
@@ -239,13 +298,25 @@ const API='https://de1c0922-8718-46e3-8972-0e490363414c-00-8zny1suz8wo3.spock.re
 const $=s=>document.querySelector(s);
 const $$=s=>document.querySelectorAll(s);
 const fmt=n=>n==null?'—':'$'+Math.round(n).toLocaleString('en-US');
+const fmtCompact=n=>{if(n==null)return'—';if(n>=1e6)return'$'+(n/1e6).toFixed(2)+'M';if(n>=1e3)return'$'+(n/1e3).toFixed(0)+'K';return'$'+Math.round(n).toLocaleString('en-US')};
 const fmtNum=n=>n==null?'—':Math.round(n).toLocaleString('en-US');
 const fmtDate=d=>{if(!d)return'—';const dt=new Date(d);return dt.toLocaleDateString('en-US',{month:'short',year:'numeric'})};
+const fmtDateFull=d=>{if(!d)return'—';const dt=new Date(d);return dt.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})};
+const fmtPct=n=>n==null?'—':Math.round(n*100)+'%';
 const esc=s=>{if(!s)return'';const d=document.createElement('div');d.textContent=s;return d.innerHTML};
 const partyColor=p=>{if(!p)return'var(--other)';const l=p.toLowerCase();if(l.includes('democrat'))return'var(--dem)';if(l.includes('republic'))return'var(--rep)';return'var(--other)'};
 const partyHex=p=>{if(!p)return'#9aa0a6';const l=p.toLowerCase();if(l.includes('democrat'))return'#4fc3f7';if(l.includes('republic'))return'#ef5350';return'#9aa0a6'};
 
-let currentEntity=null,activeTab='network',searchTimeout=null,currentSimulation=null;
+const PAC_KEYWORDS=['pac','committee','democratic','republican','party','friends of','citizens for','fund','seiu','afscme','union','laborers','teamsters','association','coalition','council','education','ilae','i.p.a.c.e'];
+function isPAC(name){
+  if(!name)return false;
+  const lc=name.toLowerCase();
+  return PAC_KEYWORDS.some(k=>lc.includes(k));
+}
+
+let currentEntity=null,activeTab='topdonors',searchTimeout=null,currentSimulation=null;
+let allDonorPoints=[];  // aggregated overlay-points across cycles
+let timelineData=null;  // cached timeline response
 
 async function apiFetch(path){const r=await fetch(API+path,{signal:AbortSignal.timeout(15000)});if(!r.ok)throw new Error('API '+r.status);return r.json()}
 
@@ -286,7 +357,6 @@ function hideResults(){searchResults.classList.remove('open')}
 
 async function doSearch(q){
   try{
-    // Show committee results immediately from fast /search endpoint
     const searchData=await apiFetch('/api/finance/search?q='+encodeURIComponent(q)+'&limit=15');
     searchResults.innerHTML='';
     const committees=searchData.committees||[];
@@ -307,7 +377,7 @@ async function doSearch(q){
     }
     showResults();
     
-    // Then try donor-network in background (slow endpoint) and append if found
+    // Then try donor-network in background
     apiFetch('/api/finance/donor-network/'+encodeURIComponent(q)).then(donorData=>{
       if(donorData&&donorData.committeesCount>0&&searchInput.value.trim()===q){
         searchResults.insertAdjacentHTML('beforeend','<div class="search-group-label">Donors</div>');
@@ -330,29 +400,63 @@ function quickSearch(q){
   doSearch(q);
 }
 
-// Entity selection
+// ═══ ENTITY SELECTION ═══
 function selectCommittee(c){
   hideResults();
   currentEntity={type:'committee',data:c};
+  allDonorPoints=[];
+  timelineData=null;
   renderCommitteeCard(c);
   showViz();
-  loadTimeline(c.committeeId);
+  showCommitteeLayout();
+  // Load all data in parallel
+  loadTimelineData(c.committeeId);
+  loadOverlayPoints(c.committeeId);
   loadMoneyFlow(c.committeeId);
   loadCommitteeNetwork(c.committeeId);
-  $('#contribEmpty').textContent='Search for a donor name to see their contributions to this committee';
-  $('#contribEmpty').style.display='flex';
-  $('#contribTable').style.display='none';
-  switchTab('timeline');
+  switchTab('topdonors');
 }
 
 function selectDonor(d){
   hideResults();
   currentEntity={type:'donor',data:d};
+  allDonorPoints=[];
+  timelineData=null;
   renderDonorCard(d);
   showViz();
+  showDonorLayout();
   renderNetwork(d);
-  renderContribTable(d.contributions);
+  renderDonorContribTable(d.contributions);
   switchTab('network');
+}
+
+function showCommitteeLayout(){
+  $('#kpiRow').style.display='grid';
+  $('#timelineSection').style.display='block';
+  // Reset KPIs
+  ['kpiRaised','kpiSpent','kpiCash','kpiBurn'].forEach(id=>{$('#'+id).textContent='…';$('#'+id+'Sub').textContent=''});
+  // Show correct tabs
+  $$('.tab').forEach(t=>{
+    const tab=t.dataset.tab;
+    if(tab==='network') t.textContent='Donor Network';
+    t.style.display='';
+  });
+}
+
+function showDonorLayout(){
+  $('#kpiRow').style.display='none';
+  $('#timelineSection').style.display='none';
+  $('#sidebarExtra').innerHTML='';
+  // For donors, show only network and contributions tabs
+  $$('.tab').forEach(t=>{
+    const tab=t.dataset.tab;
+    if(['topdonors','pacdonations','latest','frequent','moneyflow'].includes(tab)){
+      t.style.display='none';
+    } else {
+      t.style.display='';
+      if(tab==='network') t.textContent='Network Graph';
+    }
+  });
 }
 
 function renderCommitteeCard(c){
@@ -366,9 +470,8 @@ function renderCommitteeCard(c){
       ${officeShort?'<div class="entity-detail"><strong>Purpose:</strong> '+esc(officeShort)+'</div>':''}
       <div class="entity-detail"><strong>Committee ID:</strong> ${c.committeeId}</div>
       <div class="entity-actions">
-        <button class="btn btn-primary" onclick="switchTab('timeline')">📈 Timeline</button>
+        <button class="btn btn-primary" onclick="switchTab('topdonors')">👥 Top Donors</button>
         <button class="btn" onclick="switchTab('moneyflow')">🔀 Money Flow</button>
-        <button class="btn" onclick="switchTab('network')">🕸️ Network</button>
         <a class="btn" href="index.html" target="_blank">🗺️ Heatmap</a>
       </div>
     </div>`;
@@ -384,7 +487,6 @@ function renderDonorCard(d){
       <div class="entity-detail"><strong>Total Donations:</strong> ${fmtNum(d.totalDonations)}</div>
       <div class="entity-actions">
         <button class="btn btn-primary" onclick="switchTab('network')">🕸️ Network</button>
-        <button class="btn" onclick="switchTab('contributions')">📋 Contributions</button>
       </div>
     </div>`;
 }
@@ -395,11 +497,514 @@ function showViz(){
 }
 
 // Tabs
-$$('.tab').forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.tab)));
+function bindTabs(){
+  $$('.tab').forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.tab)));
+}
+bindTabs();
+
 function switchTab(tab){
   activeTab=tab;
   $$('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));
   $$('.viz-panel').forEach(p=>p.classList.toggle('active',p.id==='panel-'+tab));
+}
+
+// ═══ OVERLAY POINTS DATA (multi-cycle) ═══
+async function loadOverlayPoints(committeeId){
+  const cycles=['2026P','2024G','2024P','2022G','2022P'];
+  const panelTD=$('#panel-topdonors');
+  panelTD.innerHTML='<div class="viz-loading"><div class="spinner"></div></div>';
+  
+  try{
+    const results=await Promise.all(
+      cycles.map(c=>apiFetch('/api/finance/overlay-points/'+c+'?committeeId='+committeeId+'&limit=5000').catch(()=>({points:[]})))
+    );
+    
+    // Collect all points with cycle info
+    const rawPoints=[];
+    results.forEach((r,i)=>{
+      (r.points||[]).forEach(p=>{
+        rawPoints.push({...p, cycle:cycles[i]});
+      });
+    });
+    
+    allDonorPoints=rawPoints;
+    
+    // Aggregate donors
+    const donorMap={};
+    rawPoints.forEach(p=>{
+      const key=(p.donorName||'Unknown').trim();
+      if(!key) return;
+      if(!donorMap[key]) donorMap[key]={name:key,total:0,count:0,firstDate:p.date,lastDate:p.date,isPAC:isPAC(key),gifts:[]};
+      donorMap[key].total+=(p.amount||0);
+      donorMap[key].count++;
+      if(p.date && p.date<donorMap[key].firstDate) donorMap[key].firstDate=p.date;
+      if(p.date && p.date>donorMap[key].lastDate) donorMap[key].lastDate=p.date;
+      donorMap[key].gifts.push(p);
+    });
+    
+    const donors=Object.values(donorMap);
+    
+    // Render all tabs
+    renderTopDonorsTab(donors);
+    renderPACTab(donors);
+    renderLatestTab(rawPoints);
+    renderFrequentTab(donors);
+    renderSidebarCharts(donors, rawPoints);
+    
+    // Update tab counts
+    const pacCount=donors.filter(d=>d.isPAC).length;
+    $$('.tab').forEach(t=>{
+      if(t.dataset.tab==='topdonors') t.innerHTML='Top Donors <span class="tab-count">'+donors.length+'</span>';
+      if(t.dataset.tab==='pacdonations') t.innerHTML='PAC Donations <span class="tab-count">'+pacCount+'</span>';
+      if(t.dataset.tab==='latest') t.innerHTML='Latest Donations <span class="tab-count">'+rawPoints.length+'</span>';
+      if(t.dataset.tab==='frequent') t.innerHTML='Most Frequent <span class="tab-count">'+donors.length+'</span>';
+    });
+    
+  }catch(e){
+    console.error('Overlay points:',e);
+    panelTD.innerHTML='<div class="viz-empty">Could not load donor data</div>';
+  }
+}
+
+// ═══ TAB 1: TOP DONORS ═══
+function renderTopDonorsTab(donors){
+  const panel=$('#panel-topdonors');
+  panel.innerHTML='';
+  if(!donors.length){panel.innerHTML='<div class="viz-empty">No donor data available</div>';return}
+  
+  let sortCol='total',sortDir=-1;
+  const container=document.createElement('div');
+  container.className='table-container';
+  panel.appendChild(container);
+  
+  function render(){
+    const sorted=[...donors].sort((a,b)=>{
+      let va=a[sortCol],vb=b[sortCol];
+      if(typeof va==='string') return sortDir*va.localeCompare(vb);
+      return sortDir*((va||0)-(vb||0));
+    });
+    
+    container.innerHTML='<table><thead><tr>'+
+      thCol('name','Donor',sortCol,sortDir)+
+      '<th style="width:60px">Type</th>'+
+      thCol('total','Total',sortCol,sortDir,' style="text-align:right"')+
+      thCol('count','# Gifts',sortCol,sortDir,' style="text-align:right"')+
+      thCol('lastDate','Last Gift',sortCol,sortDir)+
+      '<th style="text-align:right">Avg Gift</th>'+
+      '</tr></thead><tbody>'+sorted.map(d=>
+        '<tr><td>'+esc(d.name)+'</td>'+
+        '<td><span class="type-tag '+(d.isPAC?'pac':'ind')+'">'+(d.isPAC?'PAC':'IND')+'</span></td>'+
+        '<td class="amount">'+fmt(d.total)+'</td>'+
+        '<td style="text-align:right">'+d.count+'</td>'+
+        '<td>'+fmtDateFull(d.lastDate)+'</td>'+
+        '<td class="amount">'+fmt(d.total/d.count)+'</td></tr>'
+      ).join('')+'</tbody></table>';
+    
+    container.querySelectorAll('th[data-col]').forEach(th=>{
+      th.addEventListener('click',()=>{
+        const col=th.dataset.col;
+        if(sortCol===col) sortDir*=-1; else{sortCol=col;sortDir=col==='name'?1:-1}
+        render();
+      });
+    });
+  }
+  render();
+}
+
+function thCol(col,label,sortCol,sortDir,extra=''){
+  return '<th data-col="'+col+'"'+extra+'>'+label+' <span class="sort-arrow">'+(sortCol===col?(sortDir>0?'▲':'▼'):'↕')+'</span></th>';
+}
+
+// ═══ TAB 2: PAC DONATIONS ═══
+function renderPACTab(donors){
+  const panel=$('#panel-pacdonations');
+  panel.innerHTML='';
+  const pacs=donors.filter(d=>d.isPAC);
+  if(!pacs.length){panel.innerHTML='<div class="viz-empty">No PAC/organizational donations found</div>';return}
+  
+  const totalAll=donors.reduce((s,d)=>s+d.total,0);
+  const totalPAC=pacs.reduce((s,d)=>s+d.total,0);
+  const pctPAC=totalAll>0?totalPAC/totalAll:0;
+  
+  // Summary bar
+  const summary=document.createElement('div');
+  summary.className='summary-bar';
+  summary.innerHTML='<strong>'+pacs.length+' PACs</strong> contributed <strong>'+fmt(totalPAC)+'</strong> ('+fmtPct(pctPAC)+' of total)';
+  panel.appendChild(summary);
+  
+  let sortCol='total',sortDir=-1;
+  const container=document.createElement('div');
+  container.className='table-container';
+  panel.appendChild(container);
+  
+  function render(){
+    const sorted=[...pacs].sort((a,b)=>{
+      let va=a[sortCol],vb=b[sortCol];
+      if(typeof va==='string') return sortDir*va.localeCompare(vb);
+      return sortDir*((va||0)-(vb||0));
+    });
+    container.innerHTML='<table><thead><tr>'+
+      thCol('name','PAC / Organization',sortCol,sortDir)+
+      thCol('total','Total',sortCol,sortDir,' style="text-align:right"')+
+      thCol('count','# Gifts',sortCol,sortDir,' style="text-align:right"')+
+      thCol('lastDate','Last Gift',sortCol,sortDir)+
+      '<th style="text-align:right">Avg Gift</th>'+
+      '</tr></thead><tbody>'+sorted.map(d=>
+        '<tr><td>'+esc(d.name)+'</td>'+
+        '<td class="amount">'+fmt(d.total)+'</td>'+
+        '<td style="text-align:right">'+d.count+'</td>'+
+        '<td>'+fmtDateFull(d.lastDate)+'</td>'+
+        '<td class="amount">'+fmt(d.total/d.count)+'</td></tr>'
+      ).join('')+'</tbody></table>';
+    
+    container.querySelectorAll('th[data-col]').forEach(th=>{
+      th.addEventListener('click',()=>{
+        const col=th.dataset.col;
+        if(sortCol===col)sortDir*=-1;else{sortCol=col;sortDir=col==='name'?1:-1}
+        render();
+      });
+    });
+  }
+  render();
+}
+
+// ═══ TAB 3: LATEST DONATIONS ═══
+function renderLatestTab(rawPoints){
+  const panel=$('#panel-latest');
+  panel.innerHTML='';
+  if(!rawPoints.length){panel.innerHTML='<div class="viz-empty">No donation data available</div>';return}
+  
+  const sorted=[...rawPoints].sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  
+  const feed=document.createElement('div');
+  feed.className='feed-list';
+  
+  sorted.forEach(p=>{
+    const item=document.createElement('div');
+    item.className='feed-item';
+    const donorName=p.donorName||'Unknown';
+    const isP=isPAC(donorName);
+    item.innerHTML=
+      '<span class="feed-date">'+fmtDateFull(p.date)+'</span>'+
+      '<span class="feed-amount">'+fmt(p.amount)+'</span>'+
+      '<span class="feed-donor">'+esc(donorName)+'</span>'+
+      '<span class="type-tag '+(isP?'pac':'ind')+'">'+(isP?'PAC':'IND')+'</span>';
+    feed.appendChild(item);
+  });
+  
+  panel.appendChild(feed);
+}
+
+// ═══ TAB 4: MOST FREQUENT DONORS ═══
+function renderFrequentTab(donors){
+  const panel=$('#panel-frequent');
+  panel.innerHTML='';
+  if(!donors.length){panel.innerHTML='<div class="viz-empty">No donor data available</div>';return}
+  
+  let sortCol='count',sortDir=-1;
+  const container=document.createElement('div');
+  container.className='table-container';
+  panel.appendChild(container);
+  
+  function render(){
+    const sorted=[...donors].sort((a,b)=>{
+      let va=a[sortCol],vb=b[sortCol];
+      if(typeof va==='string')return sortDir*va.localeCompare(vb);
+      return sortDir*((va||0)-(vb||0));
+    });
+    container.innerHTML='<table><thead><tr>'+
+      thCol('name','Donor',sortCol,sortDir)+
+      thCol('count','# Donations',sortCol,sortDir,' style="text-align:right"')+
+      thCol('total','Total',sortCol,sortDir,' style="text-align:right"')+
+      '<th style="text-align:right">Avg</th>'+
+      thCol('firstDate','First',sortCol,sortDir)+
+      thCol('lastDate','Last',sortCol,sortDir)+
+      '</tr></thead><tbody>'+sorted.map(d=>
+        '<tr><td>'+esc(d.name)+'</td>'+
+        '<td style="text-align:right;font-weight:600;color:var(--text)">'+d.count+'</td>'+
+        '<td class="amount">'+fmt(d.total)+'</td>'+
+        '<td class="amount">'+fmt(d.total/d.count)+'</td>'+
+        '<td>'+fmtDateFull(d.firstDate)+'</td>'+
+        '<td>'+fmtDateFull(d.lastDate)+'</td></tr>'
+      ).join('')+'</tbody></table>';
+    
+    container.querySelectorAll('th[data-col]').forEach(th=>{
+      th.addEventListener('click',()=>{
+        const col=th.dataset.col;
+        if(sortCol===col)sortDir*=-1;else{sortCol=col;sortDir=col==='name'?1:-1}
+        render();
+      });
+    });
+  }
+  render();
+}
+
+// ═══ DONOR CONTRIB TABLE (for donor entities) ═══
+function renderDonorContribTable(contributions){
+  const panel=$('#panel-topdonors');
+  panel.innerHTML='';
+  if(!contributions||!contributions.length){
+    panel.innerHTML='<div class="viz-empty">No contributions data available</div>';return;
+  }
+  
+  let sortCol='totalAmount',sortDir=-1;
+  const container=document.createElement('div');
+  container.className='table-container';
+  panel.appendChild(container);
+  
+  function render(){
+    const sorted=[...contributions].sort((a,b)=>{
+      let va=a[sortCol],vb=b[sortCol];
+      if(typeof va==='string')return sortDir*va.localeCompare(vb);
+      return sortDir*((va||0)-(vb||0));
+    });
+    container.innerHTML='<table><thead><tr>'+
+      '<th data-col="committeeName">Committee <span class="sort-arrow">'+(sortCol==='committeeName'?(sortDir>0?'▲':'▼'):'↕')+'</span></th>'+
+      '<th data-col="totalAmount" style="text-align:right">Amount <span class="sort-arrow">'+(sortCol==='totalAmount'?(sortDir>0?'▲':'▼'):'↕')+'</span></th>'+
+      '<th data-col="donationCount" style="text-align:right"># <span class="sort-arrow">'+(sortCol==='donationCount'?(sortDir>0?'▲':'▼'):'↕')+'</span></th>'+
+      '<th data-col="firstDate">First <span class="sort-arrow">'+(sortCol==='firstDate'?(sortDir>0?'▲':'▼'):'↕')+'</span></th>'+
+      '<th data-col="lastDate">Last <span class="sort-arrow">'+(sortCol==='lastDate'?(sortDir>0?'▲':'▼'):'↕')+'</span></th>'+
+      '<th data-col="party">Party <span class="sort-arrow">'+(sortCol==='party'?(sortDir>0?'▲':'▼'):'↕')+'</span></th>'+
+      '</tr></thead><tbody>'+sorted.map(c=>
+        '<tr data-cid="'+c.committeeId+'"><td>'+esc(c.committeeName)+'</td><td class="amount">'+fmt(c.totalAmount)+'</td><td style="text-align:right">'+(c.donationCount||'—')+'</td><td>'+fmtDate(c.firstDate)+'</td><td>'+fmtDate(c.lastDate)+'</td><td><span class="party-dot" style="background:'+partyColor(c.party)+'"></span>'+esc(c.party||'N/A')+'</td></tr>'
+      ).join('')+'</tbody></table>';
+    
+    container.querySelectorAll('th[data-col]').forEach(th=>{
+      th.addEventListener('click',()=>{
+        const col=th.dataset.col;
+        if(sortCol===col)sortDir*=-1;else{sortCol=col;sortDir=col==='totalAmount'||col==='donationCount'?-1:1}
+        render();
+      });
+    });
+    
+    container.querySelectorAll('tr[data-cid]').forEach(tr=>{
+      tr.addEventListener('click',()=>{
+        const cid=parseInt(tr.dataset.cid);
+        const match=contributions.find(c=>c.committeeId===cid);
+        if(match)apiFetch('/api/finance/search?q='+encodeURIComponent(match.committeeName)+'&limit=5').then(r=>{
+          const m=r.committees.find(c=>c.committeeId===cid)||r.committees[0];
+          if(m)selectCommittee(m);
+        }).catch(()=>{});
+      });
+    });
+  }
+  render();
+}
+
+// ═══ SIDEBAR CHARTS (donut + cycle bars) ═══
+function renderSidebarCharts(donors, rawPoints){
+  const extra=$('#sidebarExtra');
+  extra.innerHTML='';
+  
+  // === DONUT: PAC vs Individual ===
+  const pacTotal=donors.filter(d=>d.isPAC).reduce((s,d)=>s+d.total,0);
+  const indTotal=donors.filter(d=>!d.isPAC).reduce((s,d)=>s+d.total,0);
+  const grandTotal=pacTotal+indTotal;
+  
+  if(grandTotal>0){
+    const sec=document.createElement('div');
+    sec.className='sidebar-section';
+    sec.innerHTML='<div class="sidebar-section-title">Donor Breakdown</div><div class="donut-wrap"><svg id="donutChart" width="100" height="100"></svg><div class="donut-legend" id="donutLegend"></div></div>';
+    extra.appendChild(sec);
+    
+    // Draw donut with D3
+    const svg=d3.select('#donutChart');
+    const g=svg.append('g').attr('transform','translate(50,50)');
+    const arc=d3.arc().innerRadius(28).outerRadius(45);
+    const pie=d3.pie().sort(null).value(d=>d.value);
+    const data=[{label:'PAC/Committee',value:pacTotal,color:'#4fc3f7'},{label:'Individual',value:indTotal,color:'#6b7280'}];
+    
+    g.selectAll('path').data(pie(data)).join('path')
+      .attr('d',arc).attr('fill',d=>d.data.color).attr('opacity',.8);
+    
+    // Center text
+    g.append('text').attr('text-anchor','middle').attr('dy','-0.1em').attr('fill','var(--text)').attr('font-size','13px').attr('font-weight','700')
+      .text(fmtCompact(grandTotal));
+    g.append('text').attr('text-anchor','middle').attr('dy','1.1em').attr('fill','var(--text-dim)').attr('font-size','9px')
+      .text('TOTAL');
+    
+    // Legend
+    const legend=$('#donutLegend');
+    data.forEach(d=>{
+      const pct=grandTotal>0?Math.round(d.value/grandTotal*100):0;
+      legend.innerHTML+=`<div class="donut-legend-item"><div class="donut-legend-swatch" style="background:${d.color}"></div>${d.label}<span class="donut-legend-value">${fmtCompact(d.value)} (${pct}%)</span></div>`;
+    });
+  }
+  
+  // === CYCLE COMPARISON ===
+  const cycleTotals={};
+  rawPoints.forEach(p=>{
+    if(!cycleTotals[p.cycle]) cycleTotals[p.cycle]=0;
+    cycleTotals[p.cycle]+=(p.amount||0);
+  });
+  
+  const cycleEntries=Object.entries(cycleTotals).sort((a,b)=>b[0].localeCompare(a[0]));
+  if(cycleEntries.length>0){
+    const maxCycleVal=Math.max(...cycleEntries.map(e=>e[1]));
+    const sec2=document.createElement('div');
+    sec2.className='sidebar-section';
+    sec2.innerHTML='<div class="sidebar-section-title">Raised by Cycle</div><div class="cycle-bar-wrap" id="cycleBars"></div>';
+    extra.appendChild(sec2);
+    
+    const wrap=$('#cycleBars');
+    cycleEntries.forEach(([cycle,total])=>{
+      const pct=maxCycleVal>0?Math.round(total/maxCycleVal*100):0;
+      wrap.innerHTML+=`<div class="cycle-bar-row">
+        <span class="cycle-bar-label">${cycle}</span>
+        <div class="cycle-bar-track"><div class="cycle-bar-fill" style="width:${pct}%"></div></div>
+        <span class="cycle-bar-value">${fmtCompact(total)}</span>
+      </div>`;
+    });
+  }
+}
+
+// ═══ TIMELINE + KPI ═══
+async function loadTimelineData(id){
+  const container=$('#timelineContainer');
+  container.innerHTML='<div class="viz-loading"><div class="spinner"></div></div>';
+  try{
+    const data=await apiFetch('/api/finance/timeline/'+id+'?granularity=quarter');
+    timelineData=data;
+    renderTimeline(data,container);
+    computeKPIs(data);
+  }catch(e){container.innerHTML='<div class="viz-empty">Could not load timeline data</div>'}
+}
+
+function computeKPIs(data){
+  if(!data||!data.timeline||!data.timeline.length) return;
+  const tl=data.timeline;
+  const totalRaised=tl.reduce((s,q)=>s+(+q.received||0),0);
+  const totalSpent=tl.reduce((s,q)=>s+(+q.spent||0),0);
+  const cashOnHand=totalRaised-totalSpent;
+  
+  // Burn rate: avg quarterly spend / avg quarterly raised (last 4 quarters)
+  const recent=tl.slice(-4);
+  const avgSpent=recent.reduce((s,q)=>s+(+q.spent||0),0)/recent.length;
+  const avgRaised=recent.reduce((s,q)=>s+(+q.received||0),0)/recent.length;
+  const burnRate=avgRaised>0?avgSpent/avgRaised:0;
+  
+  const totalReceipts=tl.reduce((s,q)=>s+(+q.receiptCount||0),0);
+  const totalExpend=tl.reduce((s,q)=>s+(+q.expenditureCount||0),0);
+  
+  $('#kpiRaised').textContent=fmtCompact(totalRaised);
+  $('#kpiRaisedSub').textContent=fmtNum(totalReceipts)+' receipts';
+  $('#kpiSpent').textContent=fmtCompact(totalSpent);
+  $('#kpiSpentSub').textContent=fmtNum(totalExpend)+' expenditures';
+  $('#kpiCash').textContent=fmtCompact(cashOnHand);
+  $('#kpiCash').style.color=cashOnHand>=0?'var(--green)':'var(--red)';
+  $('#kpiCashSub').textContent=cashOnHand>=0?'Net positive':'Net negative';
+  $('#kpiBurn').textContent=fmtPct(burnRate);
+  $('#kpiBurn').style.color=burnRate>1?'var(--red)':burnRate>.8?'var(--orange)':'var(--green)';
+  $('#kpiBurnSub').textContent='Last '+recent.length+' quarters avg';
+}
+
+function renderTimeline(data,container){
+  container.innerHTML='';
+  if(!data.timeline||!data.timeline.length){container.innerHTML='<div class="viz-empty">No timeline data available</div>';return}
+  
+  const tl=data.timeline.map(d=>({...d,date:new Date(d.period),received:+d.received||0,spent:+d.spent||0,net:+d.netCashFlow||0,donors:+d.uniqueDonors||0}));
+  
+  // Compute cumulative cash on hand
+  let cumCash=0;
+  tl.forEach(d=>{cumCash+=d.received-d.spent;d.cashOnHand=cumCash});
+  
+  // Title
+  const title=document.createElement('div');title.className='chart-title';
+  title.textContent=data.committee.name+' — Fundraising Timeline';
+  container.appendChild(title);
+  
+  // Legend
+  const legend=document.createElement('div');legend.className='timeline-legend';
+  legend.innerHTML='<div class="legend-item"><div class="legend-swatch" style="background:#66bb6a"></div>Received</div><div class="legend-item"><div class="legend-swatch" style="background:#ef5350"></div>Spent</div><div class="legend-item"><div class="legend-swatch" style="background:#4fc3f7;height:2px"></div>Net Cash Flow</div><div class="legend-item"><div class="legend-swatch" style="background:#66bb6a;opacity:.7;height:2px;border-bottom:1px dashed #66bb6a"></div>Cash on Hand</div>';
+  container.appendChild(legend);
+  
+  // Chart wrapper
+  const wrap=document.createElement('div');wrap.className='timeline-chart-wrap';
+  container.appendChild(wrap);
+  
+  const cRect=container.getBoundingClientRect();
+  const margin={top:16,right:24,bottom:32,left:60};
+  const totalW=Math.max(400,cRect.width-32);
+  const totalH=260;
+  const w=totalW-margin.left-margin.right;
+  const h=totalH-margin.top-margin.bottom;
+  
+  const svg=d3.select(wrap).append('svg').attr('viewBox','0 0 '+totalW+' '+totalH).attr('preserveAspectRatio','xMidYMid meet');
+  const g=svg.append('g').attr('transform','translate('+margin.left+','+margin.top+')');
+  
+  const x=d3.scaleTime().domain(d3.extent(tl,d=>d.date)).range([0,w]);
+  const allVals=[...tl.map(d=>d.received),...tl.map(d=>d.spent),...tl.map(d=>Math.abs(d.cashOnHand))];
+  const maxY=d3.max(allVals)||1;
+  const minY=Math.min(0,d3.min(tl,d=>Math.min(d.net,d.cashOnHand))||0);
+  const y=d3.scaleLinear().domain([minY*1.1,maxY*1.1]).range([h,0]).nice();
+  
+  // Grid
+  g.append('g').attr('class','grid').call(d3.axisLeft(y).tickSize(-w).tickFormat('').ticks(5)).select('.domain').remove();
+  // Axes
+  g.append('g').attr('class','axis').attr('transform','translate(0,'+h+')').call(d3.axisBottom(x).ticks(Math.min(tl.length,10)).tickFormat(d3.timeFormat("'%y")));
+  g.append('g').attr('class','axis').call(d3.axisLeft(y).ticks(5).tickFormat(d=>d>=1e6?(d/1e6).toFixed(1)+'M':d>=1e3?(d/1e3).toFixed(0)+'K':d<=-1e6?(d/1e6).toFixed(1)+'M':d<=-1e3?(d/1e3).toFixed(0)+'K':d));
+  
+  // Areas
+  const areaR=d3.area().x(d=>x(d.date)).y0(y(0)).y1(d=>y(d.received)).curve(d3.curveMonotoneX);
+  const areaS=d3.area().x(d=>x(d.date)).y0(y(0)).y1(d=>y(d.spent)).curve(d3.curveMonotoneX);
+  g.append('path').datum(tl).attr('d',areaR).attr('fill','#66bb6a').attr('fill-opacity',.2).attr('stroke','#66bb6a').attr('stroke-width',1.5);
+  g.append('path').datum(tl).attr('d',areaS).attr('fill','#ef5350').attr('fill-opacity',.12).attr('stroke','#ef5350').attr('stroke-width',1.5);
+  
+  // Net cash flow line
+  const netLine=d3.line().x(d=>x(d.date)).y(d=>y(d.net)).curve(d3.curveMonotoneX);
+  g.append('path').datum(tl).attr('d',netLine).attr('fill','none').attr('stroke','#4fc3f7').attr('stroke-width',2).attr('stroke-dasharray','4,3');
+  
+  // Cumulative cash on hand line (green)
+  const cohLine=d3.line().x(d=>x(d.date)).y(d=>y(d.cashOnHand)).curve(d3.curveMonotoneX);
+  g.append('path').datum(tl).attr('d',cohLine).attr('fill','none').attr('stroke','#66bb6a').attr('stroke-width',2.5).attr('stroke-opacity',.7);
+  
+  // Hover
+  const focusLine=g.append('line').attr('y1',0).attr('y2',h).attr('stroke','var(--text-dim)').attr('stroke-width',1).attr('stroke-dasharray','3,3').style('display','none');
+  const ttip=d3.select(wrap).append('div').attr('class','tooltip').style('display','none').style('pointer-events','none');
+  
+  const bisect=d3.bisector(d=>d.date).left;
+  svg.append('rect').attr('width',w).attr('height',h).attr('transform','translate('+margin.left+','+margin.top+')').attr('fill','transparent').attr('cursor','crosshair')
+    .on('mouseover',()=>{focusLine.style('display',null);ttip.style('display','block')})
+    .on('mouseout',()=>{focusLine.style('display','none');ttip.style('display','none')})
+    .on('mousemove',function(ev){
+      const[mx]=d3.pointer(ev,this);
+      const xDate=x.invert(mx);
+      const i=bisect(tl,xDate,1);
+      const d0=tl[i-1],d1=tl[i];
+      const d=!d1?d0:(xDate-d0.date>d1.date-xDate?d1:d0);
+      focusLine.attr('x1',x(d.date)).attr('x2',x(d.date));
+      const svgRect=wrap.getBoundingClientRect();
+      const px=x(d.date)+margin.left;
+      ttip.style('left',(px+10)+'px').style('top',margin.top+'px')
+        .html('<div class="tooltip-name">'+fmtDate(d.date)+'</div><div class="tooltip-detail" style="color:#66bb6a">Received: '+fmt(d.received)+'</div><div class="tooltip-detail" style="color:#ef5350">Spent: '+fmt(d.spent)+'</div><div class="tooltip-detail" style="color:#4fc3f7">Net: '+fmt(d.net)+'</div><div class="tooltip-detail" style="color:#66bb6a">Cash on Hand: '+fmt(d.cashOnHand)+'</div><div class="tooltip-detail">Donors: '+fmtNum(d.donors)+'</div>');
+    });
+  
+  // Donors bar chart
+  const dt=document.createElement('div');dt.className='chart-title';dt.textContent='Unique Donors Per Quarter';
+  container.appendChild(dt);
+  
+  const dWrap=document.createElement('div');dWrap.className='timeline-chart-wrap';dWrap.style.minHeight='80px';
+  container.appendChild(dWrap);
+  
+  const dMargin={top:8,right:24,bottom:24,left:60};
+  const dTotalH=90;
+  const dW=totalW-dMargin.left-dMargin.right;
+  const dH=dTotalH-dMargin.top-dMargin.bottom;
+  
+  const dsvg=d3.select(dWrap).append('svg').attr('viewBox','0 0 '+totalW+' '+dTotalH).attr('preserveAspectRatio','xMidYMid meet');
+  const dg=dsvg.append('g').attr('transform','translate('+dMargin.left+','+dMargin.top+')');
+  
+  const dx=d3.scaleBand().domain(tl.map(d=>d.date.toISOString())).range([0,dW]).padding(.35);
+  const dy=d3.scaleLinear().domain([0,d3.max(tl,d=>d.donors)||1]).range([dH,0]).nice();
+  
+  const tickEvery=Math.max(1,Math.ceil(tl.length/10));
+  dg.append('g').attr('class','axis').attr('transform','translate(0,'+dH+')').call(d3.axisBottom(dx).tickValues(dx.domain().filter((_,i)=>i%tickEvery===0)).tickFormat(d=>d3.timeFormat("'%y")(new Date(d))));
+  dg.append('g').attr('class','axis').call(d3.axisLeft(dy).ticks(3));
+  
+  dg.selectAll('.dbar').data(tl).join('rect').attr('class','dbar')
+    .attr('x',d=>dx(d.date.toISOString())).attr('y',d=>dy(d.donors))
+    .attr('width',dx.bandwidth()).attr('height',d=>dH-dy(d.donors))
+    .attr('fill','#4fc3f7').attr('fill-opacity',.45).attr('rx',1);
 }
 
 // ═══ NETWORK GRAPH ═══
@@ -422,7 +1027,6 @@ function renderNetwork(donorData){
   const rScale=d3.scaleSqrt().domain([0,maxAmt]).range([5,45]);
   const lScale=d3.scaleLinear().domain([0,maxAmt]).range([.5,5]);
   
-  // Limit labels for clarity
   const topN=donorData.contributions.slice().sort((a,b)=>b.totalAmount-a.totalAmount);
   const showLabelSet=new Set(topN.slice(0,15).map(c=>c.committeeId));
   
@@ -443,7 +1047,6 @@ function renderNetwork(donorData){
     .force('collision',d3.forceCollide(d=>d.r+3));
   currentSimulation=sim;
   
-  // Pin center
   nodes[0].fx=W/2;nodes[0].fy=H/2;
   
   const link=g.selectAll('.link').data(links).join('line')
@@ -476,8 +1079,6 @@ function renderNetwork(donorData){
     const r=container.getBoundingClientRect();
     tooltip.style('left',(e.clientX-r.left+12)+'px').style('top',(e.clientY-r.top-10)+'px');
   }).on('mouseout',()=>tooltip.style('display','none'));
-  
-  // Click handler removed — navigation is now handled in dragend when wasDragged is false
   
   sim.on('tick',()=>{
     link.attr('x1',d=>d.source.x).attr('y1',d=>d.source.y).attr('x2',d=>d.target.x).attr('y2',d=>d.target.y);
@@ -529,184 +1130,21 @@ function renderCommitteeNet(mf,container){
   sim.on('tick',()=>{link.attr('x1',d=>d.source.x).attr('y1',d=>d.source.y).attr('x2',d=>d.target.x).attr('y2',d=>d.target.y);node.attr('transform',d=>'translate('+d.x+','+d.y+')')});
 }
 
-// ═══ TIMELINE ═══
-async function loadTimeline(id){
-  const container=$('#timelineContainer');
-  container.innerHTML='<div class="viz-loading"><div class="spinner"></div></div>';
-  try{
-    const data=await apiFetch('/api/finance/timeline/'+id+'?granularity=quarter');
-    renderTimeline(data,container);
-  }catch(e){container.innerHTML='<div class="viz-empty">Could not load timeline data</div>'}
-}
-
-function renderTimeline(data,container){
-  container.innerHTML='';
-  if(!data.timeline||!data.timeline.length){container.innerHTML='<div class="viz-empty">No timeline data available</div>';return}
-  
-  const tl=data.timeline.map(d=>({...d,date:new Date(d.period),received:+d.received||0,spent:+d.spent||0,net:+d.netCashFlow||0,donors:+d.uniqueDonors||0}));
-  
-  // Title
-  const title=document.createElement('div');title.className='chart-title';
-  title.textContent=data.committee.name+' — Fundraising Timeline';
-  container.appendChild(title);
-  
-  // Legend
-  const legend=document.createElement('div');legend.className='timeline-legend';
-  legend.innerHTML='<div class="legend-item"><div class="legend-swatch" style="background:#66bb6a"></div>Received</div><div class="legend-item"><div class="legend-swatch" style="background:#ef5350"></div>Spent</div><div class="legend-item"><div class="legend-swatch" style="background:#4fc3f7;height:2px"></div>Net Cash Flow</div>';
-  container.appendChild(legend);
-  
-  // Chart wrapper
-  const wrap=document.createElement('div');wrap.className='timeline-chart-wrap';
-  container.appendChild(wrap);
-  
-  const cRect=container.getBoundingClientRect();
-  const margin={top:16,right:24,bottom:32,left:60};
-  const totalW=Math.max(400,cRect.width-32);
-  const totalH=280;
-  const w=totalW-margin.left-margin.right;
-  const h=totalH-margin.top-margin.bottom;
-  
-  const svg=d3.select(wrap).append('svg').attr('viewBox','0 0 '+totalW+' '+totalH).attr('preserveAspectRatio','xMidYMid meet');
-  const g=svg.append('g').attr('transform','translate('+margin.left+','+margin.top+')');
-  
-  const x=d3.scaleTime().domain(d3.extent(tl,d=>d.date)).range([0,w]);
-  const maxY=d3.max(tl,d=>Math.max(d.received,d.spent))||1;
-  const minY=d3.min(tl,d=>d.net)||0;
-  const y=d3.scaleLinear().domain([Math.min(0,minY*1.1),maxY*1.1]).range([h,0]).nice();
-  
-  // Grid
-  g.append('g').attr('class','grid').call(d3.axisLeft(y).tickSize(-w).tickFormat('').ticks(5)).select('.domain').remove();
-  // Axes
-  g.append('g').attr('class','axis').attr('transform','translate(0,'+h+')').call(d3.axisBottom(x).ticks(Math.min(tl.length,10)).tickFormat(d3.timeFormat("'%y")));
-  g.append('g').attr('class','axis').call(d3.axisLeft(y).ticks(5).tickFormat(d=>d>=1e6?(d/1e6).toFixed(1)+'M':d>=1e3?(d/1e3).toFixed(0)+'K':d));
-  
-  // Areas
-  const areaR=d3.area().x(d=>x(d.date)).y0(y(0)).y1(d=>y(d.received)).curve(d3.curveMonotoneX);
-  const areaS=d3.area().x(d=>x(d.date)).y0(y(0)).y1(d=>y(d.spent)).curve(d3.curveMonotoneX);
-  g.append('path').datum(tl).attr('d',areaR).attr('fill','#66bb6a').attr('fill-opacity',.2).attr('stroke','#66bb6a').attr('stroke-width',1.5);
-  g.append('path').datum(tl).attr('d',areaS).attr('fill','#ef5350').attr('fill-opacity',.12).attr('stroke','#ef5350').attr('stroke-width',1.5);
-  
-  // Net line
-  const netLine=d3.line().x(d=>x(d.date)).y(d=>y(d.net)).curve(d3.curveMonotoneX);
-  g.append('path').datum(tl).attr('d',netLine).attr('fill','none').attr('stroke','#4fc3f7').attr('stroke-width',2).attr('stroke-dasharray','4,3');
-  
-  // Hover
-  const focusLine=g.append('line').attr('y1',0).attr('y2',h).attr('stroke','var(--text-dim)').attr('stroke-width',1).attr('stroke-dasharray','3,3').style('display','none');
-  const ttip=d3.select(wrap).append('div').attr('class','tooltip').style('display','none').style('pointer-events','none');
-  
-  const bisect=d3.bisector(d=>d.date).left;
-  svg.append('rect').attr('width',w).attr('height',h).attr('transform','translate('+margin.left+','+margin.top+')').attr('fill','transparent').attr('cursor','crosshair')
-    .on('mouseover',()=>{focusLine.style('display',null);ttip.style('display','block')})
-    .on('mouseout',()=>{focusLine.style('display','none');ttip.style('display','none')})
-    .on('mousemove',function(ev){
-      const[mx]=d3.pointer(ev,this);
-      const xDate=x.invert(mx);
-      const i=bisect(tl,xDate,1);
-      const d0=tl[i-1],d1=tl[i];
-      const d=!d1?d0:(xDate-d0.date>d1.date-xDate?d1:d0);
-      focusLine.attr('x1',x(d.date)).attr('x2',x(d.date));
-      // Position tooltip relative to SVG
-      const svgRect=wrap.getBoundingClientRect();
-      const px=x(d.date)+margin.left;
-      ttip.style('left',(px+10)+'px').style('top',margin.top+'px')
-        .html('<div class="tooltip-name">'+fmtDate(d.date)+'</div><div class="tooltip-detail" style="color:#66bb6a">Received: '+fmt(d.received)+'</div><div class="tooltip-detail" style="color:#ef5350">Spent: '+fmt(d.spent)+'</div><div class="tooltip-detail" style="color:#4fc3f7">Net: '+fmt(d.net)+'</div><div class="tooltip-detail">Donors: '+fmtNum(d.donors)+'</div>');
-    });
-  
-  // Donors bar chart
-  const dt=document.createElement('div');dt.className='chart-title';dt.textContent='Unique Donors Per Quarter';
-  container.appendChild(dt);
-  
-  const dWrap=document.createElement('div');dWrap.className='timeline-chart-wrap';dWrap.style.minHeight='80px';
-  container.appendChild(dWrap);
-  
-  const dMargin={top:8,right:24,bottom:24,left:60};
-  const dTotalH=90;
-  const dW=totalW-dMargin.left-dMargin.right;
-  const dH=dTotalH-dMargin.top-dMargin.bottom;
-  
-  const dsvg=d3.select(dWrap).append('svg').attr('viewBox','0 0 '+totalW+' '+dTotalH).attr('preserveAspectRatio','xMidYMid meet');
-  const dg=dsvg.append('g').attr('transform','translate('+dMargin.left+','+dMargin.top+')');
-  
-  const dx=d3.scaleBand().domain(tl.map(d=>d.date.toISOString())).range([0,dW]).padding(.35);
-  const dy=d3.scaleLinear().domain([0,d3.max(tl,d=>d.donors)||1]).range([dH,0]).nice();
-  
-  const tickEvery=Math.max(1,Math.ceil(tl.length/10));
-  dg.append('g').attr('class','axis').attr('transform','translate(0,'+dH+')').call(d3.axisBottom(dx).tickValues(dx.domain().filter((_,i)=>i%tickEvery===0)).tickFormat(d=>d3.timeFormat("'%y")(new Date(d))));
-  dg.append('g').attr('class','axis').call(d3.axisLeft(dy).ticks(3));
-  
-  dg.selectAll('.dbar').data(tl).join('rect').attr('class','dbar')
-    .attr('x',d=>dx(d.date.toISOString())).attr('y',d=>dy(d.donors))
-    .attr('width',dx.bandwidth()).attr('height',d=>dH-dy(d.donors))
-    .attr('fill','#4fc3f7').attr('fill-opacity',.45).attr('rx',1);
-}
-
-// ═══ CONTRIBUTIONS TABLE ═══
-function renderContribTable(contributions){
-  const empty=$('#contribEmpty'),table=$('#contribTable');
-  if(!contributions||!contributions.length){
-    empty.textContent='No contributions data available';empty.style.display='flex';table.style.display='none';return;
-  }
-  empty.style.display='none';table.style.display='block';
-  
-  let sortCol='totalAmount',sortDir=-1;
-  
-  function render(){
-    const sorted=[...contributions].sort((a,b)=>{
-      let va=a[sortCol],vb=b[sortCol];
-      if(typeof va==='string')return sortDir*va.localeCompare(vb);
-      return sortDir*((va||0)-(vb||0));
-    });
-    table.innerHTML='<table><thead><tr>'+
-      '<th data-col="committeeName">Committee <span class="sort-arrow">'+(sortCol==='committeeName'?(sortDir>0?'▲':'▼'):'↕')+'</span></th>'+
-      '<th data-col="totalAmount" style="text-align:right">Amount <span class="sort-arrow">'+(sortCol==='totalAmount'?(sortDir>0?'▲':'▼'):'↕')+'</span></th>'+
-      '<th data-col="donationCount" style="text-align:right"># <span class="sort-arrow">'+(sortCol==='donationCount'?(sortDir>0?'▲':'▼'):'↕')+'</span></th>'+
-      '<th data-col="firstDate">First <span class="sort-arrow">'+(sortCol==='firstDate'?(sortDir>0?'▲':'▼'):'↕')+'</span></th>'+
-      '<th data-col="lastDate">Last <span class="sort-arrow">'+(sortCol==='lastDate'?(sortDir>0?'▲':'▼'):'↕')+'</span></th>'+
-      '<th data-col="party">Party <span class="sort-arrow">'+(sortCol==='party'?(sortDir>0?'▲':'▼'):'↕')+'</span></th>'+
-      '</tr></thead><tbody>'+sorted.map(c=>
-        '<tr data-cid="'+c.committeeId+'"><td>'+esc(c.committeeName)+'</td><td class="amount">'+fmt(c.totalAmount)+'</td><td style="text-align:right">'+(c.donationCount||'—')+'</td><td>'+fmtDate(c.firstDate)+'</td><td>'+fmtDate(c.lastDate)+'</td><td><span class="party-dot" style="background:'+partyColor(c.party)+'"></span>'+esc(c.party||'N/A')+'</td></tr>'
-      ).join('')+'</tbody></table>';
-    
-    table.querySelectorAll('th[data-col]').forEach(th=>{
-      th.addEventListener('click',()=>{
-        const col=th.dataset.col;
-        if(sortCol===col)sortDir*=-1;else{sortCol=col;sortDir=col==='totalAmount'||col==='donationCount'?-1:1}
-        render();
-      });
-    });
-    
-    table.querySelectorAll('tr[data-cid]').forEach(tr=>{
-      tr.addEventListener('click',()=>{
-        const cid=parseInt(tr.dataset.cid);
-        const match=contributions.find(c=>c.committeeId===cid);
-        if(match)apiFetch('/api/finance/search?q='+encodeURIComponent(match.committeeName)+'&limit=5').then(r=>{
-          const m=r.committees.find(c=>c.committeeId===cid)||r.committees[0];
-          if(m)selectCommittee(m);
-        }).catch(()=>{});
-      });
-    });
-  }
-  render();
-}
-
 // ═══ MONEY FLOW ═══
 async function loadMoneyFlow(id){
   const container=$('#sankeyContainer');
   container.innerHTML='<div class="viz-loading"><div class="spinner"></div></div>';
   try{
-    // The /money-flow endpoint is unpopulated, so build inflows from overlay-points
-    // by aggregating donors that look like committees/PACs across all cycles
     const cycles=['2026P','2024G','2024P','2022G','2022P'];
     const donorMap={};
-    const committeeName=currentEntity?.data?.name||currentEntity?.name||'Committee';
+    const committeeName=currentEntity?.data?.name||'Committee';
     for(const cycle of cycles){
       try{
         const pts=await apiFetch('/api/finance/overlay-points/'+cycle+'?committeeId='+id+'&limit=5000');
         for(const p of (pts.points||[])){
           const dn=p.donorName||'';
-          // Identify committee/PAC donors by keywords
           const lc=dn.toLowerCase();
-          const isOrg=lc.includes('pac')||lc.includes('committee')||lc.includes('democratic')||lc.includes('republican')||lc.includes('party')||lc.includes('friends of')||lc.includes('citizens for')||lc.includes('fund')||lc.includes('seiu')||lc.includes('afscme')||lc.includes('union')||lc.includes('laborers')||lc.includes('teamsters')||lc.includes('association')||lc.includes('coalition')||lc.includes('council')||lc.includes('education')||lc.includes('ilae')||lc.includes('i.p.a.c.e');
+          const isOrg=PAC_KEYWORDS.some(k=>lc.includes(k));
           if(!isOrg) continue;
           const key=dn.trim();
           if(!key) continue;
@@ -754,7 +1192,6 @@ function renderSankey(data,container){
   const centerH=Math.max(40,ih*.4);
   g.append('rect').attr('x',centerX).attr('y',ih/2-centerH/2).attr('width',60).attr('height',centerH).attr('fill','#4fc3f7').attr('fill-opacity',.25).attr('rx',4).attr('stroke','#4fc3f7').attr('stroke-width',1);
   
-  // Center label
   const cName=data.committee.name;
   g.append('text').attr('x',centerX+30).attr('y',ih/2).attr('dy','0.35em').attr('text-anchor','middle').attr('fill','var(--text)').attr('font-size',10).attr('font-weight',600)
     .text(cName.length>12?cName.substring(0,10)+'…':cName);
@@ -790,7 +1227,6 @@ function renderSankey(data,container){
       .text(fmt(f.totalAmount));
   });
   
-  // Labels for sides
   if(hasIn)g.append('text').attr('x',0).attr('y',-8).attr('text-anchor','start').attr('font-size',10).attr('fill','#66bb6a').attr('font-weight',600).text('Inflows ↓');
   if(hasOut)g.append('text').attr('x',iw).attr('y',-8).attr('text-anchor','end').attr('font-size',10).attr('fill','#ef5350').attr('font-weight',600).text('↓ Outflows');
 }

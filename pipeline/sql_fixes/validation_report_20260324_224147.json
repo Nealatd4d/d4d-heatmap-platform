@@ -1,0 +1,66 @@
+{
+  "generated_at": "2026-03-24T22:41:47.056695",
+  "duration_seconds": 0.0,
+  "summary": {
+    "total_passed": 9,
+    "total_failed": 0,
+    "total_warnings": 0,
+    "overall_pass": true
+  },
+  "checks": [
+    {
+      "name": "Normalization Self-Test",
+      "passed": 9,
+      "failed": 0,
+      "warnings": 0,
+      "overall": "PASS",
+      "details": [
+        {
+          "status": "PASS",
+          "message": "[chicago] 'Ward 4 Precinct 1' \u2192 'Ward 04 Precinct 01' = 3f1683d455c28b64",
+          "data": {}
+        },
+        {
+          "status": "PASS",
+          "message": "[chicago] 'Ward 31 Precinct 9' \u2192 'Ward 31 Precinct 09' = 5d8f2fdf60e66f1c",
+          "data": {}
+        },
+        {
+          "status": "PASS",
+          "message": "[dupage_county] 'Wayne  017' \u2192 'Wayne 17' = dd3418983fe7ebfd",
+          "data": {}
+        },
+        {
+          "status": "PASS",
+          "message": "[dupage_county] 'Bloomingdale  013 - 0103' \u2192 'Bloomingdale 13' = b22a72789f28671b",
+          "data": {}
+        },
+        {
+          "status": "PASS",
+          "message": "[dupage_county] 'Addison  001' \u2192 'Addison 1' = 1759ad460975966d",
+          "data": {}
+        },
+        {
+          "status": "PASS",
+          "message": "[dekalb_county] 'DEKALB 09' \u2192 'DEKALB 9' = 805f2597d04baad7",
+          "data": {}
+        },
+        {
+          "status": "PASS",
+          "message": "[dekalb_county] 'AFTON 01' \u2192 'AFTON 1' = 1b873061034114b1",
+          "data": {}
+        },
+        {
+          "status": "PASS",
+          "message": "[dekalb_county] 'SYCAMORE 10' \u2192 'SYCAMORE 10' = 10efcc67a292dfde",
+          "data": {}
+        },
+        {
+          "status": "PASS",
+          "message": "[cook_suburban] '7000001' \u2192 '7000001' = caa9f82ddcd1fc22",
+          "data": {}
+        }
+      ]
+    }
+  ]
+}
