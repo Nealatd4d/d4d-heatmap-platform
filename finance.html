@@ -54,7 +54,8 @@ input,button,select{font-family:inherit;font-size:inherit}
 
 /* LAYOUT */
 .main{flex:1;display:flex;overflow:hidden;min-height:0}
-.sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto}
+.sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:visible;position:relative;z-index:10}
+.sidebar-scroll{flex:1;overflow-y:auto;min-height:0}
 .content{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
 
 /* SEARCH */
@@ -63,7 +64,7 @@ input,button,select{font-family:inherit;font-size:inherit}
 .search-input:focus{border-color:var(--blue)}
 .search-input::placeholder{color:var(--text-dim)}
 .search-icon{position:absolute;left:24px;top:50%;transform:translateY(-50%);color:var(--text-dim);pointer-events:none}
-.search-results{position:absolute;top:100%;left:12px;right:12px;background:var(--surface-alt);border:1px solid var(--border);border-radius:6px;max-height:400px;overflow-y:auto;z-index:50;display:none;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+.search-results{position:absolute;top:100%;left:12px;right:12px;background:var(--surface-alt);border:1px solid var(--border);border-radius:6px;max-height:400px;overflow-y:auto;z-index:9999;display:none;box-shadow:0 8px 24px rgba(0,0,0,.5)}
 .search-results.open{display:block}
 .search-group-label{padding:6px 12px;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0}
 .search-item{padding:8px 12px;cursor:pointer;border-bottom:1px solid var(--border);transition:background .1s}
@@ -158,7 +159,7 @@ td.amount{text-align:right;font-variant-numeric:tabular-nums;color:var(--text);f
 /* RESPONSIVE */
 @media(max-width:900px){
   .main{flex-direction:column}
-  .sidebar{width:100%;min-width:100%;max-height:45vh;border-right:none;border-bottom:1px solid var(--border);overflow-y:auto}
+  .sidebar{width:100%;min-width:100%;border-right:none;border-bottom:1px solid var(--border);overflow:visible;position:relative;z-index:10}
   .stats-bar{padding:8px 12px;gap:16px}
   .stat-value{font-size:14px}
   .header-back span.hb-text{display:none}
@@ -194,8 +195,10 @@ td.amount{text-align:right;font-variant-numeric:tabular-nums;color:var(--text);f
       <input type="text" class="search-input" id="searchInput" placeholder="Search a donor, candidate, or committee…" autocomplete="off">
       <div class="search-results" id="searchResults"></div>
     </div>
-    <div id="entityCard"></div>
-    <div id="sidebarExtra"></div>
+    <div class="sidebar-scroll">
+      <div id="entityCard"></div>
+      <div id="sidebarExtra"></div>
+    </div>
   </aside>
 
   <div class="content" id="contentArea">
@@ -283,12 +286,8 @@ function hideResults(){searchResults.classList.remove('open')}
 
 async function doSearch(q){
   try{
-    // Fire both requests in parallel; donor-network may fail for non-exact names
-    const [searchData,donorData]=await Promise.all([
-      apiFetch('/api/finance/search?q='+encodeURIComponent(q)+'&limit=15'),
-      apiFetch('/api/finance/donor-network/'+encodeURIComponent(q)).catch(()=>null)
-    ]);
-    
+    // Show committee results immediately from fast /search endpoint
+    const searchData=await apiFetch('/api/finance/search?q='+encodeURIComponent(q)+'&limit=15');
     searchResults.innerHTML='';
     const committees=searchData.committees||[];
     
@@ -303,19 +302,22 @@ async function doSearch(q){
       });
     }
     
-    if(donorData&&donorData.committeesCount>0){
-      searchResults.insertAdjacentHTML('beforeend','<div class="search-group-label">Donors</div>');
-      const div=document.createElement('div');
-      div.className='search-item';
-      div.innerHTML='<span class="party-dot" style="background:var(--yellow)"></span><span class="search-item-name">'+esc(donorData.donorName)+'</span><div class="search-item-meta">'+fmt(donorData.totalAmount)+' across '+donorData.committeesCount+' committees · '+fmtNum(donorData.totalDonations)+' donations</div>';
-      div.onclick=()=>selectDonor(donorData);
-      searchResults.appendChild(div);
-    }
-    
-    if(committees.length===0&&(!donorData||donorData.committeesCount===0)){
+    if(committees.length===0){
       searchResults.innerHTML='<div class="search-empty">No results for "'+esc(q)+'"</div>';
     }
     showResults();
+    
+    // Then try donor-network in background (slow endpoint) and append if found
+    apiFetch('/api/finance/donor-network/'+encodeURIComponent(q)).then(donorData=>{
+      if(donorData&&donorData.committeesCount>0&&searchInput.value.trim()===q){
+        searchResults.insertAdjacentHTML('beforeend','<div class="search-group-label">Donors</div>');
+        const div=document.createElement('div');
+        div.className='search-item';
+        div.innerHTML='<span class="party-dot" style="background:var(--yellow)"></span><span class="search-item-name">'+esc(donorData.donorName)+'</span><div class="search-item-meta">'+fmt(donorData.totalAmount)+' across '+donorData.committeesCount+' committees · '+fmtNum(donorData.totalDonations)+' donations</div>';
+        div.onclick=()=>selectDonor(donorData);
+        searchResults.appendChild(div);
+      }
+    }).catch(()=>{});
   }catch(e){
     searchResults.innerHTML='<div class="search-empty">Search error — please try again</div>';
     showResults();
