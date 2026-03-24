@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+   ______                            __
+  / ____/___  ____ ___  ____  __  __/ /____  _____
+ / /   / __ \/ __ `__ \/ __ \/ / / / __/ _ \/ ___/
+/ /___/ /_/ / / / / / / /_/ / /_/ / /_/  __/ /
+\____/\____/_/ /_/ /_/ .___/\__,_/\__/\___/_/
+                    /_/
+        Created with Perplexity Computer
+        https://www.perplexity.ai/computer
+-->
+<meta name="generator" content="Perplexity Computer">
+<meta name="author" content="Perplexity Computer">
+<meta property="og:see_also" content="https://www.perplexity.ai/computer">
+<link rel="author" href="https://www.perplexity.ai/computer">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D4D Finance Intelligence</title>
+<meta name="description" content="Campaign finance intelligence dashboard for Illinois — donor networks, fundraising timelines, and money flow analysis.">
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1117;--surface:#1a1d27;--surface-alt:#242836;--surface-hover:#2a2e3d;
+  --text:#e8eaed;--text-muted:#9aa0a6;--text-dim:#6b7280;
+  --blue:#4fc3f7;--blue-dim:#2196f3;--yellow:#fdd835;--border:#2d3140;
+  --dem:#4fc3f7;--rep:#ef5350;--other:#9aa0a6;
+  --green:#66bb6a;--red:#ef5350;--orange:#ffa726;
+  --header-h:42px;--sidebar-w:360px;
+}
+html{font-family:'Inter',system-ui,sans-serif;font-size:14px;line-height:1.5;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased}
+body{min-height:100vh;display:flex;flex-direction:column;overflow:hidden}
+a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}
+input,button,select{font-family:inherit;font-size:inherit}
+
+/* HEADER */
+.header{height:var(--header-h);background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:16px;position:sticky;top:0;z-index:100;flex-shrink:0}
+.header-back{color:var(--text-muted);font-size:12px;white-space:nowrap;display:flex;align-items:center;gap:4px}
+.header-back:hover{color:var(--blue)}
+.header-title{font-size:15px;font-weight:700;color:var(--text);white-space:nowrap}
+.header-title span{color:var(--blue)}
+.header-spacer{flex:1}
+
+/* STATS */
+.stats-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 16px;display:flex;gap:24px;flex-wrap:wrap;align-items:center;flex-shrink:0}
+.stat-item{display:flex;flex-direction:column;gap:1px}
+.stat-value{font-size:16px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums}
+.stat-label{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-dim)}
+
+/* LAYOUT */
+.main{flex:1;display:flex;overflow:hidden;min-height:0}
+.sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto}
+.content{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+
+/* SEARCH */
+.search-wrap{padding:12px;position:relative}
+.search-input{width:100%;background:var(--surface-alt);border:1px solid var(--border);border-radius:6px;padding:10px 12px 10px 36px;color:var(--text);font-size:14px;outline:none;transition:border-color .15s}
+.search-input:focus{border-color:var(--blue)}
+.search-input::placeholder{color:var(--text-dim)}
+.search-icon{position:absolute;left:24px;top:50%;transform:translateY(-50%);color:var(--text-dim);pointer-events:none}
+.search-results{position:absolute;top:100%;left:12px;right:12px;background:var(--surface-alt);border:1px solid var(--border);border-radius:6px;max-height:400px;overflow-y:auto;z-index:50;display:none;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+.search-results.open{display:block}
+.search-group-label{padding:6px 12px;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0}
+.search-item{padding:8px 12px;cursor:pointer;border-bottom:1px solid var(--border);transition:background .1s}
+.search-item:hover{background:var(--surface-hover)}
+.search-item:last-child{border-bottom:none}
+.search-item-name{font-weight:600;font-size:13px;color:var(--text)}
+.search-item-meta{font-size:11px;color:var(--text-dim);margin-top:1px}
+.party-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.search-empty{padding:16px;text-align:center;color:var(--text-dim);font-size:13px}
+.search-loading{padding:12px;text-align:center;color:var(--text-dim);font-size:12px}
+
+/* ENTITY CARD */
+.entity-card{padding:16px;border-bottom:1px solid var(--border)}
+.entity-type-badge{display:inline-block;font-size:10px;text-transform:uppercase;letter-spacing:.06em;padding:2px 8px;border-radius:4px;background:var(--surface-alt);color:var(--text-muted);margin-bottom:8px}
+.entity-name{font-size:17px;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:6px}
+.entity-detail{font-size:12px;color:var(--text-muted);margin-bottom:2px}
+.entity-detail strong{color:var(--text)}
+.entity-actions{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+.btn{padding:6px 14px;border-radius:5px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--surface-alt);color:var(--text-muted);transition:all .15s;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;gap:4px}
+.btn:hover{background:var(--surface-hover);color:var(--text);border-color:var(--blue);text-decoration:none}
+.btn-primary{background:var(--blue-dim);color:#fff;border-color:transparent}
+.btn-primary:hover{background:var(--blue);border-color:transparent}
+
+/* WELCOME */
+.welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;text-align:center;color:var(--text-dim)}
+.welcome-icon{font-size:48px;margin-bottom:16px;opacity:.4}
+.welcome h2{font-size:20px;font-weight:600;color:var(--text-muted);margin-bottom:8px}
+.welcome p{max-width:420px;font-size:13px;line-height:1.6}
+.welcome-hints{margin-top:20px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+
+/* TABS */
+.tabs{display:flex;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto}
+.tab{padding:10px 20px;font-size:12px;font-weight:600;color:var(--text-dim);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;user-select:none}
+.tab:hover{color:var(--text-muted)}
+.tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+
+/* VIZ PANELS */
+.viz-area{flex:1;overflow:hidden;position:relative;min-height:0}
+.viz-panel{position:absolute;inset:0;display:none;overflow:auto}
+.viz-panel.active{display:flex;flex-direction:column}
+.viz-empty{flex:1;display:flex;align-items:center;justify-content:center;color:var(--text-dim);font-size:13px;text-align:center;padding:40px;line-height:1.6}
+.viz-loading{flex:1;display:flex;align-items:center;justify-content:center}
+.spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* NETWORK */
+.network-container{flex:1;position:relative;overflow:hidden;min-height:0}
+.network-container svg{display:block;width:100%;height:100%}
+.node-label{font-size:9px;fill:var(--text-dim);pointer-events:none;text-anchor:middle}
+.node-center .node-label{font-size:11px;fill:var(--text);font-weight:600}
+.link{stroke-opacity:.4}
+.node circle{cursor:pointer;transition:opacity .15s}
+.node circle:hover{opacity:.85}
+.tooltip{position:absolute;background:var(--surface-alt);border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-size:12px;pointer-events:none;z-index:10;max-width:300px;box-shadow:0 4px 12px rgba(0,0,0,.5)}
+.tooltip-name{font-weight:600;color:var(--text);margin-bottom:2px}
+.tooltip-detail{color:var(--text-muted);font-size:11px}
+
+/* TIMELINE */
+.timeline-container{flex:1;padding:16px;display:flex;flex-direction:column;gap:12px;overflow-y:auto;min-height:0}
+.timeline-legend{display:flex;gap:16px;padding:4px 0;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-muted)}
+.legend-swatch{width:12px;height:3px;border-radius:2px}
+.axis text{fill:var(--text-dim);font-size:10px;font-family:'Inter',sans-serif}
+.axis line,.axis path{stroke:var(--border)}
+.grid line{stroke:var(--border);stroke-opacity:.3}
+.grid .domain{display:none}
+.chart-title{font-size:13px;font-weight:600;color:var(--text-muted)}
+.timeline-chart-wrap{width:100%;min-height:220px}
+.timeline-chart-wrap svg{display:block;width:100%}
+
+/* TABLE */
+.table-container{flex:1;overflow:auto;padding:0}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead{position:sticky;top:0;z-index:2}
+th{background:var(--surface);padding:8px 12px;text-align:left;font-weight:600;color:var(--text-muted);border-bottom:1px solid var(--border);cursor:pointer;white-space:nowrap;user-select:none}
+th:hover{color:var(--text)}
+th .sort-arrow{margin-left:4px;font-size:10px;color:var(--text-dim)}
+td{padding:7px 12px;border-bottom:1px solid var(--border);color:var(--text-muted);vertical-align:middle}
+tr:hover td{background:var(--surface-hover)}
+tr{cursor:pointer}
+td.amount{text-align:right;font-variant-numeric:tabular-nums;color:var(--text);font-weight:500}
+
+/* SANKEY */
+.sankey-container{flex:1;padding:16px;overflow:auto}
+.sankey-label{font-size:10px;fill:var(--text-muted)}
+
+/* FOOTER */
+.footer{background:var(--surface);border-top:1px solid var(--border);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--text-dim);flex-shrink:0}
+.footer a{color:var(--text-dim)}
+.footer a:hover{color:var(--blue)}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .main{flex-direction:column}
+  .sidebar{width:100%;min-width:100%;max-height:45vh;border-right:none;border-bottom:1px solid var(--border);overflow-y:auto}
+  .stats-bar{padding:8px 12px;gap:16px}
+  .stat-value{font-size:14px}
+  .header-back span.hb-text{display:none}
+}
+@media(max-width:600px){
+  .stats-bar{gap:12px}
+  .tab{padding:8px 14px;font-size:11px}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <a href="index.html" class="header-back">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span class="hb-text">Election Heatmap</span>
+  </a>
+  <div class="header-title">D4D <span>Finance Intelligence</span></div>
+  <div class="header-spacer"></div>
+</header>
+
+<div class="stats-bar" id="statsBar">
+  <div class="stat-item"><div class="stat-value" id="statReceipts">—</div><div class="stat-label">Total Receipts</div></div>
+  <div class="stat-item"><div class="stat-value" id="statAmount">—</div><div class="stat-label">Total Amount</div></div>
+  <div class="stat-item"><div class="stat-value" id="statCommittees">—</div><div class="stat-label">Committees</div></div>
+  <div class="stat-item"><div class="stat-value" id="statCycles">—</div><div class="stat-label">Election Cycles</div></div>
+</div>
+
+<div class="main">
+  <aside class="sidebar" id="sidebar">
+    <div class="search-wrap">
+      <svg class="search-icon" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search a donor, candidate, or committee…" autocomplete="off">
+      <div class="search-results" id="searchResults"></div>
+    </div>
+    <div id="entityCard"></div>
+    <div id="sidebarExtra"></div>
+  </aside>
+
+  <div class="content" id="contentArea">
+    <div class="welcome" id="welcomeScreen">
+      <div class="welcome-icon">💰</div>
+      <h2>Finance Intelligence</h2>
+      <p>Search for a donor, candidate, or committee to explore Illinois campaign finance data. View donor networks, fundraising timelines, contribution details, and money flow.</p>
+      <div class="welcome-hints">
+        <button class="btn" onclick="quickSearch('Pritzker, JB')">Try: Pritzker, JB</button>
+        <button class="btn" onclick="quickSearch('gabel')">Try: Gabel</button>
+        <button class="btn" onclick="quickSearch('madigan')">Try: Madigan</button>
+      </div>
+    </div>
+    <div id="vizWrapper" style="display:none;flex-direction:column;flex:1;overflow:hidden">
+      <div class="tabs" id="tabBar">
+        <div class="tab active" data-tab="network">Network Graph</div>
+        <div class="tab" data-tab="timeline">Timeline</div>
+        <div class="tab" data-tab="contributions">Contributions</div>
+        <div class="tab" data-tab="moneyflow">Money Flow</div>
+      </div>
+      <div class="viz-area">
+        <div class="viz-panel active" id="panel-network"><div class="network-container" id="networkContainer"><div class="viz-empty">Select a donor to view their contribution network</div></div></div>
+        <div class="viz-panel" id="panel-timeline"><div class="timeline-container" id="timelineContainer"><div class="viz-empty">Select a committee to view fundraising timeline</div></div></div>
+        <div class="viz-panel" id="panel-contributions"><div class="viz-empty" id="contribEmpty">Select an entity to view contributions</div><div class="table-container" id="contribTable" style="display:none"></div></div>
+        <div class="viz-panel" id="panel-moneyflow"><div class="sankey-container" id="sankeyContainer"><div class="viz-empty">Select a committee to view money flow</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <span>D4D Finance Intelligence — Illinois Campaign Finance Data</span>
+  <a href="https://www.perplexity.ai/computer" target="_blank" rel="noopener noreferrer">Created with Perplexity Computer</a>
+</footer>
+
+<script>
+const API='https://de1c0922-8718-46e3-8972-0e490363414c-00-8zny1suz8wo3.spock.replit.dev';
+const $=s=>document.querySelector(s);
+const $$=s=>document.querySelectorAll(s);
+const fmt=n=>n==null?'—':'$'+Math.round(n).toLocaleString('en-US');
+const fmtNum=n=>n==null?'—':Math.round(n).toLocaleString('en-US');
+const fmtDate=d=>{if(!d)return'—';const dt=new Date(d);return dt.toLocaleDateString('en-US',{month:'short',year:'numeric'})};
+const esc=s=>{if(!s)return'';const d=document.createElement('div');d.textContent=s;return d.innerHTML};
+const partyColor=p=>{if(!p)return'var(--other)';const l=p.toLowerCase();if(l.includes('democrat'))return'var(--dem)';if(l.includes('republic'))return'var(--rep)';return'var(--other)'};
+const partyHex=p=>{if(!p)return'#9aa0a6';const l=p.toLowerCase();if(l.includes('democrat'))return'#4fc3f7';if(l.includes('republic'))return'#ef5350';return'#9aa0a6'};
+
+let currentEntity=null,activeTab='network',searchTimeout=null;
+
+async function apiFetch(path){const r=await fetch(API+path);if(!r.ok)throw new Error('API '+r.status);return r.json()}
+
+// Stats
+async function loadStats(){
+  try{
+    const s=await apiFetch('/api/finance/stats');
+    $('#statReceipts').textContent=fmtNum(s.totalReceipts);
+    $('#statAmount').textContent=fmt(s.totalReceiptAmount);
+    $('#statCommittees').textContent=fmtNum(s.totalCommittees);
+    $('#statCycles').textContent=s.electionCycles?s.electionCycles.length:'—';
+  }catch(e){console.error('Stats:',e)}
+}
+
+// Search
+const searchInput=$('#searchInput'),searchResults=$('#searchResults');
+let searchAbort=null;
+
+searchInput.addEventListener('input',()=>{
+  clearTimeout(searchTimeout);
+  const q=searchInput.value.trim();
+  if(q.length<2){hideResults();return}
+  searchResults.innerHTML='<div class="search-loading">Searching…</div>';
+  showResults();
+  searchTimeout=setTimeout(()=>doSearch(q),300);
+});
+
+searchInput.addEventListener('focus',()=>{
+  if(searchResults.children.length>0 && searchInput.value.trim().length>=2) showResults();
+});
+
+document.addEventListener('mousedown',e=>{
+  if(!e.target.closest('.search-wrap'))hideResults();
+});
+
+function showResults(){searchResults.classList.add('open')}
+function hideResults(){searchResults.classList.remove('open')}
+
+async function doSearch(q){
+  try{
+    // Fire both requests in parallel; donor-network may fail for non-exact names
+    const [searchData,donorData]=await Promise.all([
+      apiFetch('/api/finance/search?q='+encodeURIComponent(q)+'&limit=15'),
+      apiFetch('/api/finance/donor-network/'+encodeURIComponent(q)).catch(()=>null)
+    ]);
+    
+    searchResults.innerHTML='';
+    const committees=searchData.committees||[];
+    
+    if(committees.length>0){
+      searchResults.insertAdjacentHTML('beforeend','<div class="search-group-label">Committees</div>');
+      committees.forEach(c=>{
+        const div=document.createElement('div');
+        div.className='search-item';
+        div.innerHTML='<span class="party-dot" style="background:'+partyColor(c.party)+'"></span><span class="search-item-name">'+esc(c.name)+'</span><div class="search-item-meta">'+esc(c.candidateName||'')+' · '+esc(c.type||'Committee')+' · '+esc(c.party||'N/A')+'</div>';
+        div.onclick=()=>selectCommittee(c);
+        searchResults.appendChild(div);
+      });
+    }
+    
+    if(donorData&&donorData.committeesCount>0){
+      searchResults.insertAdjacentHTML('beforeend','<div class="search-group-label">Donors</div>');
+      const div=document.createElement('div');
+      div.className='search-item';
+      div.innerHTML='<span class="party-dot" style="background:var(--yellow)"></span><span class="search-item-name">'+esc(donorData.donorName)+'</span><div class="search-item-meta">'+fmt(donorData.totalAmount)+' across '+donorData.committeesCount+' committees · '+fmtNum(donorData.totalDonations)+' donations</div>';
+      div.onclick=()=>selectDonor(donorData);
+      searchResults.appendChild(div);
+    }
+    
+    if(committees.length===0&&(!donorData||donorData.committeesCount===0)){
+      searchResults.innerHTML='<div class="search-empty">No results for "'+esc(q)+'"</div>';
+    }
+    showResults();
+  }catch(e){
+    searchResults.innerHTML='<div class="search-empty">Search error — please try again</div>';
+    showResults();
+  }
+}
+
+function quickSearch(q){
+  searchInput.value=q;
+  searchInput.focus();
+  doSearch(q);
+}
+
+// Entity selection
+function selectCommittee(c){
+  hideResults();
+  currentEntity={type:'committee',data:c};
+  renderCommitteeCard(c);
+  showViz();
+  loadTimeline(c.committeeId);
+  loadMoneyFlow(c.committeeId);
+  loadCommitteeNetwork(c.committeeId);
+  $('#contribEmpty').textContent='Search for a donor name to see their contributions to this committee';
+  $('#contribEmpty').style.display='flex';
+  $('#contribTable').style.display='none';
+  switchTab('timeline');
+}
+
+function selectDonor(d){
+  hideResults();
+  currentEntity={type:'donor',data:d};
+  renderDonorCard(d);
+  showViz();
+  renderNetwork(d);
+  renderContribTable(d.contributions);
+  switchTab('network');
+}
+
+function renderCommitteeCard(c){
+  const officeShort=c.office&&c.office.length>80?c.office.substring(0,78)+'…':c.office;
+  $('#entityCard').innerHTML=`
+    <div class="entity-card">
+      <div class="entity-type-badge">${esc(c.type||'Committee')}</div>
+      <div class="entity-name"><span class="party-dot" style="background:${partyColor(c.party)}"></span>${esc(c.name)}</div>
+      ${c.candidateName?'<div class="entity-detail"><strong>Candidate:</strong> '+esc(c.candidateName)+'</div>':''}
+      ${c.party?'<div class="entity-detail"><strong>Party:</strong> '+esc(c.party)+'</div>':''}
+      ${officeShort?'<div class="entity-detail"><strong>Purpose:</strong> '+esc(officeShort)+'</div>':''}
+      <div class="entity-detail"><strong>Committee ID:</strong> ${c.committeeId}</div>
+      <div class="entity-actions">
+        <button class="btn btn-primary" onclick="switchTab('timeline')">📈 Timeline</button>
+        <button class="btn" onclick="switchTab('moneyflow')">🔀 Money Flow</button>
+        <button class="btn" onclick="switchTab('network')">🕸️ Network</button>
+        <a class="btn" href="index.html" target="_blank">🗺️ Heatmap</a>
+      </div>
+    </div>`;
+}
+
+function renderDonorCard(d){
+  $('#entityCard').innerHTML=`
+    <div class="entity-card">
+      <div class="entity-type-badge">Donor</div>
+      <div class="entity-name"><span class="party-dot" style="background:var(--yellow)"></span>${esc(d.donorName)}</div>
+      <div class="entity-detail"><strong>Total Given:</strong> ${fmt(d.totalAmount)}</div>
+      <div class="entity-detail"><strong>Committees:</strong> ${fmtNum(d.committeesCount)}</div>
+      <div class="entity-detail"><strong>Total Donations:</strong> ${fmtNum(d.totalDonations)}</div>
+      <div class="entity-actions">
+        <button class="btn btn-primary" onclick="switchTab('network')">🕸️ Network</button>
+        <button class="btn" onclick="switchTab('contributions')">📋 Contributions</button>
+      </div>
+    </div>`;
+}
+
+function showViz(){
+  $('#welcomeScreen').style.display='none';
+  $('#vizWrapper').style.display='flex';
+}
+
+// Tabs
+$$('.tab').forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.tab)));
+function switchTab(tab){
+  activeTab=tab;
+  $$('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));
+  $$('.viz-panel').forEach(p=>p.classList.toggle('active',p.id==='panel-'+tab));
+}
+
+// ═══ NETWORK GRAPH ═══
+function renderNetwork(donorData){
+  const container=$('#networkContainer');
+  container.innerHTML='';
+  if(!donorData||!donorData.contributions||donorData.contributions.length===0){
+    container.innerHTML='<div class="viz-empty">No network data available</div>';return;
+  }
+  
+  const rect=container.getBoundingClientRect();
+  const W=rect.width||800,H=rect.height||500;
+  
+  const svg=d3.select(container).append('svg').attr('width',W).attr('height',H);
+  const tooltip=d3.select(container).append('div').attr('class','tooltip').style('display','none');
+  const g=svg.append('g');
+  svg.call(d3.zoom().scaleExtent([.2,6]).on('zoom',e=>g.attr('transform',e.transform)));
+  
+  const maxAmt=d3.max(donorData.contributions,d=>d.totalAmount)||1;
+  const rScale=d3.scaleSqrt().domain([0,maxAmt]).range([5,45]);
+  const lScale=d3.scaleLinear().domain([0,maxAmt]).range([.5,5]);
+  
+  // Limit labels for clarity
+  const topN=donorData.contributions.slice().sort((a,b)=>b.totalAmount-a.totalAmount);
+  const showLabelSet=new Set(topN.slice(0,15).map(c=>c.committeeId));
+  
+  const nodes=[{id:'donor',name:donorData.donorName,type:'donor',amount:donorData.totalAmount,r:30}];
+  const links=[];
+  
+  donorData.contributions.forEach(c=>{
+    const nid='c-'+c.committeeId;
+    nodes.push({id:nid,cid:c.committeeId,name:c.committeeName,type:'committee',party:c.party,office:c.office,amount:c.totalAmount,count:c.donationCount,r:Math.max(4,rScale(c.totalAmount)),showLabel:showLabelSet.has(c.committeeId)});
+    links.push({source:'donor',target:nid,value:c.totalAmount,w:Math.max(.5,lScale(c.totalAmount))});
+  });
+  
+  const sim=d3.forceSimulation(nodes)
+    .force('link',d3.forceLink(links).id(d=>d.id).distance(d=>80+(1-d.value/maxAmt)*100))
+    .force('charge',d3.forceManyBody().strength(d=>d.type==='donor'?-400:-100))
+    .force('center',d3.forceCenter(W/2,H/2))
+    .force('collision',d3.forceCollide(d=>d.r+3));
+  
+  // Pin center
+  nodes[0].fx=W/2;nodes[0].fy=H/2;
+  
+  const link=g.selectAll('.link').data(links).join('line')
+    .attr('class','link').attr('stroke','#4a4e5a').attr('stroke-width',d=>d.w);
+  
+  const node=g.selectAll('.node').data(nodes).join('g')
+    .attr('class',d=>'node'+(d.type==='donor'?' node-center':''))
+    .call(d3.drag().on('start',(e,d)=>{if(!e.active)sim.alphaTarget(.3).restart();d.fx=d.x;d.fy=d.y})
+      .on('drag',(e,d)=>{d.fx=e.x;d.fy=e.y})
+      .on('end',(e,d)=>{if(!e.active)sim.alphaTarget(0);if(d.type!=='donor'){d.fx=null;d.fy=null}}));
+  
+  node.append('circle').attr('r',d=>d.r)
+    .attr('fill',d=>d.type==='donor'?'#fdd835':partyHex(d.party))
+    .attr('fill-opacity',d=>d.type==='donor'?.25:.65)
+    .attr('stroke',d=>d.type==='donor'?'#fdd835':'none')
+    .attr('stroke-width',d=>d.type==='donor'?2:0);
+  
+  node.filter(d=>d.type==='donor'||d.showLabel).append('text')
+    .attr('class','node-label').attr('dy',d=>d.r+12)
+    .text(d=>d.name.length>22?d.name.substring(0,20)+'…':d.name);
+  
+  node.on('mouseover',(e,d)=>{
+    tooltip.style('display','block').html(
+      '<div class="tooltip-name">'+esc(d.name)+'</div>'+
+      '<div class="tooltip-detail">'+(d.type==='donor'?'Total: '+fmt(d.amount):fmt(d.amount)+' · '+(d.count||'')+' donations')+'</div>'+
+      (d.party?'<div class="tooltip-detail">'+esc(d.party)+'</div>':''));
+  }).on('mousemove',e=>{
+    const r=container.getBoundingClientRect();
+    tooltip.style('left',(e.clientX-r.left+12)+'px').style('top',(e.clientY-r.top-10)+'px');
+  }).on('mouseout',()=>tooltip.style('display','none'));
+  
+  node.on('click',(e,d)=>{
+    if(d.type==='committee'&&d.cid){
+      apiFetch('/api/finance/search?q='+encodeURIComponent(d.name)+'&limit=5').then(r=>{
+        const m=r.committees.find(c=>c.committeeId===d.cid)||r.committees[0];
+        if(m)selectCommittee(m);
+      }).catch(()=>{});
+    }
+  });
+  
+  sim.on('tick',()=>{
+    link.attr('x1',d=>d.source.x).attr('y1',d=>d.source.y).attr('x2',d=>d.target.x).attr('y2',d=>d.target.y);
+    node.attr('transform',d=>'translate('+d.x+','+d.y+')');
+  });
+}
+
+async function loadCommitteeNetwork(id){
+  const container=$('#networkContainer');
+  container.innerHTML='<div class="viz-loading"><div class="spinner"></div></div>';
+  try{
+    const mf=await apiFetch('/api/finance/money-flow?committeeId='+id+'&limit=50');
+    if((!mf.inflows||!mf.inflows.length)&&(!mf.outflows||!mf.outflows.length)){
+      container.innerHTML='<div class="viz-empty">No cross-committee transfer data found.<br>Try searching for a donor name to see their full network.</div>';
+      return;
+    }
+    renderCommitteeNet(mf,container);
+  }catch(e){container.innerHTML='<div class="viz-empty">Could not load network data</div>'}
+}
+
+function renderCommitteeNet(mf,container){
+  container.innerHTML='';
+  const rect=container.getBoundingClientRect();
+  const W=rect.width||800,H=rect.height||500;
+  const svg=d3.select(container).append('svg').attr('width',W).attr('height',H);
+  const g=svg.append('g');
+  svg.call(d3.zoom().scaleExtent([.3,5]).on('zoom',e=>g.attr('transform',e.transform)));
+  const tooltip=d3.select(container).append('div').attr('class','tooltip').style('display','none');
+  
+  const nodes=[{id:'center',name:mf.committee.name,type:'center',r:24}];
+  const links=[];
+  (mf.inflows||[]).forEach(f=>{const nid='in-'+f.fromCommitteeId;nodes.push({id:nid,name:f.fromCommitteeName,type:'inflow',amount:f.totalAmount,r:10});links.push({source:nid,target:'center',value:f.totalAmount})});
+  (mf.outflows||[]).forEach(f=>{const nid='out-'+f.toCommitteeId;nodes.push({id:nid,name:f.toCommitteeName,type:'outflow',amount:f.totalAmount,r:10});links.push({source:'center',target:nid,value:f.totalAmount})});
+  
+  nodes[0].fx=W/2;nodes[0].fy=H/2;
+  const sim=d3.forceSimulation(nodes).force('link',d3.forceLink(links).id(d=>d.id).distance(120)).force('charge',d3.forceManyBody().strength(-150)).force('center',d3.forceCenter(W/2,H/2));
+  const link=g.selectAll('.link').data(links).join('line').attr('stroke','#4a4e5a').attr('stroke-width',2);
+  const node=g.selectAll('.node').data(nodes).join('g').attr('class','node');
+  node.append('circle').attr('r',d=>d.r).attr('fill',d=>d.type==='center'?'#4fc3f7':d.type==='inflow'?'#66bb6a':'#ef5350').attr('fill-opacity',.7);
+  node.append('text').attr('class','node-label').attr('dy',d=>d.r+12).text(d=>d.name.length>20?d.name.substring(0,18)+'…':d.name);
+  
+  node.on('mouseover',(e,d)=>{
+    tooltip.style('display','block').html('<div class="tooltip-name">'+esc(d.name)+'</div>'+(d.amount?'<div class="tooltip-detail">'+fmt(d.amount)+'</div>':''));
+  }).on('mousemove',e=>{const r=container.getBoundingClientRect();tooltip.style('left',(e.clientX-r.left+12)+'px').style('top',(e.clientY-r.top-10)+'px')})
+  .on('mouseout',()=>tooltip.style('display','none'));
+  
+  sim.on('tick',()=>{link.attr('x1',d=>d.source.x).attr('y1',d=>d.source.y).attr('x2',d=>d.target.x).attr('y2',d=>d.target.y);node.attr('transform',d=>'translate('+d.x+','+d.y+')')});
+}
+
+// ═══ TIMELINE ═══
+async function loadTimeline(id){
+  const container=$('#timelineContainer');
+  container.innerHTML='<div class="viz-loading"><div class="spinner"></div></div>';
+  try{
+    const data=await apiFetch('/api/finance/timeline/'+id+'?granularity=quarter');
+    renderTimeline(data,container);
+  }catch(e){container.innerHTML='<div class="viz-empty">Could not load timeline data</div>'}
+}
+
+function renderTimeline(data,container){
+  container.innerHTML='';
+  if(!data.timeline||!data.timeline.length){container.innerHTML='<div class="viz-empty">No timeline data available</div>';return}
+  
+  const tl=data.timeline.map(d=>({...d,date:new Date(d.period),received:+d.received||0,spent:+d.spent||0,net:+d.netCashFlow||0,donors:+d.uniqueDonors||0}));
+  
+  // Title
+  const title=document.createElement('div');title.className='chart-title';
+  title.textContent=data.committee.name+' — Fundraising Timeline';
+  container.appendChild(title);
+  
+  // Legend
+  const legend=document.createElement('div');legend.className='timeline-legend';
+  legend.innerHTML='<div class="legend-item"><div class="legend-swatch" style="background:#66bb6a"></div>Received</div><div class="legend-item"><div class="legend-swatch" style="background:#ef5350"></div>Spent</div><div class="legend-item"><div class="legend-swatch" style="background:#4fc3f7;height:2px"></div>Net Cash Flow</div>';
+  container.appendChild(legend);
+  
+  // Chart wrapper
+  const wrap=document.createElement('div');wrap.className='timeline-chart-wrap';
+  container.appendChild(wrap);
+  
+  const cRect=container.getBoundingClientRect();
+  const margin={top:16,right:24,bottom:32,left:60};
+  const totalW=Math.max(400,cRect.width-32);
+  const totalH=280;
+  const w=totalW-margin.left-margin.right;
+  const h=totalH-margin.top-margin.bottom;
+  
+  const svg=d3.select(wrap).append('svg').attr('viewBox','0 0 '+totalW+' '+totalH).attr('preserveAspectRatio','xMidYMid meet');
+  const g=svg.append('g').attr('transform','translate('+margin.left+','+margin.top+')');
+  
+  const x=d3.scaleTime().domain(d3.extent(tl,d=>d.date)).range([0,w]);
+  const maxY=d3.max(tl,d=>Math.max(d.received,d.spent))||1;
+  const minY=d3.min(tl,d=>d.net)||0;
+  const y=d3.scaleLinear().domain([Math.min(0,minY*1.1),maxY*1.1]).range([h,0]).nice();
+  
+  // Grid
+  g.append('g').attr('class','grid').call(d3.axisLeft(y).tickSize(-w).tickFormat('').ticks(5)).select('.domain').remove();
+  // Axes
+  g.append('g').attr('class','axis').attr('transform','translate(0,'+h+')').call(d3.axisBottom(x).ticks(Math.min(tl.length,10)).tickFormat(d3.timeFormat("'%y")));
+  g.append('g').attr('class','axis').call(d3.axisLeft(y).ticks(5).tickFormat(d=>d>=1e6?(d/1e6).toFixed(1)+'M':d>=1e3?(d/1e3).toFixed(0)+'K':d));
+  
+  // Areas
+  const areaR=d3.area().x(d=>x(d.date)).y0(y(0)).y1(d=>y(d.received)).curve(d3.curveMonotoneX);
+  const areaS=d3.area().x(d=>x(d.date)).y0(y(0)).y1(d=>y(d.spent)).curve(d3.curveMonotoneX);
+  g.append('path').datum(tl).attr('d',areaR).attr('fill','#66bb6a').attr('fill-opacity',.2).attr('stroke','#66bb6a').attr('stroke-width',1.5);
+  g.append('path').datum(tl).attr('d',areaS).attr('fill','#ef5350').attr('fill-opacity',.12).attr('stroke','#ef5350').attr('stroke-width',1.5);
+  
+  // Net line
+  const netLine=d3.line().x(d=>x(d.date)).y(d=>y(d.net)).curve(d3.curveMonotoneX);
+  g.append('path').datum(tl).attr('d',netLine).attr('fill','none').attr('stroke','#4fc3f7').attr('stroke-width',2).attr('stroke-dasharray','4,3');
+  
+  // Hover
+  const focusLine=g.append('line').attr('y1',0).attr('y2',h).attr('stroke','var(--text-dim)').attr('stroke-width',1).attr('stroke-dasharray','3,3').style('display','none');
+  const ttip=d3.select(wrap).append('div').attr('class','tooltip').style('display','none').style('pointer-events','none');
+  
+  const bisect=d3.bisector(d=>d.date).left;
+  svg.append('rect').attr('width',w).attr('height',h).attr('transform','translate('+margin.left+','+margin.top+')').attr('fill','transparent').attr('cursor','crosshair')
+    .on('mouseover',()=>{focusLine.style('display',null);ttip.style('display','block')})
+    .on('mouseout',()=>{focusLine.style('display','none');ttip.style('display','none')})
+    .on('mousemove',function(ev){
+      const[mx]=d3.pointer(ev,this);
+      const xDate=x.invert(mx);
+      const i=bisect(tl,xDate,1);
+      const d0=tl[i-1],d1=tl[i];
+      const d=!d1?d0:(xDate-d0.date>d1.date-xDate?d1:d0);
+      focusLine.attr('x1',x(d.date)).attr('x2',x(d.date));
+      // Position tooltip relative to SVG
+      const svgRect=wrap.getBoundingClientRect();
+      const px=x(d.date)+margin.left;
+      ttip.style('left',(px+10)+'px').style('top',margin.top+'px')
+        .html('<div class="tooltip-name">'+fmtDate(d.date)+'</div><div class="tooltip-detail" style="color:#66bb6a">Received: '+fmt(d.received)+'</div><div class="tooltip-detail" style="color:#ef5350">Spent: '+fmt(d.spent)+'</div><div class="tooltip-detail" style="color:#4fc3f7">Net: '+fmt(d.net)+'</div><div class="tooltip-detail">Donors: '+fmtNum(d.donors)+'</div>');
+    });
+  
+  // Donors bar chart
+  const dt=document.createElement('div');dt.className='chart-title';dt.textContent='Unique Donors Per Quarter';
+  container.appendChild(dt);
+  
+  const dWrap=document.createElement('div');dWrap.className='timeline-chart-wrap';dWrap.style.minHeight='80px';
+  container.appendChild(dWrap);
+  
+  const dMargin={top:8,right:24,bottom:24,left:60};
+  const dTotalH=90;
+  const dW=totalW-dMargin.left-dMargin.right;
+  const dH=dTotalH-dMargin.top-dMargin.bottom;
+  
+  const dsvg=d3.select(dWrap).append('svg').attr('viewBox','0 0 '+totalW+' '+dTotalH).attr('preserveAspectRatio','xMidYMid meet');
+  const dg=dsvg.append('g').attr('transform','translate('+dMargin.left+','+dMargin.top+')');
+  
+  const dx=d3.scaleBand().domain(tl.map(d=>d.date.toISOString())).range([0,dW]).padding(.35);
+  const dy=d3.scaleLinear().domain([0,d3.max(tl,d=>d.donors)||1]).range([dH,0]).nice();
+  
+  const tickEvery=Math.max(1,Math.ceil(tl.length/10));
+  dg.append('g').attr('class','axis').attr('transform','translate(0,'+dH+')').call(d3.axisBottom(dx).tickValues(dx.domain().filter((_,i)=>i%tickEvery===0)).tickFormat(d=>d3.timeFormat("'%y")(new Date(d))));
+  dg.append('g').attr('class','axis').call(d3.axisLeft(dy).ticks(3));
+  
+  dg.selectAll('.dbar').data(tl).join('rect').attr('class','dbar')
+    .attr('x',d=>dx(d.date.toISOString())).attr('y',d=>dy(d.donors))
+    .attr('width',dx.bandwidth()).attr('height',d=>dH-dy(d.donors))
+    .attr('fill','#4fc3f7').attr('fill-opacity',.45).attr('rx',1);
+}
+
+// ═══ CONTRIBUTIONS TABLE ═══
+function renderContribTable(contributions){
+  const empty=$('#contribEmpty'),table=$('#contribTable');
+  if(!contributions||!contributions.length){
+    empty.textContent='No contributions data available';empty.style.display='flex';table.style.display='none';return;
+  }
+  empty.style.display='none';table.style.display='block';
+  
+  let sortCol='totalAmount',sortDir=-1;
+  
+  function render(){
+    const sorted=[...contributions].sort((a,b)=>{
+      let va=a[sortCol],vb=b[sortCol];
+      if(typeof va==='string')return sortDir*va.localeCompare(vb);
+      return sortDir*((va||0)-(vb||0));
+    });
+    table.innerHTML='<table><thead><tr>'+
+      '<th data-col="committeeName">Committee <span class="sort-arrow">'+(sortCol==='committeeName'?(sortDir>0?'▲':'▼'):'↕')+'</span></th>'+
+      '<th data-col="totalAmount" style="text-align:right">Amount <span class="sort-arrow">'+(sortCol==='totalAmount'?(sortDir>0?'▲':'▼'):'↕')+'</span></th>'+
+      '<th data-col="donationCount" style="text-align:right"># <span class="sort-arrow">'+(sortCol==='donationCount'?(sortDir>0?'▲':'▼'):'↕')+'</span></th>'+
+      '<th data-col="firstDate">First <span class="sort-arrow">'+(sortCol==='firstDate'?(sortDir>0?'▲':'▼'):'↕')+'</span></th>'+
+      '<th data-col="lastDate">Last <span class="sort-arrow">'+(sortCol==='lastDate'?(sortDir>0?'▲':'▼'):'↕')+'</span></th>'+
+      '<th data-col="party">Party <span class="sort-arrow">'+(sortCol==='party'?(sortDir>0?'▲':'▼'):'↕')+'</span></th>'+
+      '</tr></thead><tbody>'+sorted.map(c=>
+        '<tr data-cid="'+c.committeeId+'"><td>'+esc(c.committeeName)+'</td><td class="amount">'+fmt(c.totalAmount)+'</td><td style="text-align:right">'+(c.donationCount||'—')+'</td><td>'+fmtDate(c.firstDate)+'</td><td>'+fmtDate(c.lastDate)+'</td><td><span class="party-dot" style="background:'+partyColor(c.party)+'"></span>'+esc(c.party||'N/A')+'</td></tr>'
+      ).join('')+'</tbody></table>';
+    
+    table.querySelectorAll('th[data-col]').forEach(th=>{
+      th.addEventListener('click',()=>{
+        const col=th.dataset.col;
+        if(sortCol===col)sortDir*=-1;else{sortCol=col;sortDir=col==='totalAmount'||col==='donationCount'?-1:1}
+        render();
+      });
+    });
+    
+    table.querySelectorAll('tr[data-cid]').forEach(tr=>{
+      tr.addEventListener('click',()=>{
+        const cid=parseInt(tr.dataset.cid);
+        const match=contributions.find(c=>c.committeeId===cid);
+        if(match)apiFetch('/api/finance/search?q='+encodeURIComponent(match.committeeName)+'&limit=5').then(r=>{
+          const m=r.committees.find(c=>c.committeeId===cid)||r.committees[0];
+          if(m)selectCommittee(m);
+        }).catch(()=>{});
+      });
+    });
+  }
+  render();
+}
+
+// ═══ MONEY FLOW ═══
+async function loadMoneyFlow(id){
+  const container=$('#sankeyContainer');
+  container.innerHTML='<div class="viz-loading"><div class="spinner"></div></div>';
+  try{
+    const data=await apiFetch('/api/finance/money-flow?committeeId='+id+'&limit=50');
+    renderSankey(data,container);
+  }catch(e){container.innerHTML='<div class="viz-empty">Could not load money flow data</div>'}
+}
+
+function renderSankey(data,container){
+  container.innerHTML='';
+  const hasIn=data.inflows&&data.inflows.length>0;
+  const hasOut=data.outflows&&data.outflows.length>0;
+  if(!hasIn&&!hasOut){
+    container.innerHTML='<div class="viz-empty">No cross-committee transfers found for this committee.<br>This is common for candidate committees that primarily receive individual donations.</div>';
+    return;
+  }
+  
+  const rect=container.getBoundingClientRect();
+  const W=Math.max(500,rect.width-32);
+  const itemCount=Math.max((data.inflows||[]).length,(data.outflows||[]).length,1);
+  const H=Math.max(300,itemCount*36+80);
+  const margin={top:20,right:180,bottom:20,left:180};
+  const iw=W-margin.left-margin.right;
+  const ih=H-margin.top-margin.bottom;
+  
+  const svg=d3.select(container).append('svg').attr('viewBox','0 0 '+W+' '+H).attr('preserveAspectRatio','xMidYMid meet').style('max-height','600px');
+  const g=svg.append('g').attr('transform','translate('+margin.left+','+margin.top+')');
+  
+  const allAmounts=[...(data.inflows||[]).map(f=>f.totalAmount),...(data.outflows||[]).map(f=>f.totalAmount)];
+  const maxAmt=d3.max(allAmounts)||1;
+  const thickScale=d3.scaleLinear().domain([0,maxAmt]).range([2,16]);
+  
+  // Center node
+  const centerX=iw/2-30;
+  const centerH=Math.max(40,ih*.4);
+  g.append('rect').attr('x',centerX).attr('y',ih/2-centerH/2).attr('width',60).attr('height',centerH).attr('fill','#4fc3f7').attr('fill-opacity',.25).attr('rx',4).attr('stroke','#4fc3f7').attr('stroke-width',1);
+  
+  // Center label
+  const cName=data.committee.name;
+  g.append('text').attr('x',centerX+30).attr('y',ih/2).attr('dy','0.35em').attr('text-anchor','middle').attr('fill','var(--text)').attr('font-size',10).attr('font-weight',600)
+    .text(cName.length>12?cName.substring(0,10)+'…':cName);
+  
+  // Inflows
+  const inSpacing=ih/Math.max((data.inflows||[]).length,1);
+  (data.inflows||[]).forEach((f,i)=>{
+    const y=i*inSpacing+inSpacing/2;
+    const thick=thickScale(f.totalAmount);
+    const path=d3.path();
+    path.moveTo(0,y);path.bezierCurveTo(centerX*.4,y,centerX*.6,ih/2,centerX,ih/2);
+    g.append('path').attr('d',path.toString()).attr('fill','none').attr('stroke','#66bb6a').attr('stroke-width',thick).attr('stroke-opacity',.3);
+    g.append('circle').attr('cx',0).attr('cy',y).attr('r',4).attr('fill','#66bb6a');
+    g.append('text').attr('x',-8).attr('y',y).attr('dy','0.35em').attr('text-anchor','end').attr('class','sankey-label')
+      .text((f.fromCommitteeName||'').substring(0,22)+(f.fromCommitteeName.length>22?'…':''));
+    g.append('text').attr('x',-8).attr('y',y+12).attr('dy','0.35em').attr('text-anchor','end').attr('font-size',9).attr('fill','#66bb6a')
+      .text(fmt(f.totalAmount));
+  });
+  
+  // Outflows
+  const outSpacing=ih/Math.max((data.outflows||[]).length,1);
+  (data.outflows||[]).forEach((f,i)=>{
+    const y=i*outSpacing+outSpacing/2;
+    const thick=thickScale(f.totalAmount);
+    const endX=iw;
+    const path=d3.path();
+    path.moveTo(centerX+60,ih/2);path.bezierCurveTo(centerX+60+(endX-centerX-60)*.4,ih/2,centerX+60+(endX-centerX-60)*.6,y,endX,y);
+    g.append('path').attr('d',path.toString()).attr('fill','none').attr('stroke','#ef5350').attr('stroke-width',thick).attr('stroke-opacity',.3);
+    g.append('circle').attr('cx',endX).attr('cy',y).attr('r',4).attr('fill','#ef5350');
+    g.append('text').attr('x',endX+8).attr('y',y).attr('dy','0.35em').attr('text-anchor','start').attr('class','sankey-label')
+      .text((f.toCommitteeName||'').substring(0,22)+(f.toCommitteeName.length>22?'…':''));
+    g.append('text').attr('x',endX+8).attr('y',y+12).attr('dy','0.35em').attr('text-anchor','start').attr('font-size',9).attr('fill','#ef5350')
+      .text(fmt(f.totalAmount));
+  });
+  
+  // Labels for sides
+  if(hasIn)g.append('text').attr('x',0).attr('y',-8).attr('text-anchor','start').attr('font-size',10).attr('fill','#66bb6a').attr('font-weight',600).text('Inflows ↓');
+  if(hasOut)g.append('text').attr('x',iw).attr('y',-8).attr('text-anchor','end').attr('font-size',10).attr('fill','#ef5350').attr('font-weight',600).text('↓ Outflows');
+}
+
+// URL params
+const params=new URLSearchParams(location.search);
+if(params.get('donor')){
+  const dn=params.get('donor');
+  searchInput.value=dn;
+  apiFetch('/api/finance/donor-network/'+encodeURIComponent(dn)).then(d=>{if(d&&d.committeesCount>0)selectDonor(d)}).catch(()=>{});
+}else if(params.get('committee')){
+  const cn=params.get('committee');
+  searchInput.value=cn;
+  apiFetch('/api/finance/search?q='+encodeURIComponent(cn)+'&limit=5').then(r=>{if(r.committees&&r.committees[0])selectCommittee(r.committees[0])}).catch(()=>{});
+}
+
+loadStats();
+</script>
+</body>
+</html>
